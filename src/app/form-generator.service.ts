@@ -9,7 +9,8 @@ import cloneDeep from 'lodash-es/cloneDeep';
 export class FormGeneratorService {
 
   private _form: FormGroup;
-  
+  private _empty: Array<boolean> = [];
+
   resetForm$: Subject<void> = new Subject<void>();
   form$: BehaviorSubject<FormGroup> = new BehaviorSubject(null);
 
@@ -87,10 +88,11 @@ export class FormGeneratorService {
     const rowTemplate = cloneDeep(currFormElm.controls[arrayElement.name]['controls'][0]);
     this.recurseFormGroup(rowTemplate, 'CLEAR_VALUES');
     currFormElm.controls[arrayElement.name]['rowTemplate'] = rowTemplate;
-
+    currFormElm.controls[arrayElement.name]['originalValue'] = cloneDeep(value);
     if (emptyArray) {
       currFormElm.controls[arrayElement.name]['controls'] = [];
     }
+
   }
 
   setFormValue(value: any) {
@@ -99,17 +101,30 @@ export class FormGeneratorService {
     this.form$.next(form);
   }
 
-  recurseFormGroup(group: FormGroup | FormArray, operation: string): void {
+  recurseFormGroup(group: FormGroup | FormArray, operation: string = 'NO_OPERATION') {
     Object.keys(group.controls).forEach((key: string) => {
       const abstractControl = group.controls[key];
       if (abstractControl instanceof FormGroup || abstractControl instanceof FormArray) {
-        this.recurseFormGroup(abstractControl, operation);
+        if(abstractControl instanceof FormArray) {
+          abstractControl.controls.length > 0 ? this._empty.push(false) : this._empty.push(true);
+          this.recurseFormGroup(abstractControl, operation);
+        } else {
+          this.recurseFormGroup(abstractControl, operation);
+        }    
       } else {
+        abstractControl.value != null ? this._empty.push(false) : this._empty.push(true);
         if (operation === 'CLEAR_VALUES') {
           abstractControl.patchValue(null);
         }
       }
     });
+  }
+
+  isEmpty(formGroup: FormGroup): boolean {
+    this._empty = [];
+    this._empty.push(true);
+    this.recurseFormGroup(formGroup);
+    return this._empty.every(val => val === true);
   }
 
 }

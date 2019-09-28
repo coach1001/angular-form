@@ -23,6 +23,7 @@ export class AppComponent implements OnInit, OnDestroy {
   formDefinition: any;
   formValue: any;
   form: FormGroup;
+  cleared$: Subject<void> = new Subject<void>();
 
   constructor(
     private _formGenerator: FormGeneratorService) {
@@ -30,12 +31,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    // this.formDefinition = Layout;
+    //this.formDefinition = Layout;
     // this.formValue = Value;
     this.formDefinition = FamilyLayout;
     this.formValue = FamilyValue;
     this.stepIndex = 0;
-
     this._formGenerator.buildForm(this.formDefinition.screens[this.stepIndex], this.formValue);
 
     this._formGenerator.form$.pipe(
@@ -44,7 +44,6 @@ export class AppComponent implements OnInit, OnDestroy {
     ).subscribe(form => {
       this.form = form;
     });
-    
   }
 
   ngOnDestroy(): void {
@@ -64,7 +63,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   getElementInputs(element: any): any {
-    return { ...element, parent: this.form };
+    return { ...element, parent: this.form, parentCleared$: this.cleared$};
   }
 
   onSubmit() {
@@ -75,6 +74,10 @@ export class AppComponent implements OnInit, OnDestroy {
   onReset() {
     this.form.reset(this.formValue);
     this._formGenerator.resetForm$.next();
+  }
+
+  onClear() {
+    this.cleared$.next();
   }
 
 }

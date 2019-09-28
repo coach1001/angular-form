@@ -28,6 +28,8 @@ export class ElementArrayComponent implements OnInit, OnDestroy {
   visibleWhen: any;
   @Input()
   clearWhen: any;
+  @Input()
+  parentCleared$: Subject<void> =  new Subject<void>();
 
   isVisible = true;
 
@@ -40,15 +42,16 @@ export class ElementArrayComponent implements OnInit, OnDestroy {
   constructor(private _formGenerator: FormGeneratorService) { }
 
   ngOnInit(): void {
-
-    this.evalVisibleWhen();
+    
     this.evalClearWhen();
+    this.evalVisibleWhen();
 
     this.iterator = [];
-    this.origArrayValue = cloneDeep(this.parent.controls[this.name].value);
-    this.origArrayLength = this.origArrayValue.length ? this.origArrayValue.length : 0;
 
-    for (let i = 0; i < this.origArrayLength; i++) {
+    const valueLength = this.parent.controls[this.name].value ?
+      this.parent.controls[this.name].value.length : 0;
+
+    for (let i = 0; i < valueLength; i++) {
       this.iterator.push(i);
     }
 
@@ -57,22 +60,34 @@ export class ElementArrayComponent implements OnInit, OnDestroy {
     ).subscribe(_ => {
       this.iterator = [];
       this.parent.controls[this.name]['controls'] = [];
-      for (let i = 0; i < this.origArrayLength; i++) {        
-        const rowTemplate = <FormGroup>cloneDeep(this.parent.controls[this.name]['rowTemplate']);
-        this.parent.controls[this.name]['controls'].push(rowTemplate);
-        this.parent.controls[this.name]['controls'][i].patchValue(this.origArrayValue[i]);
-        this.iterator.push(i);
+      if (this.parent.controls[this.name]['originalValue'] != null) {
+        for (let i = 0; i < this.parent.controls[this.name]['originalValue'].length; i++) {
+          const rowTemplate = <FormGroup>cloneDeep(this.parent.controls[this.name]['rowTemplate']);
+          this.parent.controls[this.name]['controls'].push(rowTemplate);
+          this.parent.controls[this.name]['controls'][i].patchValue(
+            this.parent.controls[this.name]['originalValue'][i]
+          );
+          this.iterator.push(i);
+        }
       }
-      this.evalVisibleWhen();
       this.evalClearWhen();
+      this.evalVisibleWhen();
     });
 
     this.parent.valueChanges
       .pipe(
         takeUntil(this._destroy$)
       ).subscribe(_ => {
-        this.evalVisibleWhen();
         this.evalClearWhen();
+        this.evalVisibleWhen();
+      });
+    
+    this.parentCleared$
+      .pipe(
+        takeUntil(this._destroy$)
+      ).subscribe(_ => {
+        this.parent.controls[this.name]['controls'] = [];
+        this.iterator = [];
       });
   }
 

@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -10,7 +10,7 @@ import * as jexl from 'jexl';
   templateUrl: './element-control.component.html',
   styleUrls: ['./element-control.component.scss']
 })
-export class ElementControlComponent implements OnChanges {
+export class ElementControlComponent implements OnChanges, OnDestroy {
   @Input()
   name: string;
   @Input()
@@ -18,17 +18,27 @@ export class ElementControlComponent implements OnChanges {
   @Input()
   parent: FormGroup;
   @Input()
+  parentCleared$: Subject<void> =  new Subject<void>();
+  @Input()
   visibleWhen = null;
   @Input()
   clearWhen = null;
 
   isVisible = true;
 
+  private _destroy$: Subject<void> =  new Subject<void>();
+
   constructor() { }
 
   ngOnChanges() {
     this.evalVisibleWhen();
     this.evalClearWhen();
+    this.parentCleared$
+    .pipe(
+      takeUntil(this._destroy$)
+    ).subscribe(_ => {
+      this.parent.controls[this.name].patchValue(null);
+    });
   }
 
   get _label_() {
@@ -49,6 +59,11 @@ export class ElementControlComponent implements OnChanges {
         this.parent.controls[this.name].patchValue(null);
       }
     }
+  }
+
+  ngOnDestroy() {
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 
 }

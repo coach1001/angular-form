@@ -1,5 +1,6 @@
 export const FamilyValue = {
     totalIndividuals: 4,
+    testBoolean: true,
     fatherDetails: {
         firstName: 'Francois',
         surname: 'Weber',
@@ -29,8 +30,47 @@ export const FamilyLayout = {
                     label: 'Total individuals',
                 },
                 {
+                    type: 'CONTROL',
+                    subType: 'BOOLEAN_INPUT',
+                    name: 'testBoolean',
+                    label: 'Just a test for reactivity?'
+                },
+                {
                     type: 'OBJECT',
-                    subType: 'TEXT_INPUT',
+                    name: 'testObject',
+                    visibleWhen: {
+                        expression: "testBoolean"
+                    },
+                    clearWhen: {
+                        expression: "!testBoolean"
+                    },
+                    elements: [
+                        {
+                            type: 'OBJECT',
+                            name: 'innerObject',
+                            elements: [
+                                {
+                                    type: 'CONTROL',
+                                    subType: 'TEXT_INPUT',
+                                    name: 'innerObjectText'
+                                }
+                            ]
+                        },
+                        {
+                            type: 'ARRAY',
+                            name: 'innerArray',
+                            elements: [
+                                {
+                                    type: 'CONTROL',
+                                    subType: 'TEXT_INPUT',
+                                    name: 'innerArrayText'
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    type: 'OBJECT',
                     name: 'fatherDetails',
                     label: 'Family details',
                     elements: [
@@ -180,6 +220,7 @@ export const Layout = {
                     elements: [
                         {
                             type: 'CONTROL',
+                            subType: 'TEXT_INPUT',
                             name: 'step1_array1_input1'
                         }
                     ]
