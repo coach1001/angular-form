@@ -77,7 +77,7 @@ export class ElementArrayComponent implements OnInit, OnDestroy {
     this.parent.valueChanges
       .pipe(
         takeUntil(this._destroy$)
-      ).subscribe(_ => {
+      ).subscribe(value => {
         this.evalClearWhen();
         this.evalVisibleWhen();
       });

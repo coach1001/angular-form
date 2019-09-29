@@ -17,6 +17,7 @@ import * as deepDiff from 'deep-diff';
 export class AppComponent implements OnInit, OnDestroy {
 
   private _destroy$: Subject<void> = new Subject<void>();
+  private _currentForm = true;
 
   title = 'angular-form';
   stepIndex: number;
@@ -78,6 +79,19 @@ export class AppComponent implements OnInit, OnDestroy {
 
   onClear() {
     this.cleared$.next();
+  }
+  
+  onSwitch() {
+    if(this._currentForm) {
+      this.formDefinition = Layout;
+      this.formValue = Value;  
+    } else {
+      this.formDefinition = FamilyLayout;
+      this.formValue = FamilyValue;  
+    }
+    this._currentForm = !this._currentForm;
+    this.stepIndex = 0;
+    this._formGenerator.buildForm(this.formDefinition.screens[this.stepIndex], this.formValue);
   }
 
 }
