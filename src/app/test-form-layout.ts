@@ -1,6 +1,16 @@
 export const FamilyValue = {
     totalIndividuals: 4,
     testBoolean: true,
+    testObject: {
+        innerObject: {
+            innerObjectText: 'Nicely done!'
+        },
+        innerArray: [
+           {
+               innerArrayText: 'Nice done again!'
+           } 
+        ]
+    },
     fatherDetails: {
         firstName: 'Francois',
         surname: 'Weber',
@@ -12,7 +22,8 @@ export const FamilyValue = {
     },
     hasChildren: true,
     children: [
-        { firstName: 'Dailen' }
+        { firstName: 'Dailen', gender: 'M'},
+        { firstName: 'Isabellla', gender: 'F'}
     ]
 }
 

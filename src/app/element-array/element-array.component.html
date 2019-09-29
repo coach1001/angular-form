@@ -3,8 +3,7 @@
         <mat-card-title>{{_label_}}</mat-card-title>
         <form [formGroup]="parent" fxLayout="row" style="margin-top: 20px;">
             <div fxLayout="column">
-                <ng-container *ngIf="iterator != null">
-                    <ng-container *ngFor="let i of iterator;let idx  = index;">
+                    <ng-container *ngFor="let i of _controlsLength_;let idx  = index;">
                         <div fxLayout="row" style="margin-top: 10px;">
                             <ng-container *ngFor="let element of elements">
                                 <ndc-dynamic [ndcDynamicComponent]="getElementComponent(element.type)"
@@ -13,7 +12,6 @@
                             </ng-container>
                         </div>
                     </ng-container>
-                </ng-container>
             </div>
         </form>
         <mat-card-actions>

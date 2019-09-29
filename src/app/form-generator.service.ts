@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormArray, FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { FormArray, FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { BehaviorSubject, Subject } from 'rxjs';
 import cloneDeep from 'lodash-es/cloneDeep';
 
@@ -19,98 +19,93 @@ export class FormGeneratorService {
   ) {
   }
 
-  buildForm(definition: any, formInitValue: any): void {
+  buildForm(definition: any): void {
     this._form = this._formBuilder.group({});
-    this.createStep(definition, formInitValue);
-    this._form.patchValue(formInitValue);
+    this.createStep(definition);
     this.form$.next(this._form);
   }
 
-  createStep(stepDefinition: any, formInitValue: any): void {
+  createStep(stepDefinition: any): void {
     stepDefinition.elements.forEach(element => {
-      this.processElement_r(element, this._form, formInitValue);
+      this.processElement_r(element, this._form);
     });
   }
 
-  processElement_r(element, currFormElm: FormGroup, value: any): FormGroup {
+  processElement_r(element, currFormElm: FormGroup): FormGroup {
     switch (element.type) {
       case 'CONTROL':
-        this.processControl(element, currFormElm, value ? value[element.name] : null)
+        this.processControl(element, currFormElm)
         break;
       case 'OBJECT':
-        this.processObject_r(element, currFormElm, value ? value[element.name] : null);
+        this.processObject_r(element, currFormElm);
         break;
       case 'ARRAY':
-        this.processArray_r(element, currFormElm, value ? value[element.name] : null);
+        this.processArray_r(element, currFormElm);
         break;
       default: break;
     }
     return currFormElm;
   }
 
-  processControl(inputElement, currFormElm: FormGroup, value: any) {
+  processControl(inputElement, currFormElm: FormGroup) {
     const control = new FormControl();
     currFormElm.addControl(inputElement.name, control);
     return currFormElm;
   }
 
-  processObject_r(objectElement, currFormElm: FormGroup, value: any) {
+  processObject_r(objectElement, currFormElm: FormGroup) {
     currFormElm.addControl(objectElement.name, this._formBuilder.group({}));
     currFormElm = <FormGroup>currFormElm.controls[objectElement.name];
     if (objectElement.elements && objectElement.elements.length) {
       objectElement.elements.forEach(element => {
-        this.processElement_r(element, currFormElm, value);
+        this.processElement_r(element, currFormElm);
       });
     }
     return currFormElm;
   }
 
-  processArray_r(arrayElement, currFormElm: FormGroup, value: any) {
-
-    const numArrElm = value && value.length ? value.length : 1;
-    const emptyArray = !(value && value.length);
-
+  processArray_r(arrayElement, currFormElm: FormGroup) {
     currFormElm.addControl(arrayElement.name, this._formBuilder.array([]));
-    currFormElm.controls[arrayElement.name]['emptyArray'] = emptyArray;
-
-    for (let i = 0; i < numArrElm; i++) {
-
-      currFormElm.controls[arrayElement.name]['controls'][i] = this._formBuilder.group({});
-      const tempCurrFormElm = <FormGroup>currFormElm.controls[arrayElement.name]['controls'][i];
-
-      if (arrayElement.elements && arrayElement.elements.length) {
-        arrayElement.elements.forEach(element => {
-          this.processElement_r(element, tempCurrFormElm, value ? value[i] : null);
-        });
-      }
+    currFormElm.controls[arrayElement.name]['controls'].push(this._formBuilder.group({}));
+    if (arrayElement.elements && arrayElement.elements.length) {
+      arrayElement.elements.forEach(element => {
+        this.processElement_r(element, <FormGroup>currFormElm.controls[arrayElement.name]['controls'][0]);
+      });
     }
-
     const rowTemplate = cloneDeep(currFormElm.controls[arrayElement.name]['controls'][0]);
     this.recurseFormGroup(rowTemplate, 'CLEAR_VALUES');
     currFormElm.controls[arrayElement.name]['rowTemplate'] = rowTemplate;
-    currFormElm.controls[arrayElement.name]['originalValue'] = cloneDeep(value);
-    if (emptyArray) {
-      currFormElm.controls[arrayElement.name]['controls'] = [];
-    }
-
+    currFormElm.controls[arrayElement.name]['controls'] = [];
   }
 
-  setFormValue(value: any) {
-    const form = this.form$.value;
-    form.patchValue(value);
-    this.form$.next(form);
+  setFormValue(group: FormGroup, value: any) {
+    Object.keys(group.controls).forEach((key: string) => {      
+      const abstractControl = group.controls[key];
+      const controlValue = value[key];
+      if (abstractControl instanceof FormGroup && controlValue != null) {
+        this.setFormValue(abstractControl, controlValue);
+      } else if (abstractControl instanceof FormArray && controlValue != null) {
+        abstractControl['controls'] = [];
+        controlValue.forEach((val, index) => {
+          abstractControl['controls'].push(cloneDeep(abstractControl['rowTemplate']));
+          this.setFormValue(<FormGroup>abstractControl['controls'][index], val);
+        });
+      } else if (controlValue != null) {
+        abstractControl.patchValue(controlValue);
+      }
+    });
   }
 
   recurseFormGroup(group: FormGroup | FormArray, operation: string = 'NO_OPERATION') {
     Object.keys(group.controls).forEach((key: string) => {
       const abstractControl = group.controls[key];
       if (abstractControl instanceof FormGroup || abstractControl instanceof FormArray) {
-        if(abstractControl instanceof FormArray) {
+        if (abstractControl instanceof FormArray) {
           abstractControl.controls.length > 0 ? this._empty.push(false) : this._empty.push(true);
           this.recurseFormGroup(abstractControl, operation);
         } else {
           this.recurseFormGroup(abstractControl, operation);
-        }    
+        }
       } else {
         abstractControl.value != null ? this._empty.push(false) : this._empty.push(true);
         if (operation === 'CLEAR_VALUES') {

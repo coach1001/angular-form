@@ -6,7 +6,6 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import * as changeCase from 'change-case';
-import { FormGeneratorService } from '../form-generator.service';
 import * as jexl from 'jexl';
 
 @Component({
@@ -29,51 +28,17 @@ export class ElementArrayComponent implements OnInit, OnDestroy {
   @Input()
   clearWhen: any;
   @Input()
-  parentCleared$: Subject<void> =  new Subject<void>();
+  parentCleared$: Subject<void> = new Subject<void>();
 
   isVisible = true;
 
   private _destroy$: Subject<void> = new Subject<void>();
 
-  iterator: Array<number> = null;
-  origArrayValue: Array<any> = [];
-  origArrayLength: number;
-
-  constructor(private _formGenerator: FormGeneratorService) { }
+  constructor() { }
 
   ngOnInit(): void {
-    
     this.evalClearWhen();
     this.evalVisibleWhen();
-
-    this.iterator = [];
-
-    const valueLength = this.parent.controls[this.name].value ?
-      this.parent.controls[this.name].value.length : 0;
-
-    for (let i = 0; i < valueLength; i++) {
-      this.iterator.push(i);
-    }
-
-    this._formGenerator.resetForm$.pipe(
-      takeUntil(this._destroy$)
-    ).subscribe(_ => {
-      this.iterator = [];
-      this.parent.controls[this.name]['controls'] = [];
-      if (this.parent.controls[this.name]['originalValue'] != null) {
-        for (let i = 0; i < this.parent.controls[this.name]['originalValue'].length; i++) {
-          const rowTemplate = <FormGroup>cloneDeep(this.parent.controls[this.name]['rowTemplate']);
-          this.parent.controls[this.name]['controls'].push(rowTemplate);
-          this.parent.controls[this.name]['controls'][i].patchValue(
-            this.parent.controls[this.name]['originalValue'][i]
-          );
-          this.iterator.push(i);
-        }
-      }
-      this.evalClearWhen();
-      this.evalVisibleWhen();
-    });
-
     this.parent.valueChanges
       .pipe(
         takeUntil(this._destroy$)
@@ -81,13 +46,11 @@ export class ElementArrayComponent implements OnInit, OnDestroy {
         this.evalClearWhen();
         this.evalVisibleWhen();
       });
-    
     this.parentCleared$
       .pipe(
         takeUntil(this._destroy$)
       ).subscribe(_ => {
         this.parent.controls[this.name]['controls'] = [];
-        this.iterator = [];
       });
   }
 
@@ -109,11 +72,20 @@ export class ElementArrayComponent implements OnInit, OnDestroy {
   createRow() {
     const rowTemplate = <FormGroup>cloneDeep(this.parent.controls[this.name]['rowTemplate']);
     this.parent.controls[this.name]['controls'].push(rowTemplate);
-    this.iterator.push(this.iterator[this.iterator.length - 1] + 1);
   }
 
   get _label_() {
     return this.label ? this.label : changeCase.sentenceCase(this.name);
+  }
+
+  get _controlsLength_() {
+    let iterator = [];
+    const length = this.parent.controls[this.name]['controls'].length ?
+      this.parent.controls[this.name]['controls'].length : 0;
+    for (let i = 0; i < length; i++) {
+      iterator.push(i);
+    }
+    return iterator;
   }
 
   evalVisibleWhen() {
@@ -128,7 +100,6 @@ export class ElementArrayComponent implements OnInit, OnDestroy {
       const groupValue = this.parent.value;
       if (jexl.evalSync(this.clearWhen.expression, groupValue)) {
         this.parent.controls[this.name]['controls'] = [];
-        this.iterator = [];
       }
     }
   }

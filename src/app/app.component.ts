@@ -37,13 +37,14 @@ export class AppComponent implements OnInit, OnDestroy {
     this.formDefinition = FamilyLayout;
     this.formValue = FamilyValue;
     this.stepIndex = 0;
-    this._formGenerator.buildForm(this.formDefinition.screens[this.stepIndex], this.formValue);
+    this._formGenerator.buildForm(this.formDefinition.screens[this.stepIndex]);
 
     this._formGenerator.form$.pipe(
       filter(val => val != null),
       takeUntil(this._destroy$)
     ).subscribe(form => {
       this.form = form;
+      this._formGenerator.setFormValue(this.form, this.formValue);
     });
   }
 
@@ -73,8 +74,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   onReset() {
-    this.form.reset(this.formValue);
-    this._formGenerator.resetForm$.next();
+    this._formGenerator.setFormValue(this.form, this.formValue);
   }
 
   onClear() {
@@ -91,7 +91,7 @@ export class AppComponent implements OnInit, OnDestroy {
     }
     this._currentForm = !this._currentForm;
     this.stepIndex = 0;
-    this._formGenerator.buildForm(this.formDefinition.screens[this.stepIndex], this.formValue);
+    this._formGenerator.buildForm(this.formDefinition.screens[this.stepIndex]);
   }
 
 }
