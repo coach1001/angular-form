@@ -42,7 +42,7 @@ export class ElementArrayComponent implements OnInit, OnDestroy {
     this.parent.valueChanges
       .pipe(
         takeUntil(this._destroy$)
-      ).subscribe(value => {
+      ).subscribe(_ => {
         this.evalClearWhen();
         this.evalVisibleWhen();
       });
@@ -50,7 +50,9 @@ export class ElementArrayComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this._destroy$)
       ).subscribe(_ => {
-        this.parent.controls[this.name]['controls'] = [];
+        if (this.parent.controls[this.name]['controls'].length !== 0) {
+          this.parent.controls[this.name]['controls'] = [];
+        }
       });
   }
 

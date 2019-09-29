@@ -1,3 +1,41 @@
+export const MultiScreenLayout = {
+    screens: [
+        {
+            type: 'STEP',
+            name: 'personalDetails',
+            elements: [
+                {
+                    type: 'CONTROL',
+                    subType: 'TEXT_INPUT',
+                    name: 'firstName',
+                    required: true
+                },
+                {
+                    type: 'CONTROL',
+                    subType: 'TEXT_INPUT',
+                    name: 'surname',
+                }
+            ]            
+        },
+        {
+            type: 'STEP',
+            name: 'financialDetails',
+            elements: [
+                {
+                    type: 'CONTROL',
+                    subType: 'TEXT_INPUT',
+                    name: 'bankName'
+                },
+                {
+                    type: 'CONTROL',
+                    subType: 'TEXT_INPUT',
+                    name: 'accountNumber'
+                }                
+            ]          
+        }
+    ]
+};
+
 export const FamilyValue = {
     totalIndividuals: 4,
     testBoolean: true,

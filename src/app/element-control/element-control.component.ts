@@ -18,7 +18,7 @@ export class ElementControlComponent implements OnChanges, OnDestroy {
   @Input()
   parent: FormGroup;
   @Input()
-  parentCleared$: Subject<void> =  new Subject<void>();
+  parentCleared$: Subject<void> = new Subject<void>();
   @Input()
   visibleWhen = null;
   @Input()
@@ -26,7 +26,7 @@ export class ElementControlComponent implements OnChanges, OnDestroy {
 
   isVisible = true;
 
-  private _destroy$: Subject<void> =  new Subject<void>();
+  private _destroy$: Subject<void> = new Subject<void>();
 
   constructor() { }
 
@@ -34,15 +34,28 @@ export class ElementControlComponent implements OnChanges, OnDestroy {
     this.evalVisibleWhen();
     this.evalClearWhen();
     this.parentCleared$
-    .pipe(
-      takeUntil(this._destroy$)
-    ).subscribe(_ => {
-      this.parent.controls[this.name].patchValue(null);
-    });
+      .pipe(
+        takeUntil(this._destroy$)
+      ).subscribe(_ => {
+        if (this.parent.controls[this.name].value != null) {
+          this.parent.controls[this.name].patchValue(null);
+        }
+      });
   }
 
   get _label_() {
     return this.label ? this.label : changeCase.sentenceCase(this.name);
+  }
+
+  get _error_() {
+    const control = this.parent.controls[this.name];
+    let error = '';
+    if (this.parent.controls[this.name].errors != null) {
+      Object.keys(control.errors).forEach(key => {
+        error = error !== '' ? error : key;
+      });
+    }
+    return changeCase.sentenceCase(error);
   }
 
   evalVisibleWhen() {

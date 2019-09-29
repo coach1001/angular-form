@@ -1,13 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGeneratorService } from './form-generator.service';
-import { Layout, Value, FamilyLayout, FamilyValue } from './test-form-layout';
+import { Layout, Value, FamilyLayout, FamilyValue, MultiScreenLayout } from './test-form-layout';
 import { FormGroup } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { Subject, BehaviorSubject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { ElementGroupComponent } from './element-group/element-group.component';
 import { ElementArrayComponent } from './element-array/element-array.component';
 import { ElementControlComponent } from './element-control/element-control.component';
 import * as deepDiff from 'deep-diff';
+import * as changeCase from 'change-case';
 
 @Component({
   selector: 'app-root',
@@ -34,8 +35,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
     //this.formDefinition = Layout;
     // this.formValue = Value;
-    this.formDefinition = FamilyLayout;
-    this.formValue = FamilyValue;
+    // this.formDefinition = FamilyLayout;
+    // this.formValue = FamilyValue;
+    // this.formDefinition = MultiScreenLayout;
+
+    this._formGenerator.flowDefinition$.next(MultiScreenLayout);
     this.stepIndex = 0;
     this._formGenerator.buildForm(this.formDefinition.screens[this.stepIndex]);
 
@@ -44,13 +48,16 @@ export class AppComponent implements OnInit, OnDestroy {
       takeUntil(this._destroy$)
     ).subscribe(form => {
       this.form = form;
-      this._formGenerator.setFormValue(this.form, this.formValue);
+      if (this.formValue != null) {
+        this._formGenerator.setFormValue(this.form, this.formValue);
+      }
     });
   }
 
-  ngOnDestroy(): void {
-    this._destroy$.next();
-    this._destroy$.complete();
+  get _label_() {
+    return this.formDefinition.label
+      ? this.formDefinition.screens[this.stepIndex].label
+      : changeCase.sentenceCase(this.formDefinition.screens[this.stepIndex].name);
   }
 
   getElementComponent(type: string): any {
@@ -65,33 +72,52 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   getElementInputs(element: any): any {
-    return { ...element, parent: this.form, parentCleared$: this.cleared$};
+    return { ...element, parent: this.form, parentCleared$: this.cleared$ };
   }
 
   onSubmit() {
-    const changes = deepDiff(this.formValue, this.form.getRawValue());
-    console.log(this.form.getRawValue());
+    this._formGenerator.recurseFormGroup(this.form, 'TOUCH_AND_VALIDATE');
+    if (this.form.valid) {
+      this.next();
+    }
+    // const changes = deepDiff(this.formValue, this.form.getRawValue());
+    // console.log(changes, this.form, this.form.getRawValue());
   }
 
   onReset() {
-    this._formGenerator.setFormValue(this.form, this.formValue);
+    this._formGenerator.recurseFormGroup(this.form, 'MARK_UNTOUCHED_AND_MAKE_PRISTINE');
+    if (this.formValue != null) {
+      this._formGenerator.setFormValue(this.form, this.formValue);
+    }
   }
 
   onClear() {
     this.cleared$.next();
   }
-  
+
   onSwitch() {
-    if(this._currentForm) {
+    if (this._currentForm) {
       this.formDefinition = Layout;
-      this.formValue = Value;  
+      this.formValue = Value;
     } else {
       this.formDefinition = FamilyLayout;
-      this.formValue = FamilyValue;  
+      this.formValue = FamilyValue;
     }
     this._currentForm = !this._currentForm;
     this.stepIndex = 0;
     this._formGenerator.buildForm(this.formDefinition.screens[this.stepIndex]);
+  }
+
+  next() {
+    const steps = this.formDefinition.screens.length - 1;
+    this.stepIndex += 1;
+    this.stepIndex = this.stepIndex > steps ? 0 : this.stepIndex;
+    this._formGenerator.buildForm(this.formDefinition.screens[this.stepIndex]);
+  }
+
+  ngOnDestroy(): void {
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 
 }

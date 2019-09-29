@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormArray, FormGroup, FormControl, FormBuilder } from '@angular/forms';
+import { FormArray, FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { BehaviorSubject, Subject } from 'rxjs';
 import cloneDeep from 'lodash-es/cloneDeep';
 
@@ -13,6 +13,7 @@ export class FormGeneratorService {
 
   resetForm$: Subject<void> = new Subject<void>();
   form$: BehaviorSubject<FormGroup> = new BehaviorSubject(null);
+  flowDefinition$: BehaviorSubject<any> = new BehaviorSubject(null);
 
   constructor(
     private _formBuilder: FormBuilder
@@ -49,6 +50,9 @@ export class FormGeneratorService {
 
   processControl(inputElement, currFormElm: FormGroup) {
     const control = new FormControl();
+    if(inputElement.required) {
+      control.setValidators([Validators.required]);
+    }
     currFormElm.addControl(inputElement.name, control);
     return currFormElm;
   }
@@ -110,6 +114,12 @@ export class FormGeneratorService {
         abstractControl.value != null ? this._empty.push(false) : this._empty.push(true);
         if (operation === 'CLEAR_VALUES') {
           abstractControl.patchValue(null);
+        } else if (operation === 'TOUCH_AND_VALIDATE') {
+          abstractControl.markAsTouched()
+          abstractControl.updateValueAndValidity();
+        } else if (operation === 'MARK_UNTOUCHED_AND_MAKE_PRISTINE') {
+          abstractControl.markAsUntouched();
+          abstractControl.markAsPristine();      
         }
       }
     });
