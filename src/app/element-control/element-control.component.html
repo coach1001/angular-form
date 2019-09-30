@@ -4,7 +4,12 @@
         <ng-container *ngIf="subType === 'TEXT_INPUT'">
             <mat-form-field>
                 <mat-label>{{_label_}}</mat-label>
-                <input matInput [formControlName]="name">
+                <ng-container *ngIf="!numbersOnly">
+                    <input [type]="_inputType_" matInput [formControlName]="name">
+                </ng-container>
+                <ng-container *ngIf="numbersOnly">
+                    <input [type]="_inputType_" matInput [formControlName]="name" digitOnly [decimal]="allowDecimal">
+                </ng-container>
                 <mat-error>{{_error_}}</mat-error>
             </mat-form-field>
         </ng-container>

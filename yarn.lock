@@ -975,6 +975,13 @@
     "@types/source-list-map" "*"
     source-map "^0.6.1"
 
+"@uiowa/digit-only@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@uiowa/digit-only/-/digit-only-1.1.1.tgz#29e6ca7a9505ac80c9e5c2561cbfa91b52168639"
+  integrity sha512-N+tKQbvhsasdy7/T8yC0CmABK3wJqndejy/SKUjXiiHtcLa6eTnii+1XToe5L0EKEhY4ebwctZ5osfHYEo3FKQ==
+  dependencies:
+    tslib "^1.9.0"
+
 "@webassemblyjs/ast@1.8.5":
   version "1.8.5"
   resolved "https://registry.yarnpkg.com/@webassemblyjs/ast/-/ast-1.8.5.tgz#51b1c5fe6576a34953bf4b253df9f0d490d9e359"

@@ -33,13 +33,12 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    //this.formDefinition = Layout;
+    // this.formDefinition = Layout;
     // this.formValue = Value;
     // this.formDefinition = FamilyLayout;
     // this.formValue = FamilyValue;
-    // this.formDefinition = MultiScreenLayout;
+    this.formDefinition = MultiScreenLayout;
 
-    this._formGenerator.flowDefinition$.next(MultiScreenLayout);
     this.stepIndex = 0;
     this._formGenerator.buildForm(this.formDefinition.screens[this.stepIndex]);
 
@@ -77,6 +76,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     this._formGenerator.recurseFormGroup(this.form, 'TOUCH_AND_VALIDATE');
+    console.log(this.form);
     if (this.form.valid) {
       this.next();
     }
@@ -85,14 +85,17 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   onReset() {
-    this._formGenerator.recurseFormGroup(this.form, 'MARK_UNTOUCHED_AND_MAKE_PRISTINE');
     if (this.formValue != null) {
+      this._formGenerator.recurseFormGroup(this.form, 'MARK_UNTOUCHED_AND_MAKE_PRISTINE');
       this._formGenerator.setFormValue(this.form, this.formValue);
+    } else {
+      this.onClear();
     }
   }
 
   onClear() {
     this.cleared$.next();
+    this._formGenerator.recurseFormGroup(this.form, 'MARK_UNTOUCHED_AND_MAKE_PRISTINE');
   }
 
   onSwitch() {

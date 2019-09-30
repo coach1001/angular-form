@@ -16,6 +16,8 @@ export class ElementControlComponent implements OnChanges, OnDestroy {
   @Input()
   label: string;
   @Input()
+  inputType: string;
+  @Input()
   parent: FormGroup;
   @Input()
   parentCleared$: Subject<void> = new Subject<void>();
@@ -47,15 +49,34 @@ export class ElementControlComponent implements OnChanges, OnDestroy {
     return this.label ? this.label : changeCase.sentenceCase(this.name);
   }
 
+  get _inputType_() {
+    return this.inputType ? this.inputType : 'text';
+  }
+
   get _error_() {
     const control = this.parent.controls[this.name];
-    let error = '';
+    let error = null;
     if (this.parent.controls[this.name].errors != null) {
       Object.keys(control.errors).forEach(key => {
-        error = error !== '' ? error : key;
+        error = error != null ? error : {
+          key: key,
+          value: control.errors[key]
+        }
       });
     }
-    return changeCase.sentenceCase(error);
+    return error != null ? this.getValidationMessage(error) : '';
+  }
+
+  getValidationMessage(error) {
+    switch(error.key) {
+      case 'required': error = `This field is required`;break;
+      case 'email': error = `Not a valid email address`;break;
+      case 'min': error = `Minimum value is ${error.value.min}`;break;
+      case 'max': error = `Maximum value is ${error.value.max}`;break;
+      case 'mustMatch': error = `Does not match ${changeCase.sentenceCase(error.value.value)}`;break;
+      default: break;
+    }
+    return error;
   }
 
   evalVisibleWhen() {

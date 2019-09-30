@@ -3,17 +3,76 @@ export const MultiScreenLayout = {
         {
             type: 'STEP',
             name: 'personalDetails',
+            validations: [
+                { type: 'mustMatch', value: ['password', 'confirmPassword'] }
+            ],
             elements: [
                 {
                     type: 'CONTROL',
                     subType: 'TEXT_INPUT',
                     name: 'firstName',
-                    required: true
+                    validations: [
+                        { type: 'required' }
+                    ]
                 },
                 {
                     type: 'CONTROL',
                     subType: 'TEXT_INPUT',
                     name: 'surname',
+                    validations: [
+                        { type: 'required' }
+                    ]
+                },
+                {
+                    type: 'CONTROL',
+                    subType: 'TEXT_INPUT',
+                    name: 'emailAddress',
+                    inputType: 'email',
+                    validations: [
+                        { type: 'required' },
+                        { type: 'email' }
+                    ]
+                },
+                {
+                    type: 'CONTROL',
+                    subType: 'TEXT_INPUT',
+                    name: 'password',
+                    inputType: 'password',
+                    validations: [
+                        { type: 'required' }
+                    ]
+                },
+                {
+                    type: 'CONTROL',
+                    subType: 'TEXT_INPUT',
+                    name: 'confirmPassword',
+                    inputType: 'password',
+                    validations: [
+                        { type: 'required' }
+                    ]
+                },
+                {
+                    type: 'CONTROL',
+                    subType: 'TEXT_INPUT',
+                    name: 'age',
+                    numbersOnly: true,
+                    validations: [
+                        { type: 'required' },
+                        { type: 'min', value: 18 },
+                        { type: 'max', value: 80 }
+                    ]
+                },
+                {
+                    type: 'CONTROL',
+                    subType: 'BOOLEAN_INPUT',
+                    name: 'providentFund',
+                    label: 'Do you have a provident fund?',
+                    visibleWhen: {
+                        expression: "age >= 35 && age <= 60"
+                    },
+                    clearWhen: {
+                        expression: "age < 35 && age > 60"
+                    }
                 }
             ]            
         },
@@ -64,7 +123,6 @@ export const FamilyValue = {
         { firstName: 'Isabellla', gender: 'F'}
     ]
 }
-
 export const FamilyLayout = {
     screens: [
         {
@@ -255,7 +313,6 @@ export const Value = {
         }
     ]
 }
-
 export const Layout = {
     screens: [
         {
