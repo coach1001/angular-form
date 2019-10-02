@@ -1,14 +1,15 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGeneratorService } from './form-generator.service';
-import { Layout, Value, FamilyLayout, FamilyValue, MultiScreenLayout } from './test-form-layout';
+import { Layout, Value, FamilyLayout, FamilyValue, MultiScreenLayout, ScreenValue } from './test-form-layout';
 import { FormGroup } from '@angular/forms';
-import { Subject, BehaviorSubject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { ElementGroupComponent } from './element-group/element-group.component';
-import { ElementArrayComponent } from './element-array/element-array.component';
-import { ElementControlComponent } from './element-control/element-control.component';
 import * as deepDiff from 'deep-diff';
 import * as changeCase from 'change-case';
+import { ElementControlComponent } from './element-control/element-control.component';
+import { ElementArrayComponent } from './element-array/element-array.component';
+import { NullTemplateVisitor } from '@angular/compiler';
 
 @Component({
   selector: 'app-root',
@@ -26,6 +27,7 @@ export class AppComponent implements OnInit, OnDestroy {
   formValue: any;
   form: FormGroup;
   cleared$: Subject<void> = new Subject<void>();
+  formId = Math.floor(Math.random() * 10000).toString();
 
   constructor(
     private _formGenerator: FormGeneratorService) {
@@ -38,6 +40,7 @@ export class AppComponent implements OnInit, OnDestroy {
     // this.formDefinition = FamilyLayout;
     // this.formValue = FamilyValue;
     this.formDefinition = MultiScreenLayout;
+    this.formValue = ScreenValue;
 
     this.stepIndex = 0;
     this._formGenerator.buildForm(this.formDefinition.screens[this.stepIndex]);
@@ -48,9 +51,13 @@ export class AppComponent implements OnInit, OnDestroy {
     ).subscribe(form => {
       this.form = form;
       if (this.formValue != null) {
-        this._formGenerator.setFormValue(this.form, this.formValue);
+        this._formGenerator.setFormValue(this.form, this.formValue[this.stepIndex]);
       }
     });
+  }
+
+  get _root_() {
+    return this.formDefinition.screens[this.stepIndex];
   }
 
   get _label_() {
@@ -73,10 +80,9 @@ export class AppComponent implements OnInit, OnDestroy {
   getElementInputs(element: any): any {
     return { ...element, parent: this.form, parentCleared$: this.cleared$ };
   }
-
   onSubmit() {
     this._formGenerator.recurseFormGroup(this.form, 'TOUCH_AND_VALIDATE');
-    console.log(this.form);
+    console.log(this.form.value);
     if (this.form.valid) {
       this.next();
     }
@@ -85,9 +91,9 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   onReset() {
-    if (this.formValue != null) {
-      this._formGenerator.recurseFormGroup(this.form, 'MARK_UNTOUCHED_AND_MAKE_PRISTINE');
-      this._formGenerator.setFormValue(this.form, this.formValue);
+    this._formGenerator.recurseFormGroup(this.form, 'UNTOUCHED_AND_PRISTINE');
+    if (this.formValue[this.stepIndex] != null) {
+      this._formGenerator.setFormValue(this.form, this.formValue[this.stepIndex]);
     } else {
       this.onClear();
     }
@@ -95,7 +101,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   onClear() {
     this.cleared$.next();
-    this._formGenerator.recurseFormGroup(this.form, 'MARK_UNTOUCHED_AND_MAKE_PRISTINE');
   }
 
   onSwitch() {

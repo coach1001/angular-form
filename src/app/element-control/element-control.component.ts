@@ -18,7 +18,13 @@ export class ElementControlComponent implements OnChanges, OnDestroy {
   @Input()
   inputType: string;
   @Input()
+  hint: string;
+  @Input()
+  defaultValue: any;
+  @Input()
   parent: FormGroup;
+  @Input()
+  layout: string;
   @Input()
   parentCleared$: Subject<void> = new Subject<void>();
   @Input()
@@ -33,8 +39,12 @@ export class ElementControlComponent implements OnChanges, OnDestroy {
   constructor() { }
 
   ngOnChanges() {
-    this.evalVisibleWhen();
     this.evalClearWhen();
+    this.evalVisibleWhen();
+
+    if(this._defaultValue_ != null && this.parent.controls[this.name].value == null) {
+      this.parent.controls[this.name].patchValue(this._defaultValue_);
+    }
     this.parentCleared$
       .pipe(
         takeUntil(this._destroy$)
@@ -51,6 +61,14 @@ export class ElementControlComponent implements OnChanges, OnDestroy {
 
   get _inputType_() {
     return this.inputType ? this.inputType : 'text';
+  }
+
+  get _hint_() {
+    return this.hint ? this.hint : '';
+  }
+
+  get _defaultValue_() {
+    return this.defaultValue != null ? this.defaultValue : null;
   }
 
   get _error_() {
@@ -71,18 +89,30 @@ export class ElementControlComponent implements OnChanges, OnDestroy {
     switch(error.key) {
       case 'required': error = `This field is required`;break;
       case 'email': error = `Not a valid email address`;break;
-      case 'min': error = `Minimum value is ${error.value.min}`;break;
-      case 'max': error = `Maximum value is ${error.value.max}`;break;
-      case 'mustMatch': error = `Does not match ${changeCase.sentenceCase(error.value.value)}`;break;
+      case 'min': error = `Minimum ${this._label_} is ${error.value.min}`;break;
+      case 'max': error = `Maximum ${this._label_} is ${error.value.max}`;break;
+      case 'mustMatch': error = `Does not match - ${changeCase.sentenceCase(error.value.value)}`;break;
       default: break;
     }
     return error;
   }
 
   evalVisibleWhen() {
-    if (this.visibleWhen != null) {
+    const prevVisible = this.isVisible;
+    if (this.visibleWhen != null)  {
       const groupValue = this.parent.value;
       this.isVisible = jexl.evalSync(this.visibleWhen.expression, groupValue);
+      if (this.isVisible && this.isVisible !== prevVisible) {
+        this.parent.controls[this.name].markAsUntouched();
+        this.parent.controls[this.name].markAsPristine();
+        this.parent.controls[this.name].enable();
+        if (this._defaultValue_ != null && this.parent.controls[this.name].value == null) {
+          this.parent.controls[this.name].patchValue(this._defaultValue_);
+        }
+      } else if(!this.isVisible) {
+        this.parent.controls[this.name].disable();
+      }
+    
     }
   }
 

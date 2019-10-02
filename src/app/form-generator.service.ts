@@ -108,16 +108,18 @@ export class FormGeneratorService {
   setFormValue(group: FormGroup, value: any) {
     Object.keys(group.controls).forEach((key: string) => {
       const abstractControl = group.controls[key];
-      const controlValue = value[key];
-      if (abstractControl instanceof FormGroup && controlValue != null) {
+      const controlValue = value[key] ? value[key] : null;
+      if (abstractControl instanceof FormGroup) {
         this.setFormValue(abstractControl, controlValue);
-      } else if (abstractControl instanceof FormArray && controlValue != null) {
+      } else if (abstractControl instanceof FormArray) {
         abstractControl['controls'] = [];
-        controlValue.forEach((val, index) => {
-          abstractControl['controls'].push(cloneDeep(abstractControl['rowTemplate']));
-          this.setFormValue(<FormGroup>abstractControl['controls'][index], val);
-        });
-      } else if (controlValue != null) {
+        if(controlValue != null) {
+          controlValue.forEach((val, index) => {
+            abstractControl['controls'].push(cloneDeep(abstractControl['rowTemplate']));
+            this.setFormValue(<FormGroup>abstractControl['controls'][index], val);
+          });  
+        }
+      } else {
         abstractControl.patchValue(controlValue);
       }
     });
@@ -137,10 +139,12 @@ export class FormGeneratorService {
         abstractControl.value != null ? this._empty.push(false) : this._empty.push(true);
         if (operation === 'CLEAR_VALUES') {
           abstractControl.patchValue(null);
+        } else if (operation === 'DISABLE') {
+          abstractControl.disable();
         } else if (operation === 'TOUCH_AND_VALIDATE') {
           abstractControl.markAsTouched()
           abstractControl.updateValueAndValidity();
-        } else if (operation === 'MARK_UNTOUCHED_AND_MAKE_PRISTINE') {
+        } else if (operation === 'UNTOUCHED_AND_PRISTINE') {
           abstractControl.markAsUntouched();
           abstractControl.markAsPristine();
         }

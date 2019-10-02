@@ -1,12 +1,49 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import '~@angular/material/theming';
+
 $custom-typography: mat-typography-config(
-  $font-family: 'Montserrat'
+  $font-family: 'Montserrat',
+  $display-4: mat-typography-level(112px, 112px, 300),
+  $display-3: mat-typography-level(56px, 56px, 400),
+  $display-2: mat-typography-level(45px, 48px, 400),
+  $display-1: mat-typography-level(34px, 40px, 400),
+  $headline:  mat-typography-level(24px, 32px, 400),
+  $title: mat-typography-level(20px, 32px, 500),
+  $subheading-2: mat-typography-level(16px, 28px, 400),
+  $subheading-1: mat-typography-level(15px, 24px, 400),
+  $body-2: mat-typography-level(14px, 24px, 500),
+  $body-1: mat-typography-level(14px, 20px, 400),
+  $caption: mat-typography-level(12px, 20px, 400),
+  $button: mat-typography-level(14px, 18px, 500),
+  // Line-height must be unit-less fraction of the font-size.
+  $input: mat-typography-level(18px, 1.128, 700)
 );
 
 @include angular-material-typography($custom-typography);
 
-input {
-    width: 300px;
+.mat-error {
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.mat-hint {
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.mat-slide-toggle-label {
+  font-weight: 700;
+  font-size: 18px;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+
+select:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px white inset !important;
 }

@@ -1,8 +1,22 @@
+export const ScreenValue = [
+    {
+        firstName: 'Francois',
+        surname: 'Weber',
+        emailAddress: 'coach1001@gmail.com',
+        age: 36
+    },
+    {
+        bank: 'Capitec'
+    }
+]
+
 export const MultiScreenLayout = {
     screens: [
         {
             type: 'STEP',
             name: 'personalDetails',
+            layout: { large: 'row wrap', small: 'column' },
+            gap: { large: '32px grid', small: '24px grid' },
             validations: [
                 { type: 'mustMatch', value: ['password', 'confirmPassword'] }
             ],
@@ -11,6 +25,8 @@ export const MultiScreenLayout = {
                     type: 'CONTROL',
                     subType: 'TEXT_INPUT',
                     name: 'firstName',
+                    layout: { large: '50', small: '100' },
+                    defaultValue: 'Francois',
                     validations: [
                         { type: 'required' }
                     ]
@@ -19,6 +35,7 @@ export const MultiScreenLayout = {
                     type: 'CONTROL',
                     subType: 'TEXT_INPUT',
                     name: 'surname',
+                    layout: { large: '50', small: '100' },
                     validations: [
                         { type: 'required' }
                     ]
@@ -27,6 +44,7 @@ export const MultiScreenLayout = {
                     type: 'CONTROL',
                     subType: 'TEXT_INPUT',
                     name: 'emailAddress',
+                    layout: { large: '50', small: '100' },
                     inputType: 'email',
                     validations: [
                         { type: 'required' },
@@ -37,6 +55,7 @@ export const MultiScreenLayout = {
                     type: 'CONTROL',
                     subType: 'TEXT_INPUT',
                     name: 'password',
+                    layout: { large: '50', small: '100' },
                     inputType: 'password',
                     validations: [
                         { type: 'required' }
@@ -46,7 +65,9 @@ export const MultiScreenLayout = {
                     type: 'CONTROL',
                     subType: 'TEXT_INPUT',
                     name: 'confirmPassword',
+                    layout: { large: '50', small: '100' },
                     inputType: 'password',
+                    hint: 'Re-type password',
                     validations: [
                         { type: 'required' }
                     ]
@@ -55,6 +76,7 @@ export const MultiScreenLayout = {
                     type: 'CONTROL',
                     subType: 'TEXT_INPUT',
                     name: 'age',
+                    layout: { large: '50', small: '100' },
                     numbersOnly: true,
                     validations: [
                         { type: 'required' },
@@ -66,31 +88,47 @@ export const MultiScreenLayout = {
                     type: 'CONTROL',
                     subType: 'BOOLEAN_INPUT',
                     name: 'providentFund',
+                    layout: { large: '100', small: '100' },
                     label: 'Do you have a provident fund?',
+                    defaultValue: false,
+                    validations: [
+                        { type: 'required' }
+                    ],
                     visibleWhen: {
                         expression: "age >= 35 && age <= 60"
                     },
                     clearWhen: {
-                        expression: "age < 35 && age > 60"
+                        expression: "age < 35 || age > 60"
                     }
                 }
-            ]            
+            ]
         },
         {
             type: 'STEP',
             name: 'financialDetails',
+            layout: { large: 'row wrap', small: 'column' },
+            gap: { large: '32px grid', small: '24px grid' },
             elements: [
                 {
                     type: 'CONTROL',
                     subType: 'TEXT_INPUT',
-                    name: 'bankName'
+                    name: 'bank',
+                    layout: { large: '50', small: '100' },
+                    validations: [
+                        { type: 'required' }
+                    ]
                 },
                 {
                     type: 'CONTROL',
                     subType: 'TEXT_INPUT',
-                    name: 'accountNumber'
-                }                
-            ]          
+                    name: 'accountNumber',
+                    numbersOnly: true,
+                    layout: { large: '50', small: '100' },
+                    validations: [
+                        { type: 'required' }
+                    ]
+                }
+            ]
         }
     ]
 };
@@ -103,9 +141,9 @@ export const FamilyValue = {
             innerObjectText: 'Nicely done!'
         },
         innerArray: [
-           {
-               innerArrayText: 'Nice done again!'
-           } 
+            {
+                innerArrayText: 'Nice done again!'
+            }
         ]
     },
     fatherDetails: {
@@ -119,8 +157,8 @@ export const FamilyValue = {
     },
     hasChildren: true,
     children: [
-        { firstName: 'Dailen', gender: 'M'},
-        { firstName: 'Isabellla', gender: 'F'}
+        { firstName: 'Dailen', gender: 'M' },
+        { firstName: 'Isabellla', gender: 'F' }
     ]
 }
 export const FamilyLayout = {
@@ -250,7 +288,7 @@ export const FamilyLayout = {
                             label: 'Gender',
                             options: [
                                 { key: 'M', value: 'Male' },
-                                { key: 'F', value: 'Female'}
+                                { key: 'F', value: 'Female' }
                             ]
                         },
                         {

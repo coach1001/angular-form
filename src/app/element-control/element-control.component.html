@@ -1,21 +1,33 @@
-<form [formGroup]="parent" style="margin: 10px;">
+<form [formGroup]="parent">
     <ng-container *ngIf="isVisible">
 
         <ng-container *ngIf="subType === 'TEXT_INPUT'">
-            <mat-form-field>
-                <mat-label>{{_label_}}</mat-label>
-                <ng-container *ngIf="!numbersOnly">
+            <ng-container *ngIf="!numbersOnly">
+                <mat-form-field floatLabel="always" fxFlex="100">
+                    <mat-label>{{_label_}}</mat-label>
                     <input [type]="_inputType_" matInput [formControlName]="name">
-                </ng-container>
-                <ng-container *ngIf="numbersOnly">
+                    <mat-hint>{{_hint_}}</mat-hint>
+                    <mat-error>{{_error_}}</mat-error>
+                </mat-form-field>
+            </ng-container>
+            <ng-container *ngIf="numbersOnly">
+                <mat-form-field floatLabel="always" fxFlex="100">
+                    <mat-label>{{_label_}}</mat-label>
                     <input [type]="_inputType_" matInput [formControlName]="name" digitOnly [decimal]="allowDecimal">
-                </ng-container>
-                <mat-error>{{_error_}}</mat-error>
-            </mat-form-field>
+                    <mat-hint>{{_hint_}}</mat-hint>
+                    <mat-error>{{_error_}}</mat-error>
+                </mat-form-field>
+            </ng-container>
         </ng-container>
 
         <ng-container *ngIf="subType === 'BOOLEAN_INPUT'">
-            <mat-slide-toggle [formControlName]="name">{{_label_}}</mat-slide-toggle>
+            <mat-form-field appearance="none" floatLabel="always" fxFlex="100">
+                <mat-label>{{_label_}}</mat-label>
+                <mat-slide-toggle [formControlName]="name"></mat-slide-toggle>
+                <input matInput [formControlName]="name" hidden>
+                <mat-hint>{{_hint_}}</mat-hint>
+                <mat-error>{{_error_}}</mat-error>
+            </mat-form-field>
         </ng-container>
 
         <ng-container *ngIf="subType === 'RADIO_GROUP_INPUT'">

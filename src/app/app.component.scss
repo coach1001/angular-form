@@ -1,3 +1,10 @@
-mat-form-field {
-    width: 400px;
+ndc-dynamic {
+    padding: 0 !important;
+}
+
+.form-padding {
+    padding: 48px 34px 34px 34px;
+    .lt-md {
+        padding: 24px;
+    }
 }
