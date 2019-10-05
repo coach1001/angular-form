@@ -24,7 +24,7 @@
             <mat-form-field appearance="none" floatLabel="always" fxFlex="100">
                 <mat-label>{{_label_}}</mat-label>
                 <mat-slide-toggle [formControlName]="name"></mat-slide-toggle>
-                <input matInput [formControlName]="name" hidden>
+                <input matInput [formControlName]="name" style="display: none;" hidden>
                 <mat-hint>{{_hint_}}</mat-hint>
                 <mat-error>{{_error_}}</mat-error>
             </mat-form-field>

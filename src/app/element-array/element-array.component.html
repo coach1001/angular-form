@@ -1,21 +1,28 @@
-<mat-card *ngIf="isVisible">
+<mat-card *ngIf="isVisible" class="mat-elevation-z6 card-padding">
+
     <mat-card-content>
         <mat-card-title>{{_label_}}</mat-card-title>
-        <form [formGroup]="parent" fxLayout="row">
-            <div fxLayout="column">
-                <ng-container *ngFor="let i of _controlsLength_;let idx  = index;">
-                    <div fxLayout="row">
+        <form [formGroup]="parent" fxLayout="column">
+            <ng-container *ngFor="let i of _controlsLength_;let idx  = index;">
+                <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="6px">
+                    <div fxFlex="100" [fxLayout.gt-sm]="layout?.large" [fxLayoutGap.gt-sm]="gap?.large"
+                        [fxLayout.lt-md]="layout?.small" [fxLayoutGap.lt-md]="gap?.small">
                         <ng-container *ngFor="let element of elements">
-                            <ndc-dynamic [ndcDynamicComponent]="getElementComponent(element.type)"
-                                [ndcDynamicInputs]="getElementInputs(element, idx)">
-                            </ndc-dynamic>
+                            <div [fxFlex]="element.layout" [fxFlex.gt-sm]="element.layout?.large"
+                                [fxFlex.lt-md]="element.layout?.small">
+                                <ndc-dynamic [ndcDynamicComponent]="getElementComponent(element.type)"
+                                    [ndcDynamicInputs]="getElementInputs(element, idx)">
+                                </ndc-dynamic>
+                            </div>
                         </ng-container>
                     </div>
-                </ng-container>
-            </div>
+                </div>
+
+            </ng-container>
         </form>
-        <mat-card-actions>
-            <button type="button" mat-raised-button color="primary" (click)="createRow()">Add</button>
-        </mat-card-actions>
     </mat-card-content>
+    <mat-card-actions>
+        <button type="button" [disabled]="_disableAddRow_" class="mat-elevation-z6" mat-raised-button color="primary"
+            (click)="createRow()">Add</button>
+    </mat-card-actions>
 </mat-card>

@@ -150,6 +150,15 @@ export class FormGeneratorService {
         }
       }
     });
+    if (operation === 'DISABLE') {
+      group.disable();
+    } else if (operation === 'TOUCH_AND_VALIDATE') {
+      group.markAsTouched()
+      group.updateValueAndValidity();
+    } else if (operation === 'UNTOUCHED_AND_PRISTINE') {
+      group.markAsUntouched();
+      group.markAsPristine();
+    }
   }
 
   isEmpty(formGroup: FormGroup): boolean {

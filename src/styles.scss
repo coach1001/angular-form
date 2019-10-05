@@ -1,6 +1,116 @@
-/* You can add global styles to this file, and also import other style files */
-@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import '~@angular/material/theming';
+@include mat-core();
+
+html {
+  overflow: -moz-scrollbars-vertical; 
+  overflow-y: scroll;
+}
+
+$custom-primary-color: (
+  50 : #efe7f1,
+  100 : #d7c3dc,
+  200 : #bc9bc5,
+  300 : #a173ae,
+  400 : #8d559c,
+  500 : #79378b,
+  600 : #713183,
+  700 : #662a78,
+  800 : #5c236e,
+  900 : #49165b,
+  A100 : #e196ff,
+  A200 : #d363ff,
+  A400 : #c530ff,
+  A700 : #bd16ff,
+  contrast: (
+      50 : #000000,
+      100 : #000000,
+      200 : #000000,
+      300 : #000000,
+      400 : #ffffff,
+      500 : #ffffff,
+      600 : #ffffff,
+      700 : #ffffff,
+      800 : #ffffff,
+      900 : #ffffff,
+      A100 : #000000,
+      A200 : #000000,
+      A400 : #ffffff,
+      A700 : #ffffff,
+  )
+);
+
+$custom-accent-color: (
+  50 : #f2f9e8,
+  100 : #dff0c5,
+  200 : #c9e69f,
+  300 : #b3dc79,
+  400 : #a3d55c,
+  500 : #93cd3f,
+  600 : #8bc839,
+  700 : #80c131,
+  800 : #76ba29,
+  900 : #64ae1b,
+  A100 : #f1ffe5,
+  A200 : #d5ffb2,
+  A400 : #baff7f,
+  A700 : #acff65,
+  contrast: (
+      50 : #000000,
+      100 : #000000,
+      200 : #000000,
+      300 : #000000,
+      400 : #000000,
+      500 : #000000,
+      600 : #000000,
+      700 : #000000,
+      800 : #000000,
+      900 : #000000,
+      A100 : #000000,
+      A200 : #000000,
+      A400 : #000000,
+      A700 : #000000,
+  )
+);
+$custom-warn-color: (
+  50 : #f9e1e1,
+  100 : #efb4b4,
+  200 : #e48282,
+  300 : #d94f4f,
+  400 : #d12a2a,
+  500 : #c90404,
+  600 : #c30303,
+  700 : #bc0303,
+  800 : #b50202,
+  900 : #a90101,
+  A100 : #ffd3d3,
+  A200 : #ffa0a0,
+  A400 : #ff6d6d,
+  A700 : #ff5353,
+  contrast: (
+      50 : #000000,
+      100 : #000000,
+      200 : #000000,
+      300 : #ffffff,
+      400 : #ffffff,
+      500 : #ffffff,
+      600 : #ffffff,
+      700 : #ffffff,
+      800 : #ffffff,
+      900 : #ffffff,
+      A100 : #000000,
+      A200 : #000000,
+      A400 : #000000,
+      A700 : #000000,
+  )
+);
+
+$custom-primary: mat-palette($custom-primary-color);
+$custom-accent: mat-palette($custom-accent-color);
+$custom-warn: mat-palette($custom-warn-color);
+
+$custom-theme: mat-light-theme($custom-primary, $custom-accent, $custom-warn);
+
+@include angular-material-theme($custom-theme);
 
 $custom-typography: mat-typography-config(
   $font-family: 'Montserrat',
@@ -15,25 +125,25 @@ $custom-typography: mat-typography-config(
   $body-2: mat-typography-level(14px, 24px, 500),
   $body-1: mat-typography-level(14px, 20px, 400),
   $caption: mat-typography-level(12px, 20px, 400),
-  $button: mat-typography-level(14px, 18px, 500),
+  $button: mat-typography-level(18px, 18px, 500),
   // Line-height must be unit-less fraction of the font-size.
-  $input: mat-typography-level(18px, 1.128, 700)
+  $input: mat-typography-level(18px, 1.128, 500)
 );
 
 @include angular-material-typography($custom-typography);
 
 .mat-error {
-  font-weight: 600;
+  font-weight: 500;
   font-size: 12px;
 }
 
 .mat-hint {
-  font-weight: 600;
+  font-weight: 500;
   font-size: 12px;
 }
 
 .mat-slide-toggle-label {
-  font-weight: 700;
+  font-weight: 500;
   font-size: 18px;
 }
 
@@ -46,4 +156,16 @@ select:-webkit-autofill:hover,
 
 select:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+}
+
+mat-card-title {
+  margin-bottom: 24px !important;
+}
+
+button {
+  padding: 8px 32px !important;
+}
+
+form > div {
+  margin: 0 !important;
 }

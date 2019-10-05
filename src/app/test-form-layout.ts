@@ -1,3 +1,132 @@
+export const NestedScreenLayoutValue = [
+    {
+        personal: {
+            firstName: 'Francois',
+            surname: 'Weber',
+            age: 36
+        },
+        occupation: {
+            currentEmployer: 'Tangent IT Solutions',
+            address: 'The Campus, 57 Sloane Street, Carisbrook Building, Bryanston, 2194',
+            employmentHistory: [
+                { previousEmployer: 'Foundation for Human Rights', from: 2011, till: 2018}
+            ]
+        }
+    }
+];
+
+export const NestedScreenLayout = {
+    screens: [
+        {
+            type: 'STEP',
+            name: 'information',
+            layout: { large: 'row wrap', small: 'column' },
+            gap: { large: '24px grid', small: '24px grid' },
+            elements: [
+                {
+                    type: 'OBJECT',
+                    name: 'personal',
+                    layout: { large: 'row wrap', small: 'column' },
+                    gap: { large: '24px grid', small: '24px grid' },
+                    elements: [
+                        {
+                            type: 'CONTROL',
+                            subType: 'TEXT_INPUT',
+                            name: 'firstName',
+                            layout: { large: '50', small: '100' },
+                            validations: [
+                                { type: 'required' }
+                            ]
+                        },
+                        {
+                            type: 'CONTROL',
+                            subType: 'TEXT_INPUT',
+                            name: 'surname',
+                            layout: { large: '50', small: '100' },
+                            validations: [
+                                { type: 'required' }
+                            ]
+                        },
+                        {
+                            type: 'CONTROL',
+                            subType: 'TEXT_INPUT',
+                            name: 'age',
+                            numbersOnly: true,
+                            layout: { large: '50', small: '100' },
+                            validations: [
+                                { type: 'required' }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    type: 'OBJECT',
+                    name: 'occupation',
+                    layout: { large: 'row wrap', small: 'column' },
+                    gap: { large: '24px grid', small: '24px grid' },
+                    elements: [
+                        {
+                            type: 'CONTROL',
+                            subType: 'TEXT_INPUT',
+                            name: 'currentEmployer',
+                            layout: { large: '50', small: '100' },
+                            validations: [
+                                { type: 'required' }
+                            ]
+                        },
+                        {
+                            type: 'CONTROL',
+                            subType: 'TEXT_INPUT',
+                            name: 'address',
+                            layout: { large: '50', small: '100' },
+                            validations: [
+                                { type: 'required' }
+                            ]
+                        },
+                        {
+                            type: 'ARRAY',
+                            name: 'employmentHistory',
+                            layout: { large: 'row wrap', small: 'column' },
+                            gap: { large: '24px grid', small: '24px grid' },
+                            elements: [
+                                {
+                                    type: 'CONTROL',
+                                    subType: 'TEXT_INPUT',
+                                    name: 'previousEmployer',
+                                    layout: { large: '50', small: '100' },
+                                    validations: [
+                                        { type: 'required' }
+                                    ]
+                                },
+                                {
+                                    type: 'CONTROL',
+                                    subType: 'TEXT_INPUT',
+                                    name: 'from',
+                                    numbersOnly: true,
+                                    layout: { large: '25', small: '100' },
+                                    validations: [
+                                        { type: 'required' }
+                                    ]
+                                },
+                                {
+                                    type: 'CONTROL',
+                                    subType: 'TEXT_INPUT',
+                                    name: 'till',
+                                    numbersOnly: true,
+                                    layout: { large: '25', small: '100' },
+                                    validations: [
+                                        { type: 'required' }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]                    
+                }
+            ]
+        }
+    ]
+}
+
 export const ScreenValue = [
     {
         firstName: 'Francois',
@@ -9,7 +138,6 @@ export const ScreenValue = [
         bank: 'Capitec'
     }
 ]
-
 export const MultiScreenLayout = {
     screens: [
         {
@@ -132,7 +260,6 @@ export const MultiScreenLayout = {
         }
     ]
 };
-
 export const FamilyValue = {
     totalIndividuals: 4,
     testBoolean: true,

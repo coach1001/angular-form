@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormArray } from '@angular/forms';
 import { ElementControlComponent } from '../element-control/element-control.component';
 import { ElementGroupComponent } from '../element-group/element-group.component';
 import cloneDeep from 'lodash-es/cloneDeep';
@@ -7,6 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import * as changeCase from 'change-case';
 import * as jexl from 'jexl';
+import { FormGeneratorService } from '../form-generator.service';
 
 @Component({
   selector: 'app-element-array',
@@ -34,7 +35,7 @@ export class ElementArrayComponent implements OnInit, OnDestroy {
 
   private _destroy$: Subject<void> = new Subject<void>();
 
-  constructor() { }
+  constructor(private _formGenerator: FormGeneratorService) { }
 
   ngOnInit(): void {
     this.evalClearWhen();
@@ -72,8 +73,11 @@ export class ElementArrayComponent implements OnInit, OnDestroy {
   }
 
   createRow() {
-    const rowTemplate = <FormGroup>cloneDeep(this.parent.controls[this.name]['rowTemplate']);
-    this.parent.controls[this.name]['controls'].push(rowTemplate);
+    this._formGenerator.recurseFormGroup(<FormArray> this.parent.controls[this.name], 'TOUCH_AND_VALIDATE');
+    if(this.parent.controls[this.name].valid) {
+      const rowTemplate = <FormGroup>cloneDeep(this.parent.controls[this.name]['rowTemplate']);
+      this.parent.controls[this.name]['controls'].push(rowTemplate);  
+    }
   }
 
   get _label_() {

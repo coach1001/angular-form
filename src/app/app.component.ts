@@ -1,6 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGeneratorService } from './form-generator.service';
-import { Layout, Value, FamilyLayout, FamilyValue, MultiScreenLayout, ScreenValue } from './test-form-layout';
+import {
+  NestedScreenLayoutValue, NestedScreenLayout,
+  Layout, Value, FamilyLayout, FamilyValue, MultiScreenLayout, ScreenValue
+} from './test-form-layout';
 import { FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
@@ -9,7 +12,6 @@ import * as deepDiff from 'deep-diff';
 import * as changeCase from 'change-case';
 import { ElementControlComponent } from './element-control/element-control.component';
 import { ElementArrayComponent } from './element-array/element-array.component';
-import { NullTemplateVisitor } from '@angular/compiler';
 
 @Component({
   selector: 'app-root',
@@ -35,14 +37,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    // this.formDefinition = Layout;
-    // this.formValue = Value;
-    // this.formDefinition = FamilyLayout;
-    // this.formValue = FamilyValue;
-    this.formDefinition = MultiScreenLayout;
-    this.formValue = ScreenValue;
+    this.formDefinition = NestedScreenLayout;
+    this.formValue = NestedScreenLayoutValue;
 
-    this.stepIndex = 0;
+      this.stepIndex = 0;
     this._formGenerator.buildForm(this.formDefinition.screens[this.stepIndex]);
 
     this._formGenerator.form$.pipe(
@@ -82,9 +80,9 @@ export class AppComponent implements OnInit, OnDestroy {
   }
   onSubmit() {
     this._formGenerator.recurseFormGroup(this.form, 'TOUCH_AND_VALIDATE');
-    console.log(this.form.value);
+    console.log(this.form);
     if (this.form.valid) {
-      this.next();
+      // this.next();
     }
     // const changes = deepDiff(this.formValue, this.form.getRawValue());
     // console.log(changes, this.form, this.form.getRawValue());
@@ -92,7 +90,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   onReset() {
     this._formGenerator.recurseFormGroup(this.form, 'UNTOUCHED_AND_PRISTINE');
-    if (this.formValue[this.stepIndex] != null) {
+    if (this.formValue && this.formValue[this.stepIndex] != null) {
       this._formGenerator.setFormValue(this.form, this.formValue[this.stepIndex]);
     } else {
       this.onClear();
@@ -101,6 +99,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   onClear() {
     this.cleared$.next();
+    this._formGenerator.recurseFormGroup(this.form, 'UNTOUCHED_AND_PRISTINE');
   }
 
   onSwitch() {
