@@ -113,7 +113,7 @@ $custom-theme: mat-light-theme($custom-primary, $custom-accent, $custom-warn);
 @include angular-material-theme($custom-theme);
 
 $custom-typography: mat-typography-config(
-  $font-family: 'Montserrat',
+  $font-family: 'Montserrat, sans-serif',
   $display-4: mat-typography-level(112px, 112px, 300),
   $display-3: mat-typography-level(56px, 56px, 400),
   $display-2: mat-typography-level(45px, 48px, 400),

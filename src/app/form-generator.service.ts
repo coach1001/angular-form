@@ -3,6 +3,7 @@ import { FormArray, FormGroup, FormControl, FormBuilder, Validators } from '@ang
 import { BehaviorSubject, Subject } from 'rxjs';
 import cloneDeep from 'lodash-es/cloneDeep';
 import { MustMatch } from './validators/must-match.validator';
+import { RequiredIf } from './validators/required-if.validator';
 
 @Injectable({
   providedIn: 'root'
@@ -83,6 +84,7 @@ export class FormGeneratorService {
       objectElement.validations.forEach(validation => {
         switch (validation.type) {
           case 'mustMatch': validators.push(MustMatch(validation.value[0], validation.value[1])); break;
+          case 'requiredIf': validators.push(RequiredIf(validation.controlName, validation.expression)); break;
           default: break;
         }
       });  
@@ -92,6 +94,7 @@ export class FormGeneratorService {
   }
 
   processArray_r(arrayElement, currFormElm: FormGroup) {
+    
     currFormElm.addControl(arrayElement.name, this._formBuilder.array([]));
     currFormElm.controls[arrayElement.name]['controls'].push(this._formBuilder.group({}));
     if (arrayElement.elements && arrayElement.elements.length) {
@@ -100,6 +103,18 @@ export class FormGeneratorService {
       });
     }
     const rowTemplate = cloneDeep(currFormElm.controls[arrayElement.name]['controls'][0]);
+
+    if (arrayElement.validations) {
+      let validators = [];
+      arrayElement.validations.forEach(validation => {
+        switch (validation.type) {
+          case 'mustMatch': validators.push(MustMatch(validation.value[0], validation.value[1])); break;
+          case 'requiredIf': validators.push(RequiredIf(validation.controlName, validation.expression)); break;
+          default: break;
+        }
+      });  
+      rowTemplate.setValidators(validators);
+    }
     this.recurseFormGroup(rowTemplate, 'CLEAR_VALUES');
     currFormElm.controls[arrayElement.name]['rowTemplate'] = rowTemplate;
     currFormElm.controls[arrayElement.name]['controls'] = [];
@@ -117,7 +132,7 @@ export class FormGeneratorService {
           controlValue.forEach((val, index) => {
             abstractControl['controls'].push(cloneDeep(abstractControl['rowTemplate']));
             this.setFormValue(<FormGroup>abstractControl['controls'][index], val);
-          });  
+          });
         }
       } else {
         abstractControl.patchValue(controlValue);
@@ -142,11 +157,13 @@ export class FormGeneratorService {
         } else if (operation === 'DISABLE') {
           abstractControl.disable();
         } else if (operation === 'TOUCH_AND_VALIDATE') {
-          abstractControl.markAsTouched()
+          abstractControl.markAsTouched();
           abstractControl.updateValueAndValidity();
         } else if (operation === 'UNTOUCHED_AND_PRISTINE') {
           abstractControl.markAsUntouched();
           abstractControl.markAsPristine();
+        } else if (operation === 'VALIDATE') {
+          abstractControl.updateValueAndValidity();
         }
       }
     });
@@ -158,6 +175,8 @@ export class FormGeneratorService {
     } else if (operation === 'UNTOUCHED_AND_PRISTINE') {
       group.markAsUntouched();
       group.markAsPristine();
+    } else if (operation === 'VALIDATE') {
+      group.updateValueAndValidity();
     }
   }
 

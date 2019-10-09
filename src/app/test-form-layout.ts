@@ -9,7 +9,7 @@ export const NestedScreenLayoutValue = [
             currentEmployer: 'Tangent IT Solutions',
             address: 'The Campus, 57 Sloane Street, Carisbrook Building, Bryanston, 2194',
             employmentHistory: [
-                { previousEmployer: 'Foundation for Human Rights', from: 2011, till: 2018}
+                { previousEmployer: 'Foundation for Human Rights', from: 2011, till: 2011 }
             ]
         }
     }
@@ -28,6 +28,9 @@ export const NestedScreenLayout = {
                     name: 'personal',
                     layout: { large: 'row wrap', small: 'column' },
                     gap: { large: '24px grid', small: '24px grid' },
+                    validations: [
+                        { type: 'requiredIf', controlName: 'gender', expression: 'age > 20' }
+                    ],
                     elements: [
                         {
                             type: 'CONTROL',
@@ -52,10 +55,21 @@ export const NestedScreenLayout = {
                             subType: 'TEXT_INPUT',
                             name: 'age',
                             numbersOnly: true,
+                            hint: 'Any age above 21 and gender will be required.',
                             layout: { large: '50', small: '100' },
                             validations: [
                                 { type: 'required' }
                             ]
+                        },
+                        {
+                            type: 'CONTROL',
+                            subType: 'RADIO_GROUP_INPUT',
+                            name: 'gender',
+                            layout: { large: '50', small: '100' },
+                            options: [
+                                { key: 'M', value: 'Male' },
+                                { key: 'F', value: 'Female' }
+                            ],
                         }
                     ]
                 },
@@ -88,6 +102,9 @@ export const NestedScreenLayout = {
                             name: 'employmentHistory',
                             layout: { large: 'row wrap', small: 'column' },
                             gap: { large: '24px grid', small: '24px grid' },
+                            validations: [
+                                { type: 'mustMatch', value: ['from', 'till'] }
+                            ],
                             elements: [
                                 {
                                     type: 'CONTROL',
@@ -120,7 +137,7 @@ export const NestedScreenLayout = {
                                 }
                             ]
                         }
-                    ]                    
+                    ]
                 }
             ]
         }

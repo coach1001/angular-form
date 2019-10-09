@@ -72,12 +72,14 @@ export class ElementArrayComponent implements OnInit, OnDestroy {
     return { ...element, parent: this.parent.controls[this.name]['controls'][index] };
   }
 
-  createRow() {
-    this._formGenerator.recurseFormGroup(<FormArray> this.parent.controls[this.name], 'TOUCH_AND_VALIDATE');
-    if(this.parent.controls[this.name].valid) {
-      const rowTemplate = <FormGroup>cloneDeep(this.parent.controls[this.name]['rowTemplate']);
-      this.parent.controls[this.name]['controls'].push(rowTemplate);  
-    }
+  addRow() {
+    const rowTemplate = <FormGroup>cloneDeep(this.parent.controls[this.name]['rowTemplate']);
+    this.parent.controls[this.name]['controls'].push(rowTemplate); 
+  }
+
+  get _disableAddRow_() {
+    this._formGenerator.recurseFormGroup(<FormArray> this.parent.controls[this.name], 'VALIDATE');
+    return this.parent.controls[this.name].invalid;
   }
 
   get _label_() {
