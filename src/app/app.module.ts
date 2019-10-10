@@ -41,13 +41,21 @@ import {MatTableModule} from '@angular/material/table';
 import {MatSortModule} from '@angular/material/sort';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { DigitOnlyModule } from '@uiowa/digit-only';
+import { FgControlComponent } from './fg-control/fg-control.component';
+import { FgGroupComponent } from './fg-group/fg-group.component';
+import { FgArrayComponent } from './fg-array/fg-array.component';
+import { FgTextInputComponent } from './controls/fg-text-input/fg-text-input.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ElementControlComponent,
     ElementGroupComponent,
-    ElementArrayComponent
+    ElementArrayComponent,
+    FgControlComponent,
+    FgGroupComponent,
+    FgArrayComponent,
+    FgTextInputComponent
   ],
   imports: [
     BrowserModule,
@@ -56,7 +64,17 @@ import { DigitOnlyModule } from '@uiowa/digit-only';
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
-    DynamicModule.withComponents([ElementArrayComponent, ElementGroupComponent, ElementControlComponent]),
+    DynamicModule.withComponents([
+      ElementArrayComponent,
+      ElementGroupComponent, 
+      ElementControlComponent,
+      
+      FgControlComponent,
+      FgGroupComponent,
+      FgArrayComponent,
+      
+      FgTextInputComponent
+    ]),
 
     MatCheckboxModule,
     MatButtonModule,

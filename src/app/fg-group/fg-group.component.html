@@ -1,0 +1,11 @@
+<form [formGroup]="parent">
+    <mat-card class="mat-elevation-z6 card-padding">
+        <mat-card-content>
+            <mat-card-title>{{label}}</mat-card-title>
+            <ng-container *ngFor="let key of controlKeys;">
+                <ndc-dynamic [ndcDynamicComponent]="getComponent(key)" [ndcDynamicInputs]="getComponentInputs(key)">
+                </ndc-dynamic>
+            </ng-container>
+        </mat-card-content>
+    </mat-card>
+</form>

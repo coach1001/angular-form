@@ -1,4 +1,4 @@
-<div fxLayout="row">
+<!-- <div fxLayout="row">
   <div fxFlex="20" fxFlex.lt-md="5" fxFlex.lt-sm="0"></div>
   <ng-container *ngIf="form" class="container">
     <mat-card fxFlex="0" fxFlex.lt-md="100" class="mat-elevation-z12 form-padding" ngClass.lt-md="lt-md">
@@ -22,11 +22,29 @@
         <button class="mat-elevation-z6" type="button" mat-stroked-button color="accent"
           (click)="onReset()">Reset</button>
         <button class="mat-elevation-z6" type="button" mat-stroked-button color="warn" (click)="onClear()">Clear</button>
-        <!-- <button type="button" mat-button color="accent" (click)="onSwitch()">Switch Forms</button> -->
-        <!-- <button type="button" mat-stroked-button color="accent" (click)="next()">Next</button> -->
       </mat-card-actions>
     </mat-card>
   </ng-container>
   <div fxFlex="20" fxFlex.lt-md="5" fxFlex.lt-sm="0"></div>
-</div>
-<!-- <router-outlet></router-outlet> -->
+</div> -->
+<form [id]="formId" (ngSubmit)="onSubmit()" *ngIf="form" [formGroup]="form">
+  <div fxLayout="row">
+    <div fxFlex="20" fxFlex.lt-md="5" fxFlex.lt-sm="0"></div>
+    <mat-card fxFlex="0" fxFlex.lt-md="100" class="mat-elevation-z12 form-padding" ngClass.lt-md="lt-md">
+      <mat-card-title>Form</mat-card-title>
+      <mat-card-content>
+        <app-fg-group [controlIn]="form" [parent]="form" [parentCleared$]="cleared$" [parentReset$]="reset$">
+        </app-fg-group>
+      </mat-card-content>
+      <mat-card-actions>
+        <button [attr.form]="formId" class="mat-elevation-z6" type="submit" mat-raised-button
+          color="primary">Submit</button>
+        <button class="mat-elevation-z6" type="button" mat-stroked-button color="accent"
+          (click)="onReset()">Reset</button>
+        <button class="mat-elevation-z6" type="button" mat-stroked-button color="warn"
+          (click)="onClear()">Clear</button>
+      </mat-card-actions>
+    </mat-card>
+    <div fxFlex="20" fxFlex.lt-md="5" fxFlex.lt-sm="0"></div>
+  </div>
+</form>

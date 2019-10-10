@@ -158,14 +158,20 @@ select:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0px 1000px white inset !important;
 }
 
-mat-card-title {
-  margin-bottom: 24px !important;
-}
-
 button {
   padding: 8px 32px !important;
 }
 
 form > div {
   margin: 0 !important;
+}
+
+mat-card {
+  margin: 10px;
+  padding: 5px;
+}
+
+mat-card-content {
+  margin: 5px;
+  padding: 5px;
 }

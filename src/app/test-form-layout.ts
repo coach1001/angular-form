@@ -9,7 +9,7 @@ export const NestedScreenLayoutValue = [
             currentEmployer: 'Tangent IT Solutions',
             address: 'The Campus, 57 Sloane Street, Carisbrook Building, Bryanston, 2194',
             employmentHistory: [
-                { previousEmployer: 'Foundation for Human Rights', from: 2011, till: 2011 }
+                { previousEmployer: 'Foundation for Human Rights', from: 2011, till: 2012 }
             ]
         }
     }
@@ -21,13 +21,13 @@ export const NestedScreenLayout = {
             type: 'STEP',
             name: 'information',
             layout: { large: 'row wrap', small: 'column' },
-            gap: { large: '24px grid', small: '24px grid' },
+            gap: { large: '20px grid', small: '10px grid' },
             elements: [
                 {
                     type: 'OBJECT',
                     name: 'personal',
                     layout: { large: 'row wrap', small: 'column' },
-                    gap: { large: '24px grid', small: '24px grid' },
+                    gap: { large: '20px grid', small: '10px grid' },
                     validations: [
                         { type: 'requiredIf', controlName: 'gender', expression: 'age > 20' }
                     ],
@@ -77,7 +77,7 @@ export const NestedScreenLayout = {
                     type: 'OBJECT',
                     name: 'occupation',
                     layout: { large: 'row wrap', small: 'column' },
-                    gap: { large: '24px grid', small: '24px grid' },
+                    gap: { large: '20px grid', small: '10px grid' },
                     elements: [
                         {
                             type: 'CONTROL',
@@ -101,7 +101,7 @@ export const NestedScreenLayout = {
                             type: 'ARRAY',
                             name: 'employmentHistory',
                             layout: { large: 'row wrap', small: 'column' },
-                            gap: { large: '24px grid', small: '24px grid' },
+                            gap: { large: '10px grid', small: '10px grid' },
                             validations: [
                                 { type: 'mustMatch', value: ['from', 'till'] }
                             ],
@@ -492,13 +492,20 @@ export const Value = {
                     step1_array3_array1_input1: 'step1_array3_index0_array1_index1_input1_value'
                 }
             ]
+        },
+        {
+            step1_array3_array1: [
+                {
+                    step1_array3_array1_input1: 'step1_array3_index1_array1_index0_input1_value'
+                }
+            ]      
         }
     ]
 }
 export const Layout = {
     screens: [
         {
-            type: 'STEP',
+            type: 'OBJECT',
             subType: 'PARENT',
             name: 'step1',
             elements: [

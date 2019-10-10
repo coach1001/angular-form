@@ -29,6 +29,7 @@ export class AppComponent implements OnInit, OnDestroy {
   formValue: any;
   form: FormGroup;
   cleared$: Subject<void> = new Subject<void>();
+  reset$: Subject<void> = new Subject<void>();
   formId = Math.floor(Math.random() * 10000).toString();
 
   constructor(
@@ -40,8 +41,9 @@ export class AppComponent implements OnInit, OnDestroy {
     this.formDefinition = NestedScreenLayout;
     this.formValue = NestedScreenLayoutValue;
 
-      this.stepIndex = 0;
-    this._formGenerator.buildForm(this.formDefinition.screens[this.stepIndex]);
+    this.stepIndex = 0;
+    this._formGenerator.buildForm(this.formDefinition.screens[this.stepIndex]);  
+    // this._formGenerator.buildForm(this.formDefinition.screens[0]);
 
     this._formGenerator.form$.pipe(
       filter(val => val != null),
@@ -50,34 +52,11 @@ export class AppComponent implements OnInit, OnDestroy {
       this.form = form;
       if (this.formValue != null) {
         this._formGenerator.setFormValue(this.form, this.formValue[this.stepIndex]);
+        // this._formGenerator.setFormValue(this.form, this.formValue);
       }
     });
   }
 
-  get _root_() {
-    return this.formDefinition.screens[this.stepIndex];
-  }
-
-  get _label_() {
-    return this.formDefinition.label
-      ? this.formDefinition.screens[this.stepIndex].label
-      : changeCase.sentenceCase(this.formDefinition.screens[this.stepIndex].name);
-  }
-
-  getElementComponent(type: string): any {
-    if (type === 'CONTROL') {
-      return ElementControlComponent;
-    } else if (type === 'OBJECT') {
-      return ElementGroupComponent;
-    } else if (type === 'ARRAY') {
-      return ElementArrayComponent;
-    }
-    return null;
-  }
-
-  getElementInputs(element: any): any {
-    return { ...element, parent: this.form, parentCleared$: this.cleared$ };
-  }
   onSubmit() {
     this._formGenerator.recurseFormGroup(this.form, 'TOUCH_AND_VALIDATE');
     console.log(this.form);
@@ -91,7 +70,9 @@ export class AppComponent implements OnInit, OnDestroy {
   onReset() {
     this._formGenerator.recurseFormGroup(this.form, 'UNTOUCHED_AND_PRISTINE');
     if (this.formValue && this.formValue[this.stepIndex] != null) {
+      // if (this.formValue && this.formValue != null) {
       this._formGenerator.setFormValue(this.form, this.formValue[this.stepIndex]);
+      this.reset$.next();
     } else {
       this.onClear();
     }
@@ -100,26 +81,6 @@ export class AppComponent implements OnInit, OnDestroy {
   onClear() {
     this.cleared$.next();
     this._formGenerator.recurseFormGroup(this.form, 'UNTOUCHED_AND_PRISTINE');
-  }
-
-  onSwitch() {
-    if (this._currentForm) {
-      this.formDefinition = Layout;
-      this.formValue = Value;
-    } else {
-      this.formDefinition = FamilyLayout;
-      this.formValue = FamilyValue;
-    }
-    this._currentForm = !this._currentForm;
-    this.stepIndex = 0;
-    this._formGenerator.buildForm(this.formDefinition.screens[this.stepIndex]);
-  }
-
-  next() {
-    const steps = this.formDefinition.screens.length - 1;
-    this.stepIndex += 1;
-    this.stepIndex = this.stepIndex > steps ? 0 : this.stepIndex;
-    this._formGenerator.buildForm(this.formDefinition.screens[this.stepIndex]);
   }
 
   ngOnDestroy(): void {
