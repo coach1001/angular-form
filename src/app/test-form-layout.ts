@@ -9,7 +9,7 @@ export const NestedScreenLayoutValue = [
             currentEmployer: 'Tangent IT Solutions',
             address: 'The Campus, 57 Sloane Street, Carisbrook Building, Bryanston, 2194',
             employmentHistory: [
-                { previousEmployer: 'Foundation for Human Rights', from: 2011, till: 2012 }
+                { previousEmployer: 'Foundation for Human Rights', from: 2011, till: 2011 }
             ]
         }
     }
@@ -64,10 +64,11 @@ export const NestedScreenLayout = {
                             subType: 'RADIO_GROUP_INPUT',
                             name: 'gender',
                             layout: {},
+                            defaultValue: 'M',
                             reactivity: [
                                 { type: 'clearWhen', expression: 'age < 21' },
-                                { type: 'disableWhen', expression: 'age < 21' },
-                                // { type: 'visibleWhen', expression: 'age > 20' }
+                                // { type: 'disableWhen', expression: 'age < 21' },
+                                { type: 'visibleWhen', expression: 'age > 20' }
                             ],
                             options: [
                                 { key: 'M', value: 'Male' },

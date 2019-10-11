@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { FormGroup, FormArray } from '@angular/forms';
 import { FgArrayComponent } from '../fg-array/fg-array.component';
 import { FgControlComponent } from '../fg-control/fg-control.component';
@@ -12,7 +12,7 @@ import * as changeCase from 'change-case';
   templateUrl: './fg-group.component.html',
   styleUrls: ['./fg-group.component.scss']
 })
-export class FgGroupComponent implements OnInit {
+export class FgGroupComponent implements OnInit, OnDestroy {
   @Input()
   controlIn: FormGroup;
   @Input()
@@ -49,6 +49,11 @@ export class FgGroupComponent implements OnInit {
     ).subscribe(_ => {
       this.reset$.next();
     });
+  }
+
+  ngOnDestroy() {
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 
   getComponent(controlKey: string) {

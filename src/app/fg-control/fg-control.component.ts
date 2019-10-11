@@ -28,6 +28,7 @@ export class FgControlComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.checkReactivity(this.controlIn.parent.getRawValue());
+    this.setDefaultValue();
     this.parentCleared$
       .pipe(
         takeUntil(this._destroy$)
@@ -40,11 +41,13 @@ export class FgControlComponent implements OnInit, OnDestroy {
       takeUntil(this._destroy$)
     ).subscribe(value => {
       this.checkReactivity(value);
-    })
+      this.setDefaultValue();
+    });
   }
 
   ngOnDestroy() {
-    throw new Error("Method not implemented.");
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 
   get error() {
@@ -72,12 +75,20 @@ export class FgControlComponent implements OnInit, OnDestroy {
     return error;
   }
 
+  setDefaultValue() {
+    if (this.controlIn['element'].defaultValue && this.controlIn.value == null) {
+      this.controlIn.patchValue(this.controlIn['element'].defaultValue, { emitEvent: false });
+    }
+  }
+
   checkReactivity(scopeValue) {
+
     const visible: Array<boolean> = [];
     const disable: Array<boolean> = [];
     const clear: Array<boolean> = [];
-    
+
     if (this.controlIn['element'].reactivity) {
+
       this.controlIn['element'].reactivity.forEach(r => {
         const result = jexl.evalSync(r.expression, scopeValue);
         switch (r.type) {
@@ -88,18 +99,24 @@ export class FgControlComponent implements OnInit, OnDestroy {
         }
       });
 
-      if (clear.length > 0 && clear.every(d => d) && this.controlIn.value != null) {
+      if (clear.length > 0 && clear.every(c => c) && this.controlIn.value != null) {
         this.controlIn.patchValue(null, { emitEvent: false });
         this.cleared$.next();
       }
 
       if (disable.length > 0 && disable.every(d => d) && !this.controlIn.disabled) {
         this.controlIn.disable({ emitEvent: false });
-      } else if (disable.length > 0 && !disable.every(d => d) ) {
+      } else if (disable.length > 0 && !disable.every(d => d)) {
         this.controlIn.enable({ emitEvent: false });
       }
 
-      
+      if (visible.length > 0 && visible.every(v => v) && !this.visible) {
+        this.controlIn.markAsUntouched();
+        this.controlIn.markAsPristine();
+        this.visible = true;
+      } else if (visible.length > 0 && !visible.every(v => v)) {
+        this.visible = false;
+      }
     }
   }
 }
