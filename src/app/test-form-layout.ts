@@ -3,7 +3,7 @@ export const NestedScreenLayoutValue = [
         personal: {
             firstName: 'Francois',
             surname: 'Weber',
-            age: 36
+            age: 20
         },
         occupation: {
             currentEmployer: 'Tangent IT Solutions',
@@ -20,14 +20,12 @@ export const NestedScreenLayout = {
         {
             type: 'STEP',
             name: 'information',
-            layout: { large: 'row wrap', small: 'column' },
-            gap: { large: '20px grid', small: '10px grid' },
+            layout: {},
             elements: [
                 {
                     type: 'OBJECT',
                     name: 'personal',
-                    layout: { large: 'row wrap', small: 'column' },
-                    gap: { large: '20px grid', small: '10px grid' },
+                    layout: {},
                     validations: [
                         { type: 'requiredIf', controlName: 'gender', expression: 'age > 20' }
                     ],
@@ -36,7 +34,7 @@ export const NestedScreenLayout = {
                             type: 'CONTROL',
                             subType: 'TEXT_INPUT',
                             name: 'firstName',
-                            layout: { large: '50', small: '100' },
+                            layout: {},
                             validations: [
                                 { type: 'required' }
                             ]
@@ -45,7 +43,7 @@ export const NestedScreenLayout = {
                             type: 'CONTROL',
                             subType: 'TEXT_INPUT',
                             name: 'surname',
-                            layout: { large: '50', small: '100' },
+                            layout: {},
                             validations: [
                                 { type: 'required' }
                             ]
@@ -55,8 +53,8 @@ export const NestedScreenLayout = {
                             subType: 'TEXT_INPUT',
                             name: 'age',
                             numbersOnly: true,
-                            hint: 'Any age above 21 and gender will be required.',
-                            layout: { large: '50', small: '100' },
+                            hint: 'Any age above 20 and gender will be required.',
+                            layout: {},
                             validations: [
                                 { type: 'required' }
                             ]
@@ -65,7 +63,12 @@ export const NestedScreenLayout = {
                             type: 'CONTROL',
                             subType: 'RADIO_GROUP_INPUT',
                             name: 'gender',
-                            layout: { large: '50', small: '100' },
+                            layout: {},
+                            reactivity: [
+                                { type: 'clearWhen', expression: 'age < 21' },
+                                { type: 'disableWhen', expression: 'age < 21' },
+                                // { type: 'visibleWhen', expression: 'age > 20' }
+                            ],
                             options: [
                                 { key: 'M', value: 'Male' },
                                 { key: 'F', value: 'Female' }
@@ -76,14 +79,13 @@ export const NestedScreenLayout = {
                 {
                     type: 'OBJECT',
                     name: 'occupation',
-                    layout: { large: 'row wrap', small: 'column' },
-                    gap: { large: '20px grid', small: '10px grid' },
+                    layout: {},
                     elements: [
                         {
                             type: 'CONTROL',
                             subType: 'TEXT_INPUT',
                             name: 'currentEmployer',
-                            layout: { large: '50', small: '100' },
+                            layout: {},
                             validations: [
                                 { type: 'required' }
                             ]
@@ -92,7 +94,7 @@ export const NestedScreenLayout = {
                             type: 'CONTROL',
                             subType: 'TEXT_INPUT',
                             name: 'address',
-                            layout: { large: '50', small: '100' },
+                            layout: {},
                             validations: [
                                 { type: 'required' }
                             ]
@@ -100,8 +102,7 @@ export const NestedScreenLayout = {
                         {
                             type: 'ARRAY',
                             name: 'employmentHistory',
-                            layout: { large: 'row wrap', small: 'column' },
-                            gap: { large: '10px grid', small: '10px grid' },
+                            layout: {},
                             validations: [
                                 { type: 'mustMatch', value: ['from', 'till'] }
                             ],
@@ -110,7 +111,7 @@ export const NestedScreenLayout = {
                                     type: 'CONTROL',
                                     subType: 'TEXT_INPUT',
                                     name: 'previousEmployer',
-                                    layout: { large: '50', small: '100' },
+                                    layout: {},
                                     validations: [
                                         { type: 'required' }
                                     ]
@@ -120,7 +121,7 @@ export const NestedScreenLayout = {
                                     subType: 'TEXT_INPUT',
                                     name: 'from',
                                     numbersOnly: true,
-                                    layout: { large: '25', small: '100' },
+                                    layout: {},
                                     validations: [
                                         { type: 'required' }
                                     ]
@@ -130,7 +131,7 @@ export const NestedScreenLayout = {
                                     subType: 'TEXT_INPUT',
                                     name: 'till',
                                     numbersOnly: true,
-                                    layout: { large: '25', small: '100' },
+                                    layout: {},
                                     validations: [
                                         { type: 'required' }
                                     ]

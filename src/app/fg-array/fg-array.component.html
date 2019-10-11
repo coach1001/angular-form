@@ -1,20 +1,10 @@
 <form [formGroup]="parent" *ngIf="isVisible">
-    <mat-card class="mat-elevation-z6 card-padding">
-        <mat-card-content>
-            <mat-card-title>{{label}}</mat-card-title>
-            <ng-container *ngFor="let group of groupKeys;let gIndex = index;">
-                <div fxLayout="row">
-                    <ng-container *ngFor="let key of group">
-                        <ndc-dynamic [ndcDynamicComponent]="getComponent(key, gIndex)"
-                            [ndcDynamicInputs]="getComponentInputs(key, gIndex)">
-                        </ndc-dynamic>
-                    </ng-container>
-                </div>
-            </ng-container>
-        </mat-card-content>
-        <mat-card-actions>
-            <button type="button" class="mat-elevation-z6" mat-raised-button color="primary"
-                (click)="addRow()">Add</button>
-        </mat-card-actions>
-    </mat-card>
+    <ng-container *ngFor="let group of groupKeys;let gIndex = index;">
+        <ng-container *ngFor="let key of group">
+            <ndc-dynamic [ndcDynamicComponent]="getComponent(key, gIndex)"
+                [ndcDynamicInputs]="getComponentInputs(key, gIndex)">
+            </ndc-dynamic>
+        </ng-container>
+    </ng-container>
+    <button type="button" class="mat-elevation-z6" mat-raised-button color="primary" (click)="addRow()">Add</button>
 </form>

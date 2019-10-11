@@ -1,7 +1,8 @@
-<form [formGroup]="parent" *ngIf="isVisible">
+<form [formGroup]="parent" *ngIf="visible" >
     <mat-form-field floatLabel="always" fxFlex="100">
         <mat-label>{{label}}</mat-label>
         <input [type]="_inputType_" matInput [formControlName]="name">
+        
         <mat-error>{{error}}</mat-error>
     </mat-form-field>
 </form>

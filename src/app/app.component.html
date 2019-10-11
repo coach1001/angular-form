@@ -1,50 +1,7 @@
-<!-- <div fxLayout="row">
-  <div fxFlex="20" fxFlex.lt-md="5" fxFlex.lt-sm="0"></div>
-  <ng-container *ngIf="form" class="container">
-    <mat-card fxFlex="0" fxFlex.lt-md="100" class="mat-elevation-z12 form-padding" ngClass.lt-md="lt-md">
-      <mat-card-title>{{_label_}}</mat-card-title>
-      <mat-card-content>
-        <form [id]="formId" [formGroup]="form" (ngSubmit)="onSubmit()" [fxLayout.gt-sm]="_root_.layout?.large"
-          [fxLayoutGap.gt-sm]="_root_.gap?.large" [fxLayout.lt-md]="_root_.layout?.small"
-          [fxLayoutGap.lt-md]="_root_.gap?.small">
-          <ng-container *ngFor="let element of formDefinition?.screens[stepIndex]?.elements">
-            <div [fxFlex.gt-sm]="element.layout?.large" [fxFlex.lt-md]="element.layout?.small">
-              <ndc-dynamic [ndcDynamicComponent]="getElementComponent(element.type)"
-                [ndcDynamicInputs]="getElementInputs(element)">
-              </ndc-dynamic>
-            </div>
-          </ng-container>
-        </form>
-      </mat-card-content>
-      <mat-card-actions>
-        <button [attr.form]="formId" class="mat-elevation-z6" type="submit" mat-raised-button
-          color="primary">Submit</button>
-        <button class="mat-elevation-z6" type="button" mat-stroked-button color="accent"
-          (click)="onReset()">Reset</button>
-        <button class="mat-elevation-z6" type="button" mat-stroked-button color="warn" (click)="onClear()">Clear</button>
-      </mat-card-actions>
-    </mat-card>
-  </ng-container>
-  <div fxFlex="20" fxFlex.lt-md="5" fxFlex.lt-sm="0"></div>
-</div> -->
 <form [id]="formId" (ngSubmit)="onSubmit()" *ngIf="form" [formGroup]="form">
-  <div fxLayout="row">
-    <div fxFlex="20" fxFlex.lt-md="5" fxFlex.lt-sm="0"></div>
-    <mat-card fxFlex="0" fxFlex.lt-md="100" class="mat-elevation-z12 form-padding" ngClass.lt-md="lt-md">
-      <mat-card-title>Form</mat-card-title>
-      <mat-card-content>
-        <app-fg-group [controlIn]="form" [parent]="form" [parentCleared$]="cleared$" [parentReset$]="reset$">
-        </app-fg-group>
-      </mat-card-content>
-      <mat-card-actions>
-        <button [attr.form]="formId" class="mat-elevation-z6" type="submit" mat-raised-button
-          color="primary">Submit</button>
-        <button class="mat-elevation-z6" type="button" mat-stroked-button color="accent"
-          (click)="onReset()">Reset</button>
-        <button class="mat-elevation-z6" type="button" mat-stroked-button color="warn"
-          (click)="onClear()">Clear</button>
-      </mat-card-actions>
-    </mat-card>
-    <div fxFlex="20" fxFlex.lt-md="5" fxFlex.lt-sm="0"></div>
-  </div>
+  <app-fg-group [controlIn]="form" [parent]="form" [parentCleared$]="cleared$" [parentReset$]="reset$">
+  </app-fg-group>
+  <button [attr.form]="formId" class="mat-elevation-z6" type="submit" mat-raised-button color="primary">Submit</button>
+  <button class="mat-elevation-z6" type="button" mat-stroked-button color="accent" (click)="onReset()">Reset</button>
+  <button class="mat-elevation-z6" type="button" mat-stroked-button color="warn" (click)="onClear()">Clear</button>
 </form>

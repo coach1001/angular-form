@@ -159,19 +159,10 @@ select:-webkit-autofill:focus {
 }
 
 button {
-  padding: 8px 32px !important;
+  padding: 8px 24px !important;
 }
 
-form > div {
+ndc-dynamic {
+  padding: 0 !important;
   margin: 0 !important;
-}
-
-mat-card {
-  margin: 10px;
-  padding: 5px;
-}
-
-mat-card-content {
-  margin: 5px;
-  padding: 5px;
 }

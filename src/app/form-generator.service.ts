@@ -65,6 +65,7 @@ export class FormGeneratorService {
       });
       control.setValidators(validators);
     }
+    control['element'] = inputElement;
     currFormElm.addControl(inputElement.name, control);
     return currFormElm;
   }
@@ -73,11 +74,14 @@ export class FormGeneratorService {
     if(!root) {
       currFormElm.addControl(objectElement.name, this._formBuilder.group({}));
       currFormElm = <FormGroup>currFormElm.controls[objectElement.name];
+      currFormElm['element'] = objectElement;
       if (objectElement.elements && objectElement.elements.length) {
         objectElement.elements.forEach(element => {
           this.processElement_r(element, currFormElm);
         });
       }  
+    } else {
+      currFormElm['element'] = objectElement;
     }
     if (objectElement.validations) {
       let validators = [];
@@ -117,6 +121,7 @@ export class FormGeneratorService {
     }
     this.recurseFormGroup(rowTemplate, 'CLEAR_VALUES');
     currFormElm.controls[arrayElement.name]['rowTemplate'] = rowTemplate;
+    currFormElm.controls[arrayElement.name]['element'] = arrayElement;
     currFormElm.controls[arrayElement.name]['controls'] = [];
   }
 
@@ -134,7 +139,7 @@ export class FormGeneratorService {
             this.setFormValue(<FormGroup>abstractControl['controls'][index], val);
           });
         }
-      } else {
+      } else { 
         abstractControl.patchValue(controlValue);
       }
     });
