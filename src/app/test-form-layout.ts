@@ -35,7 +35,7 @@ export const ReactiveLayoutTest = {
                         }
                     ]
                 },
-                /*{
+                {
                     type: 'ARRAY',
                     name: 'testArray',
                     reactivity: [
@@ -58,7 +58,7 @@ export const ReactiveLayoutTest = {
                             name: 'testArrayInput',
                         }
                     ]
-                }*/
+                }
             ]
         }
     ]
@@ -71,7 +71,8 @@ export const NestedScreenLayoutValue = [
         personal: {
             firstName: 'Francois',
             surname: 'Weber',
-            age: 20
+            age: 21,
+            gender: 'F'
         },
         occupation: {
             currentEmployer: 'Tangent IT Solutions',
@@ -93,7 +94,7 @@ export const NestedScreenLayout = {
                 {
                     type: 'OBJECT',
                     name: 'personal',
-                    layout: {},
+                    layout: { stretchLarge: 100, stretchSmall: 100 },
                     validations: [
                         { type: 'requiredIf', controlName: 'gender', expression: 'age > 20' }
                     ],
@@ -102,7 +103,7 @@ export const NestedScreenLayout = {
                             type: 'CONTROL',
                             subType: 'TEXT_INPUT',
                             name: 'firstName',
-                            layout: {},
+                            layout: { stretchLarge: 50, stretchSmall: 100 },
                             validations: [
                                 { type: 'required' }
                             ]
@@ -111,7 +112,7 @@ export const NestedScreenLayout = {
                             type: 'CONTROL',
                             subType: 'TEXT_INPUT',
                             name: 'surname',
-                            layout: {},
+                            layout: { stretchLarge: 50, stretchSmall: 100 },
                             validations: [
                                 { type: 'required' }
                             ]
@@ -122,7 +123,7 @@ export const NestedScreenLayout = {
                             name: 'age',
                             numbersOnly: true,
                             hint: 'Any age above 20 and gender will be required.',
-                            layout: {},
+                            layout: { stretchLarge: 50, stretchSmall: 100 },
                             validations: [
                                 { type: 'required' }
                             ]
@@ -131,8 +132,8 @@ export const NestedScreenLayout = {
                             type: 'CONTROL',
                             subType: 'RADIO_GROUP_INPUT',
                             name: 'gender',
-                            layout: {},
                             defaultValue: 'M',
+                            layout: { stretchLarge: 50, stretchSmall: 100 },
                             reactivity: [
                                 { type: 'clearWhen', expression: 'age < 21' },
                                 // { type: 'disableWhen', expression: 'age < 21' },
@@ -148,13 +149,13 @@ export const NestedScreenLayout = {
                 {
                     type: 'OBJECT',
                     name: 'occupation',
-                    layout: {},
+                    layout: { stretchLarge: 100, stretchSmall: 100 },
                     elements: [
                         {
                             type: 'CONTROL',
                             subType: 'TEXT_INPUT',
                             name: 'currentEmployer',
-                            layout: {},
+                            layout: { stretchLarge: 50, stretchSmall: 100 },
                             validations: [
                                 { type: 'required' }
                             ]
@@ -163,7 +164,7 @@ export const NestedScreenLayout = {
                             type: 'CONTROL',
                             subType: 'TEXT_INPUT',
                             name: 'address',
-                            layout: {},
+                            layout: { stretchLarge: 50, stretchSmall: 100 },
                             validations: [
                                 { type: 'required' }
                             ]
@@ -171,7 +172,7 @@ export const NestedScreenLayout = {
                         {
                             type: 'ARRAY',
                             name: 'employmentHistory',
-                            layout: {},
+                            layout: { stretchLarge: 100, stretchSmall: 100 },
                             validations: [
                                 { type: 'mustMatch', value: ['from', 'till'] }
                             ],
@@ -180,7 +181,7 @@ export const NestedScreenLayout = {
                                     type: 'CONTROL',
                                     subType: 'TEXT_INPUT',
                                     name: 'previousEmployer',
-                                    layout: {},
+                                    layout: { stretchLarge: 33.3, stretchSmall: 100 },
                                     validations: [
                                         { type: 'required' }
                                     ]
@@ -190,7 +191,7 @@ export const NestedScreenLayout = {
                                     subType: 'TEXT_INPUT',
                                     name: 'from',
                                     numbersOnly: true,
-                                    layout: {},
+                                    layout: { stretchLarge: 33.3, stretchSmall: 100 },
                                     validations: [
                                         { type: 'required' }
                                     ]
@@ -200,7 +201,7 @@ export const NestedScreenLayout = {
                                     subType: 'TEXT_INPUT',
                                     name: 'till',
                                     numbersOnly: true,
-                                    layout: {},
+                                    layout: { stretchLarge: 33.3, stretchSmall: 100 },
                                     validations: [
                                         { type: 'required' }
                                     ]

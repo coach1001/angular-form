@@ -81,6 +81,8 @@ export abstract class FgBaseElementComponent implements OnInit, OnDestroy {
       if (disable.length > 0 && disable.every(d => d) && !this.controlIn.disabled) {
         this.controlIn.disable({ emitEvent: false });
       } else if (disable.length > 0 && !disable.every(d => d)) {
+        this.controlIn.markAsUntouched();
+        this.controlIn.markAsPristine();
         this.controlIn.enable({ emitEvent: false });
       }
 

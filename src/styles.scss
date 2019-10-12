@@ -159,12 +159,19 @@ select:-webkit-autofill:focus {
 }
 
 button {
+  &.add {
+    margin-top: 24px !important;
+  }
   padding: 8px 24px !important;
 }
 
 ndc-dynamic {
   padding: 0 !important;
   margin: 0 !important;
+}
+
+.group {
+  padding: 0 !important;
 }
 
 * {

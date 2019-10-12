@@ -35,8 +35,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    this.formDefinition = ReactiveLayoutTest;
-    // this.formValue = ReactiveLayoutTestValue;
+    this.formDefinition = NestedScreenLayout;
+    this.formValue = NestedScreenLayoutValue;
+    //cthis.formDefinition = ReactiveLayoutTest;
 
     this.stepIndex = 0;
     this._formGenerator.buildForm(this.formDefinition.screens[this.stepIndex]);  

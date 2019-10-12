@@ -10,13 +10,15 @@ import { FormGeneratorService } from './services/form-generator.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../material/material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { FgControlTextComponent } from './controls/fg-control-text/fg-control-text.component';
 
 @NgModule({
   declarations: [
     FgControlComponent,
     FgGroupComponent,
     FgArrayComponent,
-    FgTextInputComponent
+    FgTextInputComponent,
+    FgControlTextComponent
   ],
   imports: [
     CommonModule,
