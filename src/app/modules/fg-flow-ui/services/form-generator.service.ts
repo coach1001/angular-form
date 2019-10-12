@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { FormArray, FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { BehaviorSubject, Subject } from 'rxjs';
 import cloneDeep from 'lodash-es/cloneDeep';
-import { MustMatch } from './validators/must-match.validator';
-import { RequiredIf } from './validators/required-if.validator';
+import { MustMatch } from '../form-validators/must-match.validator';
+import { RequiredIf } from '../form-validators/required-if.validator';
 
 @Injectable({
   providedIn: 'root'

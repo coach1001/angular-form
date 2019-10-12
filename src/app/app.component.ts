@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormGeneratorService } from './form-generator.service';
+import { FormGeneratorService } from './modules/fg-flow-ui/services/form-generator.service';
 import {
   NestedScreenLayoutValue, NestedScreenLayout,
   Layout, Value, 
@@ -19,7 +19,6 @@ import { filter, takeUntil } from 'rxjs/operators';
 export class AppComponent implements OnInit, OnDestroy {
 
   private _destroy$: Subject<void> = new Subject<void>();
-  private _currentForm = true;
 
   title = 'angular-form';
   stepIndex: number;

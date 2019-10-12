@@ -7,7 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import * as changeCase from 'change-case';
 import * as jexl from 'jexl';
-import { FormGeneratorService } from '../form-generator.service';
+import { FormGeneratorService } from '../modules/fg-flow-ui/services/form-generator.service';
 
 @Component({
   selector: 'app-element-array',

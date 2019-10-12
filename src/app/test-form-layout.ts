@@ -11,6 +11,10 @@ export const ReactiveLayoutTest = {
                 {
                     type: 'OBJECT',
                     name: 'testObject',
+                    reactivity: [
+                        { type: 'clearWhen', expression: "input != 'show'"},
+                        { type: 'visibleWhen', expression: "input == 'show'"}
+                    ],
                     elements: [
                         {
                             type: 'CONTROL',
@@ -31,9 +35,13 @@ export const ReactiveLayoutTest = {
                         }
                     ]
                 },
-                {
+                /*{
                     type: 'ARRAY',
                     name: 'testArray',
+                    reactivity: [
+                        { type: 'clearWhen', expression: "input != 'show'"},
+                        { type: 'visibleWhen', expression: "input == 'show'"}
+                    ],
                     elements: [
                         {
                             type: 'ARRAY',
@@ -50,7 +58,7 @@ export const ReactiveLayoutTest = {
                             name: 'testArrayInput',
                         }
                     ]
-                }
+                }*/
             ]
         }
     ]

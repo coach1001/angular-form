@@ -4,7 +4,7 @@ import { FgGroupComponent } from '../fg-group/fg-group.component';
 import { FgControlComponent } from '../fg-control/fg-control.component';
 import cloneDeep from 'lodash-es/cloneDeep';
 import { takeUntil } from 'rxjs/operators';
-import { FormGeneratorService } from '../form-generator.service';
+import { FormGeneratorService } from '../../services/form-generator.service';
 import * as changeCase from 'change-case';
 import { FgBaseElementComponent } from '../fg-base-element/fg-base-element.component';
 
