@@ -1,4 +1,4 @@
-<form [id]="formId" (ngSubmit)="onSubmit()" *ngIf="form" [formGroup]="form">
+<form [id]="formId" [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="form">
   <app-fg-group [controlIn]="form" [parent]="form" [parentCleared$]="cleared$" [parentReset$]="reset$">
   </app-fg-group>
   <button [attr.form]="formId" class="mat-elevation-z6" type="submit" mat-raised-button color="primary">Submit</button>

@@ -1,4 +1,5 @@
-<form [formGroup]="parent" *ngIf="isVisible">
+<form [formGroup]="parent" *ngIf="visible">
+    <h4>{{label}}</h4>
     <ng-container *ngFor="let group of groupKeys;let gIndex = index;">
         <ng-container *ngFor="let key of group">
             <ndc-dynamic [ndcDynamicComponent]="getComponent(key, gIndex)"
@@ -6,5 +7,6 @@
             </ndc-dynamic>
         </ng-container>
     </ng-container>
-    <button type="button" class="mat-elevation-z6" mat-raised-button color="primary" (click)="addRow()">Add</button>
+    <button [disabled]="controlIn.disabled" type="button" class="mat-elevation-z6" mat-raised-button color="primary"
+        (click)="addRow()">Add</button>
 </form>

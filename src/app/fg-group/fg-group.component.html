@@ -1,4 +1,4 @@
-<form [formGroup]="parent">
+<form [formGroup]="parent" *ngIf="visible">
     <ng-container *ngFor="let key of controlKeys;">
         <ndc-dynamic [ndcDynamicComponent]="getComponent(key)" [ndcDynamicInputs]="getComponentInputs(key)">
         </ndc-dynamic>

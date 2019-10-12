@@ -45,6 +45,7 @@ import { FgControlComponent } from './fg-control/fg-control.component';
 import { FgGroupComponent } from './fg-group/fg-group.component';
 import { FgArrayComponent } from './fg-array/fg-array.component';
 import { FgTextInputComponent } from './controls/fg-text-input/fg-text-input.component';
+import { FgBaseElementComponent } from './fg-base-element/fg-base-element.component';
 
 @NgModule({
   declarations: [
@@ -72,7 +73,7 @@ import { FgTextInputComponent } from './controls/fg-text-input/fg-text-input.com
       FgControlComponent,
       FgGroupComponent,
       FgArrayComponent,
-      
+
       FgTextInputComponent
     ]),
 

@@ -2,16 +2,14 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGeneratorService } from './form-generator.service';
 import {
   NestedScreenLayoutValue, NestedScreenLayout,
-  Layout, Value, FamilyLayout, FamilyValue, MultiScreenLayout, ScreenValue
+  Layout, Value, 
+  FamilyLayout, FamilyValue, 
+  MultiScreenLayout, ScreenValue, 
+  ReactiveLayoutTest, ReactiveLayoutTestValue
 } from './test-form-layout';
 import { FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
-import { ElementGroupComponent } from './element-group/element-group.component';
-import * as deepDiff from 'deep-diff';
-import * as changeCase from 'change-case';
-import { ElementControlComponent } from './element-control/element-control.component';
-import { ElementArrayComponent } from './element-array/element-array.component';
 
 @Component({
   selector: 'app-root',
@@ -38,8 +36,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    this.formDefinition = NestedScreenLayout;
-    this.formValue = NestedScreenLayoutValue;
+    this.formDefinition = ReactiveLayoutTest;
+    // this.formValue = ReactiveLayoutTestValue;
 
     this.stepIndex = 0;
     this._formGenerator.buildForm(this.formDefinition.screens[this.stepIndex]);  

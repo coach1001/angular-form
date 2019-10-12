@@ -1,41 +1,36 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
 import { FgGroupComponent } from '../fg-group/fg-group.component';
 import { FgControlComponent } from '../fg-control/fg-control.component';
 import cloneDeep from 'lodash-es/cloneDeep';
-import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { FormGeneratorService } from '../form-generator.service';
 import * as changeCase from 'change-case';
+import { FgBaseElementComponent } from '../fg-base-element/fg-base-element.component';
 
 @Component({
   selector: 'app-fg-array',
   templateUrl: './fg-array.component.html',
   styleUrls: ['./fg-array.component.scss']
 })
-export class FgArrayComponent implements OnInit, OnDestroy {
+export class FgArrayComponent extends FgBaseElementComponent {
+  
   @Input()
   controlIn: FormArray;
-  @Input()
-  parentCleared$: Subject<void> =  new Subject<void>();
-  @Input()
-  parentReset$: Subject<void> =  new Subject<void>();
   
   groupKeys: Array<Array<string>>;
-  isVisible = true;
-
-  private _destroy$: Subject<void> = new Subject<void>();
-  reset$: Subject<void> = new Subject<void>();
 
   constructor(
     private _formGenerator: FormGeneratorService
-  ) { }
+  ) { 
+    super();
+  }
 
-  ngOnInit() {
+  elementInit() {
     this.initKeys();
     this.parentCleared$
     .pipe(
-      takeUntil(this._destroy$)
+      takeUntil(this.destroy$)
     ).subscribe(_ => {
       if (this.controlIn['controls'].length !== 0) {
         this.controlIn['controls'] = [];
@@ -44,16 +39,11 @@ export class FgArrayComponent implements OnInit, OnDestroy {
     });
     this.parentReset$
     .pipe(
-      takeUntil(this._destroy$)
+      takeUntil(this.destroy$)
     ).subscribe(_ => {
       this.initKeys();
       this.reset$.next();
     });
-  }
-
-  ngOnDestroy() {
-    this._destroy$.next();
-    this._destroy$.complete();
   }
 
   initKeys() {
@@ -67,7 +57,7 @@ export class FgArrayComponent implements OnInit, OnDestroy {
     });
   }
 
-  getComponent(controlKey: string, rowIndex) {
+  getComponent(controlKey: string, rowIndex: number) {
     const control = this.controlIn.controls[rowIndex]['controls'][controlKey];
     if (control instanceof FormGroup) {
       return FgGroupComponent;
@@ -85,7 +75,8 @@ export class FgArrayComponent implements OnInit, OnDestroy {
       parent: this.controlIn.controls[rowIndex],
       name: controlKey,
       label: changeCase.sentenceCase(controlKey),
-      parentReset$: this.reset$
+      parentReset$: this.reset$,
+      parentCleared$: this.cleared$
     };
   }
 
@@ -96,4 +87,13 @@ export class FgArrayComponent implements OnInit, OnDestroy {
       this.initKeys();  
     }
   }
+
+  handleClearing(clear: Array<boolean>): void {
+    if (clear.length > 0 && clear.every(c => c) && this.controlIn['controls'].length > 0) {
+      this.controlIn['controls'] = [];
+      this.initKeys();   
+      this.cleared$.next();
+    }
+  }
+
 }

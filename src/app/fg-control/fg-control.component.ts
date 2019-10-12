@@ -1,53 +1,31 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { FgBaseElementComponent } from '../fg-base-element/fg-base-element.component';
 import { FormControl } from '@angular/forms';
-import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import * as jexl from 'jexl';
 
 @Component({
   selector: 'app-fg-control',
   templateUrl: './fg-control.component.html',
   styleUrls: ['./fg-control.component.scss']
 })
-export class FgControlComponent implements OnInit, OnDestroy {
+export class FgControlComponent extends FgBaseElementComponent {
 
-  @Input()
-  name: string;
   @Input()
   controlIn: FormControl;
-  @Input()
-  parentCleared$: Subject<void> = new Subject<void>();
 
-  visible = true;
-  cleared$: Subject<void> = new Subject<void>();
-  reset$: Subject<void> = new Subject<void>();
+  constructor() {
+    super();
+  }
 
-  private _destroy$: Subject<void> = new Subject<void>();
-
-  constructor() { }
-
-  ngOnInit() {
-    this.checkReactivity(this.controlIn.parent.getRawValue());
-    this.setDefaultValue();
+  elementInit() {
     this.parentCleared$
       .pipe(
-        takeUntil(this._destroy$)
+        takeUntil(this.destroy$)
       ).subscribe(_ => {
         if (this.controlIn.value != null) {
           this.controlIn.patchValue(null);
         }
       });
-    this.controlIn.parent.valueChanges.pipe(
-      takeUntil(this._destroy$)
-    ).subscribe(value => {
-      this.checkReactivity(value);
-      this.setDefaultValue();
-    });
-  }
-
-  ngOnDestroy() {
-    this._destroy$.next();
-    this._destroy$.complete();
   }
 
   get error() {
@@ -74,49 +52,5 @@ export class FgControlComponent implements OnInit, OnDestroy {
     }
     return error;
   }
-
-  setDefaultValue() {
-    if (this.controlIn['element'].defaultValue && this.controlIn.value == null) {
-      this.controlIn.patchValue(this.controlIn['element'].defaultValue, { emitEvent: false });
-    }
-  }
-
-  checkReactivity(scopeValue) {
-
-    const visible: Array<boolean> = [];
-    const disable: Array<boolean> = [];
-    const clear: Array<boolean> = [];
-
-    if (this.controlIn['element'].reactivity) {
-
-      this.controlIn['element'].reactivity.forEach(r => {
-        const result = jexl.evalSync(r.expression, scopeValue);
-        switch (r.type) {
-          case 'clearWhen': result ? clear.push(true) : clear.push(false); break;
-          case 'disableWhen': result ? disable.push(true) : disable.push(false); break;
-          case 'visibleWhen': result ? visible.push(true) : visible.push(false); break;
-          default: break;
-        }
-      });
-
-      if (clear.length > 0 && clear.every(c => c) && this.controlIn.value != null) {
-        this.controlIn.patchValue(null, { emitEvent: false });
-        this.cleared$.next();
-      }
-
-      if (disable.length > 0 && disable.every(d => d) && !this.controlIn.disabled) {
-        this.controlIn.disable({ emitEvent: false });
-      } else if (disable.length > 0 && !disable.every(d => d)) {
-        this.controlIn.enable({ emitEvent: false });
-      }
-
-      if (visible.length > 0 && visible.every(v => v) && !this.visible) {
-        this.controlIn.markAsUntouched();
-        this.controlIn.markAsPristine();
-        this.visible = true;
-      } else if (visible.length > 0 && !visible.every(v => v)) {
-        this.visible = false;
-      }
-    }
-  }
+  
 }

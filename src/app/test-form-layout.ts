@@ -1,3 +1,63 @@
+export const ReactiveLayoutTest = {
+    screens: [
+        {
+            type: 'STEP',
+            name: 'test',
+            elements: [
+                {
+                    type: 'CONTROL',
+                    name: 'input'
+                },
+                {
+                    type: 'OBJECT',
+                    name: 'testObject',
+                    elements: [
+                        {
+                            type: 'CONTROL',
+                            name: 'testObjectInput'
+                        },
+                        {
+                            type: 'ARRAY',
+                            name: 'testObjectArray',
+                            elements: [
+                                {
+                                    type: 'CONTROL',
+                                    name: 'testObjectArrayInput',
+                                    validations: [
+                                        { type: 'required' }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    type: 'ARRAY',
+                    name: 'testArray',
+                    elements: [
+                        {
+                            type: 'ARRAY',
+                            name: 'testArrayArray',
+                            elements: [
+                                {
+                                    type: 'CONTROL',
+                                    name: 'testArrayArrayInput',
+                                }
+                            ]
+                        },
+                        {
+                            type: 'CONTROL',
+                            name: 'testArrayInput',
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+};
+
+export const ReactiveLayoutTestValue = [];
+
 export const NestedScreenLayoutValue = [
     {
         personal: {
@@ -500,7 +560,7 @@ export const Value = {
                 {
                     step1_array3_array1_input1: 'step1_array3_index1_array1_index0_input1_value'
                 }
-            ]      
+            ]
         }
     ]
 }
