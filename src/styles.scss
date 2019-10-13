@@ -4,6 +4,7 @@
 html {
   overflow: -moz-scrollbars-vertical; 
   overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 $custom-primary-color: (
@@ -158,6 +159,12 @@ select:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0px 1000px white inset !important;
 }
 
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 button {
   &.add {
     margin-top: 24px !important;
@@ -176,4 +183,8 @@ ndc-dynamic {
 
 * {
   font-family: sans-serif;
+}
+
+h3 {
+  margin-block-start: 0px;
 }

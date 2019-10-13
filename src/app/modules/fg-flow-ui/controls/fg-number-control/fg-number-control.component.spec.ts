@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FgControlTextComponent } from './fg-control-text.component';
+import { FgNumberControlComponent } from './fg-number-control.component';
 
-describe('FgControlTextComponent', () => {
-  let component: FgControlTextComponent;
-  let fixture: ComponentFixture<FgControlTextComponent>;
+describe('FgNumberControlComponent', () => {
+  let component: FgNumberControlComponent;
+  let fixture: ComponentFixture<FgNumberControlComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FgControlTextComponent ]
+      declarations: [ FgNumberControlComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FgControlTextComponent);
+    fixture = TestBed.createComponent(FgNumberControlComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

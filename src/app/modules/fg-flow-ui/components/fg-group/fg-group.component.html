@@ -1,8 +1,8 @@
-<h3>{{label}}</h3>
-<form [formGroup]="parent" class="group" *ngIf="visible" fxLayout.gt-sm="row wrap" fxLayout.lt-md="column" fxLayoutGap="20px grid">
+<h2 *ngIf="label">{{label}}</h2>
+<form [formGroup]="parent" class="group" *ngIf="visible" fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap="20px grid">
     <ng-container *ngFor="let key of controlKeys;let i = index;">
-        <div [fxFlex.gt-sm]="controlIn.element.elements[i]?.layout?.stretchLarge"
-            [fxFlex.lt-md]="controlIn.element.elements[i]?.layout?.stretchSmall">
+        <div [fxFlex]="controlIn.element.elements[i]?.layout?.stretchLarge || 100" 
+            [fxFlex.lt-md]="controlIn.element.elements[i]?.layout?.stretchSmall || 100">
             <ndc-dynamic [ndcDynamicComponent]="getComponent(key)" [ndcDynamicInputs]="getComponentInputs(key)">
             </ndc-dynamic>
         </div>

@@ -4,6 +4,9 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import cloneDeep from 'lodash-es/cloneDeep';
 import { MustMatch } from '../form-validators/must-match.validator';
 import { RequiredIf } from '../form-validators/required-if.validator';
+import { FgTextControlComponent } from '../controls/fg-text-control/fg-text-control.component';
+import { FgNumberControlComponent } from '../controls/fg-number-control/fg-number-control.component';
+import { FgRadioGroupControlComponent } from '../controls/fg-radio-group-control/fg-radio-group-control.component';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +20,7 @@ export class FormGeneratorService {
   form$: BehaviorSubject<FormGroup> = new BehaviorSubject(null);
 
   constructor(
-    private _formBuilder: FormBuilder
+    private _formBuilder: FormBuilder,
   ) {
   }
 
@@ -87,6 +90,7 @@ export class FormGeneratorService {
       let validators = [];
       objectElement.validations.forEach(validation => {
         switch (validation.type) {
+          case 'required': validators.push(Validators.required); break;
           case 'mustMatch': validators.push(MustMatch(validation.value[0], validation.value[1])); break;
           case 'requiredIf': validators.push(RequiredIf(validation.controlName, validation.expression)); break;
           default: break;
@@ -98,7 +102,6 @@ export class FormGeneratorService {
   }
 
   processArray_r(arrayElement, currFormElm: FormGroup) {
-    
     currFormElm.addControl(arrayElement.name, this._formBuilder.array([]));
     currFormElm.controls[arrayElement.name]['controls'].push(this._formBuilder.group({}));
     if (arrayElement.elements && arrayElement.elements.length) {
@@ -110,14 +113,17 @@ export class FormGeneratorService {
 
     if (arrayElement.validations) {
       let validators = [];
+      let arrayValidators = [];
       arrayElement.validations.forEach(validation => {
-        switch (validation.type) {
+        switch (validation.type) { 
+          case 'required': arrayValidators.push(Validators.required); break;
           case 'mustMatch': validators.push(MustMatch(validation.value[0], validation.value[1])); break;
           case 'requiredIf': validators.push(RequiredIf(validation.controlName, validation.expression)); break;
           default: break;
         }
       });  
       rowTemplate.setValidators(validators);
+      currFormElm.controls[arrayElement.name].setValidators(arrayValidators);
     }
     this.recurseFormGroup(rowTemplate, 'CLEAR_VALUES');
     currFormElm.controls[arrayElement.name]['rowTemplate'] = rowTemplate;
@@ -192,4 +198,12 @@ export class FormGeneratorService {
     return this._empty.every(val => val === true);
   }
 
+  getControl(subType: string) {
+    switch(subType) {
+      case 'TEXT_INPUT': return FgTextControlComponent;
+      case 'NUMBER_INPUT': return FgNumberControlComponent;
+      case 'RADIO_GROUP_INPUT': return FgRadioGroupControlComponent;
+      default: break;
+    }
+  }
 }

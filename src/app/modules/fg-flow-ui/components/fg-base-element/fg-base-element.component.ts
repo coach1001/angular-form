@@ -5,7 +5,6 @@ import { takeUntil } from 'rxjs/operators';
 import * as jexl from 'jexl';
 
 @Component({
-  template: '',
   selector: 'app-fg-base-element'
 })
 export abstract class FgBaseElementComponent implements OnInit, OnDestroy {
@@ -32,6 +31,22 @@ export abstract class FgBaseElementComponent implements OnInit, OnDestroy {
     this.elementInit();
   }
 
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  elementInit() {
+    this.parentCleared$
+      .pipe(
+        takeUntil(this.destroy$)
+      ).subscribe(_ => {
+        if (this.controlIn.value != null) {
+          this.controlIn.patchValue(null);
+        }
+      });
+  }
+
   defaultInit() {
     if (this.controlIn.parent != null) {
       this.checkReactivity(this.controlIn.parent.getRawValue());
@@ -43,13 +58,6 @@ export abstract class FgBaseElementComponent implements OnInit, OnDestroy {
       });
     }
     this.setDefaultValue();
-  }
-
-  elementInit() { }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   setDefaultValue() {
@@ -103,5 +111,30 @@ export abstract class FgBaseElementComponent implements OnInit, OnDestroy {
       this.cleared$.next();
     }
   } 
+
+  get error() {
+    let error = null;
+    if (this.controlIn.errors != null) {
+      Object.keys(this.controlIn.errors).forEach(key => {
+        error = error != null ? error : {
+          key: key,
+          value: this.controlIn.errors[key]
+        }
+      });
+    }
+    return error != null ? this.getValidationMessage(error) : '';
+  }
+
+  getValidationMessage(error) {
+    switch (error.key) {
+      case 'required': error = `This field is required`; break;
+      case 'email': error = `Not a valid email address`; break;
+      case 'min': error = `Minimum is ${error.value.min}`; break;
+      case 'max': error = `Maximum is ${error.value.max}`; break;
+      case 'mustMatch': error = `Does not match - ${error.value.value}`; break;
+      default: break;
+    }
+    return error;
+  }
 
 }

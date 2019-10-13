@@ -1,9 +1,10 @@
-<h3>{{label}}</h3>
+<h2 *ngIf="label">{{label}}</h2>
 <form [formGroup]="parent" *ngIf="visible">
-    <div class="group" fxLayout.gt-sm="row wrap" fxLayout.lt-md="column" fxLayoutGap="20px grid">
+    <div class="group" fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap="20px grid">   
+        <mat-error *ngIf="error && controlIn.touched">{{error}}</mat-error>
         <ng-container *ngFor="let group of groupKeys;let gIndex = index;">
             <ng-container *ngFor="let key of group;let i = index;">
-                <div [fxFlex.gt-sm]="controlIn.element.elements[i]?.layout?.stretchLarge"
+                <div [fxFlex]="controlIn.element.elements[i]?.layout?.stretchLarge"
                     [fxFlex.lt-md]="controlIn.element.elements[i]?.layout?.stretchSmall">
                     <ndc-dynamic [ndcDynamicComponent]="getComponent(key, gIndex)"
                         [ndcDynamicInputs]="getComponentInputs(key, gIndex)">
@@ -12,7 +13,6 @@
             </ng-container>
         </ng-container>
     </div>
-    <button [disabled]="controlIn.disabled" type="button" class="mat-elevation-z6 add" mat-raised-button 
-        color="primary"
+    <button [disabled]="controlIn.disabled" type="button" class="mat-elevation-z6 add" mat-raised-button color="primary"
         (click)="addRow()">Add</button>
 </form>

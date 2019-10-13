@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
 import { FgGroupComponent } from '../fg-group/fg-group.component';
-import { FgControlComponent } from '../fg-control/fg-control.component';
 import cloneDeep from 'lodash-es/cloneDeep';
 import { takeUntil } from 'rxjs/operators';
 import { FormGeneratorService } from '../../services/form-generator.service';
@@ -63,8 +62,8 @@ export class FgArrayComponent extends FgBaseElementComponent {
       return FgGroupComponent;
     } else if(control instanceof FormArray) {
       return FgArrayComponent;
-    } else { // FormControl
-      return FgControlComponent;
+    } else {
+      return this._formGenerator.getControl(control['element'].subType);
     }
   }
 
@@ -75,6 +74,7 @@ export class FgArrayComponent extends FgBaseElementComponent {
       parent: this.controlIn.controls[rowIndex],
       name: controlKey,
       label: changeCase.sentenceCase(controlKey),
+      hint: control['element'].hint,
       parentReset$: this.reset$,
       parentCleared$: this.cleared$
     };
@@ -82,7 +82,8 @@ export class FgArrayComponent extends FgBaseElementComponent {
 
   addRow() {
     this._formGenerator.recurseFormGroup(this.controlIn, 'TOUCH_AND_VALIDATE');
-    if (this.controlIn.valid) {
+    if (this.controlIn.valid || this.controlIn.controls.length === 0) {
+      this.controlIn.markAsUntouched();
       this.controlIn.controls.push(cloneDeep(this.controlIn['rowTemplate']));
       this.initKeys();  
     }

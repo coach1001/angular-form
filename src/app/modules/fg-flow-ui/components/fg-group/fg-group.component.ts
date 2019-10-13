@@ -1,11 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { FormGroup, FormArray } from '@angular/forms';
 import { FgArrayComponent } from '../fg-array/fg-array.component';
-import { FgControlComponent } from '../fg-control/fg-control.component';
 import { takeUntil } from 'rxjs/operators';
 import { FormGeneratorService } from '../../services/form-generator.service';
 import * as changeCase from 'change-case';
 import { FgBaseElementComponent } from '../fg-base-element/fg-base-element.component';
+import { FgTextControlComponent } from '../../controls/fg-text-control/fg-text-control.component';
 
 @Component({
   selector: 'app-fg-group',
@@ -48,8 +48,8 @@ export class FgGroupComponent extends FgBaseElementComponent {
       return FgGroupComponent;
     } else if (control instanceof FormArray) {
       return FgArrayComponent;
-    } else { // FormControl
-      return FgControlComponent;
+    } else {
+      return this._formGenerator.getControl(control['element'].subType);
     }
   }
 
@@ -60,6 +60,7 @@ export class FgGroupComponent extends FgBaseElementComponent {
       parent: this.controlIn,
       name: controlKey,
       label: changeCase.sentenceCase(controlKey),
+      hint: control['element'].hint,
       parentReset$: this.reset$,
       parentCleared$: this.cleared$
     };

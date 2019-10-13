@@ -1,24 +1,26 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DynamicModule } from 'ng-dynamic-component';
-import { FgControlComponent } from './components/fg-control/fg-control.component';
 import { FgGroupComponent } from './components/fg-group/fg-group.component';
 import { FgArrayComponent } from './components/fg-array/fg-array.component';
-import { FgTextInputComponent } from 'src/app/controls/fg-text-input/fg-text-input.component';
 import { DigitOnlyModule } from '@uiowa/digit-only';
 import { FormGeneratorService } from './services/form-generator.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../material/material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { FgControlTextComponent } from './controls/fg-control-text/fg-control-text.component';
+import { FgTextControlComponent } from './controls/fg-text-control/fg-text-control.component';
+import { FgNumberControlComponent } from './controls/fg-number-control/fg-number-control.component';
+import { FgRadioGroupControlComponent } from './controls/fg-radio-group-control/fg-radio-group-control.component';
+import { ElementDirective } from './directives/element.directive';
 
 @NgModule({
   declarations: [
-    FgControlComponent,
     FgGroupComponent,
     FgArrayComponent,
-    FgTextInputComponent,
-    FgControlTextComponent
+    FgTextControlComponent,
+    FgNumberControlComponent,
+    FgRadioGroupControlComponent,
+    ElementDirective
   ],
   imports: [
     CommonModule,
@@ -27,10 +29,12 @@ import { FgControlTextComponent } from './controls/fg-control-text/fg-control-te
     FlexLayoutModule,
     MaterialModule,
     DynamicModule.withComponents([
-      FgControlComponent,
       FgGroupComponent,
       FgArrayComponent,
-      FgTextInputComponent
+      
+      FgTextControlComponent,
+      FgNumberControlComponent,
+      FgRadioGroupControlComponent
     ]),
     DigitOnlyModule
   ],
@@ -44,4 +48,4 @@ import { FgControlTextComponent } from './controls/fg-control-text/fg-control-te
     FgGroupComponent
   ]
 })
-export class FgFlowUiModule  { }
+export class FgFlowUiModule {}

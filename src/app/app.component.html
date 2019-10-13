@@ -1,6 +1,6 @@
 <form [id]="formId" [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="form">
   <div fxFlex.gt-sm="10" fxFlex.lt-md="0"></div>
-  <mat-card  fxFlex.gt-sm="90" fxFlex.lt-md="100" class="mat-elevation-z12">
+  <mat-card fxFlex.gt-sm="90" fxFlex.lt-md="100"  class="mat-elevation-z12">
     <mat-card-content>
       <app-fg-group fxFlex [controlIn]="form" [parent]="form" [parentCleared$]="cleared$" [parentReset$]="reset$">
       </app-fg-group>

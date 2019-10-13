@@ -72,13 +72,13 @@ export const NestedScreenLayoutValue = [
             firstName: 'Francois',
             surname: 'Weber',
             age: 21,
-            gender: 'F'
+            gender: 'M'
         },
         occupation: {
             currentEmployer: 'Tangent IT Solutions',
             address: 'The Campus, 57 Sloane Street, Carisbrook Building, Bryanston, 2194',
             employmentHistory: [
-                { previousEmployer: 'Foundation for Human Rights', from: 2011, till: 2011 }
+                // { previousEmployer: 'Foundation for Human Rights', from: 2011, till: 2011 }
             ]
         }
     }
@@ -119,7 +119,7 @@ export const NestedScreenLayout = {
                         },
                         {
                             type: 'CONTROL',
-                            subType: 'TEXT_INPUT',
+                            subType: 'NUMBER_INPUT',
                             name: 'age',
                             numbersOnly: true,
                             hint: 'Any age above 20 and gender will be required.',
@@ -132,11 +132,9 @@ export const NestedScreenLayout = {
                             type: 'CONTROL',
                             subType: 'RADIO_GROUP_INPUT',
                             name: 'gender',
-                            defaultValue: 'M',
                             layout: { stretchLarge: 50, stretchSmall: 100 },
                             reactivity: [
                                 { type: 'clearWhen', expression: 'age < 21' },
-                                // { type: 'disableWhen', expression: 'age < 21' },
                                 { type: 'visibleWhen', expression: 'age > 20' }
                             ],
                             options: [
@@ -174,6 +172,7 @@ export const NestedScreenLayout = {
                             name: 'employmentHistory',
                             layout: { stretchLarge: 100, stretchSmall: 100 },
                             validations: [
+                                { type: 'required' },
                                 { type: 'mustMatch', value: ['from', 'till'] }
                             ],
                             elements: [
@@ -188,7 +187,7 @@ export const NestedScreenLayout = {
                                 },
                                 {
                                     type: 'CONTROL',
-                                    subType: 'TEXT_INPUT',
+                                    subType: 'NUMBER_INPUT',
                                     name: 'from',
                                     numbersOnly: true,
                                     layout: { stretchLarge: 33.3, stretchSmall: 100 },
@@ -198,7 +197,7 @@ export const NestedScreenLayout = {
                                 },
                                 {
                                     type: 'CONTROL',
-                                    subType: 'TEXT_INPUT',
+                                    subType: 'NUMBER_INPUT',
                                     name: 'till',
                                     numbersOnly: true,
                                     layout: { stretchLarge: 33.3, stretchSmall: 100 },
