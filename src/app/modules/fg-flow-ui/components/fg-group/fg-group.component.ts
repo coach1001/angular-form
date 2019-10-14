@@ -5,7 +5,6 @@ import { takeUntil } from 'rxjs/operators';
 import { FormGeneratorService } from '../../services/form-generator.service';
 import * as changeCase from 'change-case';
 import { FgBaseElementComponent } from '../fg-base-element/fg-base-element.component';
-import { FgTextControlComponent } from '../../controls/fg-text-control/fg-text-control.component';
 
 @Component({
   selector: 'app-fg-group',

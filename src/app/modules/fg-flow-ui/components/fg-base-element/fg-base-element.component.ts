@@ -5,6 +5,7 @@ import { takeUntil } from 'rxjs/operators';
 import * as jexl from 'jexl';
 
 @Component({
+  template: '',
   selector: 'app-fg-base-element'
 })
 export abstract class FgBaseElementComponent implements OnInit, OnDestroy {
@@ -12,6 +13,8 @@ export abstract class FgBaseElementComponent implements OnInit, OnDestroy {
   controlIn: FormGroup | FormArray | FormControl;
   @Input()
   name: string;
+  @Input()
+  label: string;
   @Input()
   parent: FormGroup;
   @Input()
@@ -48,16 +51,17 @@ export abstract class FgBaseElementComponent implements OnInit, OnDestroy {
   }
 
   defaultInit() {
+    this.setDefaultValue();
     if (this.controlIn.parent != null) {
       this.checkReactivity(this.controlIn.parent.getRawValue());
       this.controlIn.parent.valueChanges.pipe(
         takeUntil(this.destroy$)
       ).subscribe(value => {
-        this.checkReactivity(value);
         this.setDefaultValue();
+        this.checkReactivity(value);
       });
     }
-    this.setDefaultValue();
+    
   }
 
   setDefaultValue() {
@@ -97,8 +101,11 @@ export abstract class FgBaseElementComponent implements OnInit, OnDestroy {
       if (visible.length > 0 && visible.every(v => v) && !this.visible) {
         this.controlIn.markAsUntouched();
         this.controlIn.markAsPristine();
+        this.controlIn.enable({ emitEvent: false });
         this.visible = true;
       } else if (visible.length > 0 && !visible.every(v => v)) {
+        this.cleared$.next();
+        this.controlIn.disable({ emitEvent: false });
         this.visible = false;
       }
       

@@ -12,15 +12,19 @@ import { FgTextControlComponent } from './controls/fg-text-control/fg-text-contr
 import { FgNumberControlComponent } from './controls/fg-number-control/fg-number-control.component';
 import { FgRadioGroupControlComponent } from './controls/fg-radio-group-control/fg-radio-group-control.component';
 import { ElementDirective } from './directives/element.directive';
+import { FgSwitchControlComponent } from './controls/fg-switch-control/fg-switch-control.component';
+import { FgBaseElementComponent } from './components/fg-base-element/fg-base-element.component';
 
 @NgModule({
   declarations: [
+    ElementDirective,
+    <any> FgBaseElementComponent,
     FgGroupComponent,
     FgArrayComponent,
     FgTextControlComponent,
     FgNumberControlComponent,
     FgRadioGroupControlComponent,
-    ElementDirective
+    FgSwitchControlComponent
   ],
   imports: [
     CommonModule,
@@ -31,10 +35,11 @@ import { ElementDirective } from './directives/element.directive';
     DynamicModule.withComponents([
       FgGroupComponent,
       FgArrayComponent,
-      
+
       FgTextControlComponent,
       FgNumberControlComponent,
-      FgRadioGroupControlComponent
+      FgRadioGroupControlComponent,
+      FgSwitchControlComponent
     ]),
     DigitOnlyModule
   ],

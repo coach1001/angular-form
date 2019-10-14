@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ElementControlComponent } from './element-control.component';
+import { FgSwitchControlComponent } from './fg-switch-control.component';
 
-describe('ElementControlComponent', () => {
-  let component: ElementControlComponent;
-  let fixture: ComponentFixture<ElementControlComponent>;
+describe('FgSwitchControlComponent', () => {
+  let component: FgSwitchControlComponent;
+  let fixture: ComponentFixture<FgSwitchControlComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ElementControlComponent ]
+      declarations: [ FgSwitchControlComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ElementControlComponent);
+    fixture = TestBed.createComponent(FgSwitchControlComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

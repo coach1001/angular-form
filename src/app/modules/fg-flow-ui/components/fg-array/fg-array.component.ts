@@ -32,7 +32,8 @@ export class FgArrayComponent extends FgBaseElementComponent {
       takeUntil(this.destroy$)
     ).subscribe(_ => {
       if (this.controlIn['controls'].length !== 0) {
-        this.controlIn['controls'] = [];
+        this.controlIn.clear();
+        this.cleared$.next();
         this.initKeys();
       }
     });
@@ -40,8 +41,8 @@ export class FgArrayComponent extends FgBaseElementComponent {
     .pipe(
       takeUntil(this.destroy$)
     ).subscribe(_ => {
-      this.initKeys();
       this.reset$.next();
+      this.initKeys();
     });
   }
 
@@ -91,9 +92,9 @@ export class FgArrayComponent extends FgBaseElementComponent {
 
   handleClearing(clear: Array<boolean>): void {
     if (clear.length > 0 && clear.every(c => c) && this.controlIn['controls'].length > 0) {
-      this.controlIn['controls'] = [];
-      this.initKeys();   
+      this.controlIn.clear();
       this.cleared$.next();
+      this.initKeys();   
     }
   }
 

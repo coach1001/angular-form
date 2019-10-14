@@ -1,5 +1,6 @@
-<h2 *ngIf="label">{{label}}</h2>
-<form [formGroup]="parent" *ngIf="visible">
+<h2 *ngIf="label && visible">{{label}}</h2>
+<!-- <form [formGroup]="parent" *ngIf="visible"> -->
+<form [formGroup]="parent" [ngClass]="{'hidden': !visible}">
     <div class="group" fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap="20px grid">   
         <mat-error *ngIf="error && controlIn.touched">{{error}}</mat-error>
         <ng-container *ngFor="let group of groupKeys;let gIndex = index;">

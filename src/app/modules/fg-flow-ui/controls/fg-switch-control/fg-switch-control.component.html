@@ -1,11 +1,7 @@
 <form [formGroup]="parent" *ngIf="visible">
     <mat-form-field appearance="none" floatLabel="always" fxFlex="100">
         <mat-label>{{label}}</mat-label>
-        <mat-radio-group [formControlName]="name" fxLayout="row" fxLayoutGap="10px">
-            <ng-container *ngFor="let option of controlIn.element.options">
-                <mat-radio-button [value]="option.key">{{option.value}}</mat-radio-button>
-            </ng-container>
-        </mat-radio-group>
+        <mat-slide-toggle [formControlName]="name"></mat-slide-toggle>
         <input matInput [formControlName]="name" style="display: none;" hidden>
         <mat-hint *ngIf="hint">{{hint}}</mat-hint>
         <mat-error>{{error}}</mat-error>

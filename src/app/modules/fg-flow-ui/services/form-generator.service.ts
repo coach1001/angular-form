@@ -7,6 +7,7 @@ import { RequiredIf } from '../form-validators/required-if.validator';
 import { FgTextControlComponent } from '../controls/fg-text-control/fg-text-control.component';
 import { FgNumberControlComponent } from '../controls/fg-number-control/fg-number-control.component';
 import { FgRadioGroupControlComponent } from '../controls/fg-radio-group-control/fg-radio-group-control.component';
+import { FgSwitchControlComponent } from '../controls/fg-switch-control/fg-switch-control.component';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,7 @@ export class FormGeneratorService {
   }
 
   buildForm(definition: any): void {
+    this._form = null;
     this._form = this._formBuilder.group({});
     this.createStep(definition);
     this.form$.next(this._form);
@@ -203,6 +205,7 @@ export class FormGeneratorService {
       case 'TEXT_INPUT': return FgTextControlComponent;
       case 'NUMBER_INPUT': return FgNumberControlComponent;
       case 'RADIO_GROUP_INPUT': return FgRadioGroupControlComponent;
+      case 'SWITCH_INPUT': return FgSwitchControlComponent;
       default: break;
     }
   }

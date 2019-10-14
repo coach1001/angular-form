@@ -3,30 +3,39 @@ export const ReactiveLayoutTest = {
         {
             type: 'STEP',
             name: 'test',
+            layout: {},
             elements: [
                 {
                     type: 'CONTROL',
+                    subType: 'TEXT_INPUT',
+                    layout: { stretchLarge: 50, stretchSmall: 100 },
                     name: 'input'
                 },
                 {
                     type: 'OBJECT',
                     name: 'testObject',
+                    layout: { stretchLarge: 100, stretchSmall: 100 },
                     reactivity: [
-                        { type: 'clearWhen', expression: "input != 'show'"},
-                        { type: 'visibleWhen', expression: "input == 'show'"}
+                        { type: 'clearWhen', expression: "input != 'show'" },
+                        { type: 'visibleWhen', expression: "input == 'show'" }
                     ],
                     elements: [
                         {
                             type: 'CONTROL',
-                            name: 'testObjectInput'
+                            subType: 'TEXT_INPUT',
+                            name: 'testObjectInput',
+                            layout: { stretchLarge: 50, stretchSmall: 100 },
                         },
                         {
                             type: 'ARRAY',
                             name: 'testObjectArray',
+                            layout: { stretchLarge: 100, stretchSmall: 100 },
                             elements: [
                                 {
                                     type: 'CONTROL',
                                     name: 'testObjectArrayInput',
+                                    subType: 'TEXT_INPUT',
+                                    layout: { stretchLarge: 50, stretchSmall: 100 },
                                     validations: [
                                         { type: 'required' }
                                     ]
@@ -38,23 +47,29 @@ export const ReactiveLayoutTest = {
                 {
                     type: 'ARRAY',
                     name: 'testArray',
+                    layout: { stretchLarge: 100, stretchSmall: 100 },
                     reactivity: [
-                        { type: 'clearWhen', expression: "input != 'show'"},
-                        { type: 'visibleWhen', expression: "input == 'show'"}
+                        { type: 'clearWhen', expression: "input != 'show'" },
+                        { type: 'visibleWhen', expression: "input == 'show'" }
                     ],
                     elements: [
                         {
                             type: 'ARRAY',
                             name: 'testArrayArray',
+                            layout: { stretchLarge: 50, stretchSmall: 100 },
                             elements: [
                                 {
                                     type: 'CONTROL',
+                                    subType: 'TEXT_INPUT',
+                                    layout: { stretchLarge: 100, stretchSmall: 100 },
                                     name: 'testArrayArrayInput',
                                 }
                             ]
                         },
                         {
                             type: 'CONTROL',
+                            subType: 'TEXT_INPUT',
+                            layout: { stretchLarge: 50, stretchSmall: 100 },
                             name: 'testArrayInput',
                         }
                     ]
@@ -77,8 +92,9 @@ export const NestedScreenLayoutValue = [
         occupation: {
             currentEmployer: 'Tangent IT Solutions',
             address: 'The Campus, 57 Sloane Street, Carisbrook Building, Bryanston, 2194',
+            includeOccupationHistory: true,
             employmentHistory: [
-                // { previousEmployer: 'Foundation for Human Rights', from: 2011, till: 2011 }
+                { previousEmployer: 'Foundation for Human Rights', from: 2012, till: 2012 }
             ]
         }
     }
@@ -148,6 +164,9 @@ export const NestedScreenLayout = {
                     type: 'OBJECT',
                     name: 'occupation',
                     layout: { stretchLarge: 100, stretchSmall: 100 },
+                    validations: [
+                        { type: 'requiredIf', controlName: 'employmentHistory', expression: 'includeOccupationHistory' }
+                    ],
                     elements: [
                         {
                             type: 'CONTROL',
@@ -168,11 +187,22 @@ export const NestedScreenLayout = {
                             ]
                         },
                         {
+                            type: 'CONTROL',
+                            subType: 'SWITCH_INPUT',
+                            name: 'includeOccupationHistory',
+                            layout: { stretchLarge: 50, stretchSmall: 100 },
+                            defaultValue: false
+                        },
+                        {
                             type: 'ARRAY',
                             name: 'employmentHistory',
                             layout: { stretchLarge: 100, stretchSmall: 100 },
+                            reactivity: [
+                                { type: 'clearWhen', expression: '!includeOccupationHistory' },
+                                // { type: 'disableWhen', expression: '!includeOccupationHistory' },
+                                { type: 'visibleWhen', expression: 'includeOccupationHistory' }
+                            ],
                             validations: [
-                                { type: 'required' },
                                 { type: 'mustMatch', value: ['from', 'till'] }
                             ],
                             elements: [

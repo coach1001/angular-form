@@ -170,6 +170,7 @@ button {
     margin-top: 24px !important;
   }
   padding: 8px 24px !important;
+  min-width: 140px !important;
 }
 
 ndc-dynamic {
@@ -181,10 +182,6 @@ ndc-dynamic {
   padding: 0 !important;
 }
 
-* {
-  font-family: sans-serif;
-}
-
-h3 {
+h2 {
   margin-block-start: 0px;
 }

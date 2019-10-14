@@ -7,6 +7,7 @@ import {
   MultiScreenLayout, ScreenValue, 
   ReactiveLayoutTest, ReactiveLayoutTestValue
 } from './test-form-layout';
+import { TestFlow } from './test-flow';
 import { FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
@@ -19,62 +20,68 @@ import { filter, takeUntil } from 'rxjs/operators';
 export class AppComponent implements OnInit, OnDestroy {
 
   private _destroy$: Subject<void> = new Subject<void>();
-
+  
   title = 'angular-form';
   stepIndex: number;
-  formDefinition: any;
-  formValue: any;
-  form: FormGroup;
   cleared$: Subject<void> = new Subject<void>();
   reset$: Subject<void> = new Subject<void>();
   formId = Math.floor(Math.random() * 10000).toString();
+
+  flowDefinition: any;
+
+  formDefinitions: Array<any> = [];
+  formData: Array<any> = [];
+
+  numberOfSteps: number;
 
   constructor(
     private _formGenerator: FormGeneratorService) {
   }
 
   ngOnInit(): void {
-
-    this.formDefinition = NestedScreenLayout;
-    this.formValue = NestedScreenLayoutValue;
-
     this.stepIndex = 0;
-    this._formGenerator.buildForm(this.formDefinition.screens[this.stepIndex]);  
-
+    this.flowDefinition = TestFlow;
+    this.numberOfSteps = this.flowDefinition.steps.length;
+    this._formGenerator.buildForm(this.flowDefinition.steps[this.stepIndex]);  
     this._formGenerator.form$.pipe(
       filter(val => val != null),
       takeUntil(this._destroy$)
     ).subscribe(form => {
-      this.form = form;
-      if (this.formValue != null) {
-        this._formGenerator.setFormValue(this.form, this.formValue[this.stepIndex]);
-      }
+      this.formDefinitions[this.stepIndex] = form;
     });
   }
 
   onSubmit() {
-    this._formGenerator.recurseFormGroup(this.form, 'TOUCH_AND_VALIDATE');
-    console.log(this.form);
-    if (this.form.valid) {
-      // this.next();
+    this._formGenerator.recurseFormGroup(this.formDefinitions[this.stepIndex], 'TOUCH_AND_VALIDATE');
+    if (this.formDefinitions[this.stepIndex].valid) {
+      this.nextStep();
     }
-    // const changes = deepDiff(this.formValue, this.form.getRawValue());
-    // console.log(changes, this.form, this.form.getRawValue());
+  }
+
+  nextStep() {
+    this.formId = Math.floor(Math.random() * 10000).toString();
+    this.formData[this.stepIndex] = this.formDefinitions[this.stepIndex].getRawValue();
+    this.stepIndex += 1;
+    if(this.stepIndex > this.numberOfSteps - 1) {
+      this.stepIndex = 0;
+    }
+    if(this.formDefinitions[this.stepIndex] == null) {
+      this._formGenerator.buildForm(this.flowDefinition.steps[this.stepIndex]);
+    } 
+    this.onReset();
   }
 
   onReset() {
-    this._formGenerator.recurseFormGroup(this.form, 'UNTOUCHED_AND_PRISTINE');
-    if (this.formValue && this.formValue[this.stepIndex] != null) {
-      this._formGenerator.setFormValue(this.form, this.formValue[this.stepIndex]);
+    this._formGenerator.recurseFormGroup(this.formDefinitions[this.stepIndex], 'UNTOUCHED_AND_PRISTINE');
+    if (this.formData && this.formData[this.stepIndex] != null) {
+      this._formGenerator.setFormValue(this.formDefinitions[this.stepIndex], this.formData[this.stepIndex]);
       this.reset$.next();
-    } else {
-      this.onClear();
     }
   }
 
   onClear() {
     this.cleared$.next();
-    this._formGenerator.recurseFormGroup(this.form, 'UNTOUCHED_AND_PRISTINE');
+    this._formGenerator.recurseFormGroup(this.formDefinitions[this.stepIndex], 'UNTOUCHED_AND_PRISTINE');
   }
 
   ngOnDestroy(): void {

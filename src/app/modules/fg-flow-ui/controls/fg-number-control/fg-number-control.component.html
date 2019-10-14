@@ -2,7 +2,7 @@
     <mat-form-field floatLabel="always" fxFlex="100">
         <mat-label>{{label}}</mat-label>
         <input type="number" matInput [formControlName]="name" digitOnly [decimal]="allowDecimal">
-        <mat-hint>{{hint}}</mat-hint>
+        <mat-hint *ngIf="hint">{{hint}}</mat-hint>
         <mat-error>{{error}}</mat-error>
     </mat-form-field>
 </form>
