@@ -5,8 +5,8 @@
         <mat-error *ngIf="error && controlIn.touched">{{error}}</mat-error>
         <ng-container *ngFor="let group of groupKeys;let gIndex = index;">
             <ng-container *ngFor="let key of group;let i = index;">
-                <div [fxFlex]="controlIn.element.elements[i]?.layout?.stretchLarge"
-                    [fxFlex.lt-md]="controlIn.element.elements[i]?.layout?.stretchSmall">
+                <div [fxFlex]="controlIn?.element?.elements[i]?.layout?.stretchLarge"
+                    [fxFlex.lt-md]="controlIn?.element?.elements[i]?.layout?.stretchSmall">
                     <ndc-dynamic [ndcDynamicComponent]="getComponent(key, gIndex)"
                         [ndcDynamicInputs]="getComponentInputs(key, gIndex)">
                     </ndc-dynamic>

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { FormGroup, FormArray } from '@angular/forms';
+import { FormGroup, FormArray, FormControl } from '@angular/forms';
 import { FgArrayComponent } from '../fg-array/fg-array.component';
 import { takeUntil } from 'rxjs/operators';
 import { FormGeneratorService } from '../../services/form-generator.service';
@@ -47,7 +47,7 @@ export class FgGroupComponent extends FgBaseElementComponent {
       return FgGroupComponent;
     } else if (control instanceof FormArray) {
       return FgArrayComponent;
-    } else {
+    } else if (control instanceof FormControl) {
       return this._formGenerator.getControl(control['element'].subType);
     }
   }
@@ -67,9 +67,9 @@ export class FgGroupComponent extends FgBaseElementComponent {
 
   handleClearing(clear: Array<boolean>): void {
     if (clear.length > 0 && clear.every(c => c) && this.controlIn.value != null) {
-      this.controlIn.patchValue({}, { emitEvent: false });     
+      this.controlIn.patchValue({}, { emitEvent: false });
       this.cleared$.next();
     }
   }
-  
+
 }

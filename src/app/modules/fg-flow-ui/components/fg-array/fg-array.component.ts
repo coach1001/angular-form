@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { FormArray, FormGroup } from '@angular/forms';
+import { FormArray, FormGroup, FormControl } from '@angular/forms';
 import { FgGroupComponent } from '../fg-group/fg-group.component';
 import cloneDeep from 'lodash-es/cloneDeep';
 import { takeUntil } from 'rxjs/operators';
@@ -13,37 +13,37 @@ import { FgBaseElementComponent } from '../fg-base-element/fg-base-element.compo
   styleUrls: ['./fg-array.component.scss']
 })
 export class FgArrayComponent extends FgBaseElementComponent {
-  
+
   @Input()
   controlIn: FormArray;
-  
+
   groupKeys: Array<Array<string>>;
 
   constructor(
     private _formGenerator: FormGeneratorService
-  ) { 
+  ) {
     super();
   }
 
   elementInit() {
     this.initKeys();
     this.parentCleared$
-    .pipe(
-      takeUntil(this.destroy$)
-    ).subscribe(_ => {
-      if (this.controlIn['controls'].length !== 0) {
-        this.controlIn.clear();
-        this.cleared$.next();
-        this.initKeys();
-      }
-    });
+      .pipe(
+        takeUntil(this.destroy$)
+      ).subscribe(_ => {
+        if (this.controlIn['controls'].length !== 0) {
+          this.controlIn.clear();
+          this.cleared$.next();
+          this.initKeys();
+        }
+      });
     this.parentReset$
-    .pipe(
-      takeUntil(this.destroy$)
-    ).subscribe(_ => {
-      this.reset$.next();
-      this.initKeys();
-    });
+      .pipe(
+        takeUntil(this.destroy$)
+      ).subscribe(_ => {
+        this.reset$.next();
+        this.initKeys();
+      });
   }
 
   initKeys() {
@@ -61,9 +61,9 @@ export class FgArrayComponent extends FgBaseElementComponent {
     const control = this.controlIn.controls[rowIndex]['controls'][controlKey];
     if (control instanceof FormGroup) {
       return FgGroupComponent;
-    } else if(control instanceof FormArray) {
+    } else if (control instanceof FormArray) {
       return FgArrayComponent;
-    } else {
+    } else if (control instanceof FormControl) {
       return this._formGenerator.getControl(control['element'].subType);
     }
   }
@@ -79,6 +79,7 @@ export class FgArrayComponent extends FgBaseElementComponent {
       parentReset$: this.reset$,
       parentCleared$: this.cleared$
     };
+
   }
 
   addRow() {
@@ -86,7 +87,7 @@ export class FgArrayComponent extends FgBaseElementComponent {
     if (this.controlIn.valid || this.controlIn.controls.length === 0) {
       this.controlIn.markAsUntouched();
       this.controlIn.controls.push(cloneDeep(this.controlIn['rowTemplate']));
-      this.initKeys();  
+      this.initKeys();
     }
   }
 
@@ -94,7 +95,7 @@ export class FgArrayComponent extends FgBaseElementComponent {
     if (clear.length > 0 && clear.every(c => c) && this.controlIn['controls'].length > 0) {
       this.controlIn.clear();
       this.cleared$.next();
-      this.initKeys();   
+      this.initKeys();
     }
   }
 

@@ -1,9 +1,9 @@
-<ng-container *ngIf="formDefinitions[stepIndex]">
-  <form [id]="formId" [formGroup]="formDefinitions[stepIndex]" (ngSubmit)="onSubmit()">
+<ng-container *ngIf="currentForm">
+  <form [id]="formId" [formGroup]="currentForm" (ngSubmit)="onSubmit()">
     <div fxFlex.gt-sm="10" fxFlex.lt-md="0"></div>
     <mat-card fxFlex.gt-sm="90" fxFlex.lt-md="100" class="mat-elevation-z12">
       <mat-card-content>
-        <app-fg-group fxFlex [controlIn]="formDefinitions[stepIndex]" [parent]="formDefinitions[stepIndex]" [parentCleared$]="cleared$" [parentReset$]="reset$">
+        <app-fg-group fxFlex [controlIn]="currentForm" [parent]="currentForm" [parentCleared$]="cleared$" [parentReset$]="reset$">
         </app-fg-group>
       </mat-card-content>
       <!-- <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap="10px">
