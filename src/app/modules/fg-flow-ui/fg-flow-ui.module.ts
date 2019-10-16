@@ -14,6 +14,8 @@ import { FgRadioGroupControlComponent } from './controls/fg-radio-group-control/
 import { ElementDirective } from './directives/element.directive';
 import { FgSwitchControlComponent } from './controls/fg-switch-control/fg-switch-control.component';
 import { FgBaseElementComponent } from './components/fg-base-element/fg-base-element.component';
+import { ModuleGuard } from './guards/module.guard';
+import { FgDynamicFormComponent } from './components/fg-dynamic-form/fg-dynamic-form.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,8 @@ import { FgBaseElementComponent } from './components/fg-base-element/fg-base-ele
     FgTextControlComponent,
     FgNumberControlComponent,
     FgRadioGroupControlComponent,
-    FgSwitchControlComponent
+    FgSwitchControlComponent,
+    FgDynamicFormComponent
   ],
   imports: [
     CommonModule,
@@ -44,13 +47,14 @@ import { FgBaseElementComponent } from './components/fg-base-element/fg-base-ele
     DigitOnlyModule
   ],
   entryComponents: [
-    FgGroupComponent
+    FgDynamicFormComponent
   ],
   providers: [
-    FormGeneratorService
+    FormGeneratorService,
+    ModuleGuard
   ],
   exports: [
-    FgGroupComponent
+    FgDynamicFormComponent
   ]
 })
 export class FgFlowUiModule {}

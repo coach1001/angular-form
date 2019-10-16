@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from './modules/material/material.module';
 import { FgFlowUiModule } from './modules/fg-flow-ui/fg-flow-ui.module';
+import { AccountModule } from './modules/account/account.module';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { FgFlowUiModule } from './modules/fg-flow-ui/fg-flow-ui.module';
     ReactiveFormsModule,
     FlexLayoutModule,
     MaterialModule,
-    FgFlowUiModule
+    FgFlowUiModule,
+    AccountModule
   ],
   providers: [],
   bootstrap: [AppComponent]
