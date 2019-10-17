@@ -1,1 +1,9 @@
-<p>fg-dynamic-form works!</p>
+<ng-container *ngIf="form">
+    <div fxFlex.gt-sm="10" fxFlex.lt-md="0"></div>
+    <mat-card fxFlex.gt-sm="90" fxFlex.lt-md="100" class="mat-elevation-z12">
+        <mat-card-content>
+            <app-fg-group fxFlex [controlIn]="form" [parent]="form"></app-fg-group>
+        </mat-card-content>
+    </mat-card>
+    <div fxFlex.gt-sm="10" fxFlex.lt-md="0"></div>
+</ng-container>

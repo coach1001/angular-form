@@ -50,6 +50,20 @@ export class FlowService {
     }
   }
 
+  setCurrentFlowAndStep(module: string, flow: string, stepIndex: number) {
+    const moduleDefinitions = this.moduleDefinitions$.value;
+    const moduleDefinition = moduleDefinitions
+      .find(m => m.system === this.system && m.module === module)
+    if (!moduleDefinition) return;
+    const flowDefinition = moduleDefinition.flows.find(f => f.flow === flow);
+    if (!flowDefinition) return;
+    if (!this.currentFlow$.value || !this.currentFlow$.value.flowStarted) {
+      this.currentFlow$.next({ flow: flowDefinition, flowStarted: true });
+      this.currentStepIndex$.next(stepIndex);
+      this.currentStep$.next(this.currentFlow$.value.flow.steps[this.currentStepIndex$.value]);
+    }
+  }
+
   startFlow(module: string, flow: string): void {
     const moduleDefinitions = this.moduleDefinitions$.value;
     const moduleDefinition = moduleDefinitions

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { FlowService } from '../services/flow.service';
 import * as changeCase from 'change-case';
 import { FgDynamicFormComponent } from '../components/fg-dynamic-form/fg-dynamic-form.component';
+import { StepGuard } from './step.guard';
 
 @Injectable({
   providedIn: 'root'
@@ -73,6 +74,7 @@ export class ModuleGuard implements CanActivate {
       const route: Route = {
         path: path,
         component: FgDynamicFormComponent,
+        canActivate: [StepGuard],
         data: {
           module,
           flow,
@@ -81,6 +83,7 @@ export class ModuleGuard implements CanActivate {
       }
       moduleMainRoute.children.push(route);
     });
+    console.log(this._router.config);
     return {
       startPathForFlow,
       startUrl
