@@ -4,12 +4,6 @@
 @import './fonts.scss';
 @import './icons.scss';
 
-html {
-  overflow: -moz-scrollbars-vertical; 
-  overflow-y: scroll;
-  overflow-x: hidden;
-}
-
 $custom-primary-color: (
   50 : #efe7f1,
   100 : #d7c3dc,
@@ -136,12 +130,6 @@ $custom-typography: mat-typography-config(
 
 @include angular-material-typography($custom-typography);
 
-body {
-  margin: 0;
-  padding: 0;
-  height: 100vh;
-}
-
 .mat-error {
   font-weight: 500;
   font-size: 12px;
@@ -214,30 +202,13 @@ h2 {
 .container {
   padding: 36px;
   &.lt-md {
-    padding: 24px 0;
+    padding: 12px 0;
   }
 }
 
-[class^="cicon-"], [class*=" cicon-"] {
-  &.mat-accent {
-    color: white;
-    &.mat-icon {
-      color: $accent-color;
-    }
-    &.outline {
-      color: $accent-color;
-    }
-  }
-  &.mat-primary {
-    color: white;
-    &.mat-icon {
-      color: $primary-color;
-    }
-    &.outline {
-      color: $primary-color;
-    }
-  }
-  &.medium {
-    font-size: 36px;
-  }
+hr {
+  border: 0.5px lightgray solid;
+  width: 100vw;
+  margin-top: 24px;
+  margin-left: -8px;
 }

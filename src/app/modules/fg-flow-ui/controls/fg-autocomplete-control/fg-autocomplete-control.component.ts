@@ -41,6 +41,11 @@ export class FgAutocompleteControlComponent extends FgBaseElementComponent {
     }
     const options = this.controlIn['element'].options;
     const controlValue = this.controlIn.value;
+    const eventValue = event.target.value;
+
+    const validValue = options.find(option => option.value === controlValue && option.displayValue === eventValue );
+    if (validValue != null) return;
+
     if (options == null || controlValue == null) {
       this.controlIn.setValue(null);
       return;

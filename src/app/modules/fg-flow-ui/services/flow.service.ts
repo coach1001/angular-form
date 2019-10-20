@@ -23,9 +23,9 @@ export class FlowService {
   public currentFlowId$: BehaviorSubject<string> = new BehaviorSubject(null);
 
   public system = 'portal';
-  
+
   public routeRegistration: Array<any> = [];
-  
+
   constructor(
     private _formGenerator: FormGeneratorService,
     private _formData: FormDataService,
@@ -87,41 +87,65 @@ export class FlowService {
     }
   }
 
-  nextStep(): void {
-    const form = this._formGenerator.form$.value;
-    const currentIndex = this.currentStepIndex$.value;
+  gotoStep(stepIndex: number): void {
+
     const currentModule = this.currentFlow$.value.module;
     const currentFlow = this.currentFlow$.value.flow.flow;
-    const currentFlowId = this.currentFlowId$.value;
-    this._formGenerator.recurseFormGroup(form, 'TOUCH_AND_VALIDATE');
+    const routeConfig = this.routeRegistration.find(routeReg =>
+      routeReg.module === currentModule &&
+      routeReg.flow === currentFlow);
+    const nextRoute = routeConfig.routes.find(route => route.stepIndex === stepIndex);
+    if (nextRoute == null) return;
+    this._router.navigate([nextRoute.absolutePath], {
+      queryParamsHandling: 'merge'
+    });
 
-    if (form.valid) {
-      this._formData.setStepData(currentFlowId, currentModule, currentFlow, currentIndex, form.getRawValue());
+  }
+
+  checkRouting(event: string): boolean {
+    const currentFlow = this.currentFlow$.value.flow.flow;
+    const routeConfig = currentFlow.routeConfig;
+    
+    return true;
+  }
+
+  nextStep(): void {
+    if (this.checkRouting('NEXT_STEP')) {
+      const form = this._formGenerator.form$.value;
+      const currentIndex = this.currentStepIndex$.value;
+      const currentModule = this.currentFlow$.value.module;
+      const currentFlow = this.currentFlow$.value.flow.flow;
+      const currentFlowId = this.currentFlowId$.value;
+      this._formGenerator.recurseFormGroup(form, 'TOUCH_AND_VALIDATE');
+      if (form.valid) {
+        this._formData.setStepData(currentFlowId, currentModule, currentFlow, currentIndex, form.getRawValue());
+        const routeConfig = this.routeRegistration.find(routeReg =>
+          routeReg.module === currentModule &&
+          routeReg.flow === currentFlow);
+        if (routeConfig == null) return;
+        const nextRoute = routeConfig.routes.find(route => route.stepIndex === (currentIndex + 1));
+        if (nextRoute == null) return;
+        this._router.navigate([nextRoute.absolutePath], {
+          queryParamsHandling: 'merge'
+        });
+      }
+    }
+  }
+
+  backStep() {
+    if (this.checkRouting('BACK_STEP')) {
+      const currentIndex = this.currentStepIndex$.value;
+      const currentModule = this.currentFlow$.value.module;
+      const currentFlow = this.currentFlow$.value.flow.flow;
       const routeConfig = this.routeRegistration.find(routeReg =>
         routeReg.module === currentModule &&
         routeReg.flow === currentFlow);
       if (routeConfig == null) return;
-      const nextRoute = routeConfig.routes.find(route => route.stepIndex === (currentIndex + 1));
+      const nextRoute = routeConfig.routes.find(route => route.stepIndex === (currentIndex - 1));
       if (nextRoute == null) return;
       this._router.navigate([nextRoute.absolutePath], {
         queryParamsHandling: 'merge'
       });
     }
-  }
-
-  backStep() {
-    const currentIndex = this.currentStepIndex$.value;
-    const currentModule = this.currentFlow$.value.module;
-    const currentFlow = this.currentFlow$.value.flow.flow;
-
-    const routeConfig = this.routeRegistration.find(routeReg =>
-      routeReg.module === currentModule &&
-      routeReg.flow === currentFlow);
-    if (routeConfig == null) return;
-    const nextRoute = routeConfig.routes.find(route => route.stepIndex === (currentIndex - 1));
-    if (nextRoute == null) return;
-    this._router.navigate([nextRoute.absolutePath], {
-      queryParamsHandling: 'merge'
-    });
   }
 }

@@ -6,6 +6,8 @@ import * as changeCase from 'change-case';
 import { FgDynamicFormComponent } from '../components/fg-dynamic-form/fg-dynamic-form.component';
 import { StepGuard } from './step.guard';
 import * as uuidv4 from 'uuid/v4';
+import { FormDataService } from '../services/form-data.service';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +16,7 @@ export class ModuleGuard implements CanActivate {
 
   constructor(
     private _flow: FlowService,
+    private _formData: FormDataService,
     private _router: Router
   ) { }
 
@@ -24,9 +27,6 @@ export class ModuleGuard implements CanActivate {
       const flowId = next.queryParams.flowId;
       if(flowId == null) {
         this._router.navigateByUrl(`${state.url}?flowId=${uuidv4()}`);
-//        this._router.navigate([state.url], {
-//          queryParams 
-//        });
         return false;
       } else {
         return true;
@@ -49,10 +49,16 @@ export class ModuleGuard implements CanActivate {
         this._router.navigateByUrl(`${startUrl}?flowId=${flowId == null ? uuidv4() : flowId}`);
       } else {
         this._flow.initFlow(module, flow);
-        if(this._flow.currentFlow$.value != null) {
-          const routeConfig = this.buildRoutes(route, module, flow, this._flow.currentFlow$.value.flow.steps, step);
+        const currentFlow = this._flow.currentFlow$.value;
+        if(currentFlow != null) {
+          const routeConfig = this.buildRoutes(route, module, flow, currentFlow.flow.steps, step);
           this._flow.registerRoute(module, flow, routeConfig.startPathForFlow, routeConfig.routes);
-          this._router.navigateByUrl(`${routeConfig.startUrl}?flowId=${flowId == null ? uuidv4() : flowId}`);
+          if(currentFlow.flow.resumable || !environment.production) {
+            this._router.navigateByUrl(`${routeConfig.startUrl}?flowId=${flowId == null ? uuidv4() : flowId}`);
+          } else {
+            this._formData.clearOnNextGet$.next(true);
+            this._router.navigateByUrl(`${routeConfig.startPathForFlow}?flowId=${flowId == null ? uuidv4() : flowId}`);
+          }
         }
       }
       return false;

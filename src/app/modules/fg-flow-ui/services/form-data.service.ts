@@ -5,7 +5,8 @@ interface StepData {
   module: string,
   flow: string,
   flowId: string,
-  stepIndex: number;
+  stepName: number;
+  updatedAt: Date;
   data: any;
 }
 
@@ -35,9 +36,9 @@ export class FormDataService {
         stepData.flowId === flowId
       );
       if (stepDataIndex < 0) {
-        currentData.push(<StepData>{ module, flow, stepIndex, data, flowId });
+        currentData.push(<StepData>{ module, flow, stepIndex, data, flowId, updatedAt: new Date() });
       } else {
-        currentData[stepDataIndex] = <StepData>{ module, flow, stepIndex, data, flowId };
+        currentData[stepDataIndex] = <StepData>{ module, flow, stepIndex, data, flowId, updatedAt: new Date() };
       }
       this.stepData$.next(currentData);
     }

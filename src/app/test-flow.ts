@@ -5,6 +5,7 @@ export const TestModule = {
         {
             flow: 'registration',
             stepper: 'flat-linear',
+            resumable: false,
             steps: [
                 {
                     name: 'signup',
@@ -121,6 +122,12 @@ export const TestModule = {
                 {
                     name: 'done',
                     icon: 'cicon-tick',
+                    routing: {
+                        event: 'NEXT_STEP',
+                        type: 'ABSOLUTE_PATH',
+                        value: '/',
+                        expression: 'true'
+                    },
                     elements: []
                 }
             ]

@@ -29,7 +29,57 @@
   margin-top: 10px;
   font-family: Montserrat, sans-serif;
   color: $primary-color;
+  font-weight: normal;
   &.done {
     color: $accent-color;
   }
+  &.current {
+    font-weight: bold;
+  }
+  &.mobile {
+    width: 100%;
+    font-weight: bold;
+    margin-top: 10;
+  }
+}
+
+.chevrons {
+  color: $primary-color;
+  font-weight: bold;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+.mobile-stepper-icon {
+  background-color: $primary-color;
+  color: white;
+  font-size: 36px;
+}
+
+.desktop-stepper-icon {
+  &.medium {
+    font-size: 36px;
+  }
+  &.mat-primary {
+    color: white;
+    &.mat-icon {
+      color: $primary-color;
+    }
+    &.outline {
+      color: $primary-color;
+    }        
+  }
+  &.mat-accent {
+    color: white;
+    &.mat-icon {
+      color: $accent-color;
+    }
+    &.outline {
+      color: $accent-color;
+    }        
+  }
+}
+
+.hide-chevron {
+  visibility: hidden;
 }
