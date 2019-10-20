@@ -7,7 +7,8 @@ export const TestModule = {
             stepper: 'flat-linear',
             steps: [
                 {
-                    name: 'createCredentials',
+                    name: 'signup',
+                    icon: 'cicon-profile-add',
                     validations: [
                         { type: 'mustMatch', value: ['password', 'confirmPassword'] }
                     ],
@@ -24,7 +25,29 @@ export const TestModule = {
                         },
                         {
                             type: 'CONTROL',
-                            subType: 'TEXT_INPUT',
+                            subType: 'AUTOCOMPLETE_INPUT',
+                            layout: { stretchLarge: 15, stretchSmall: 30 },
+                            name: 'mobilePrefix',
+                            validations: [
+                                { type: 'required' }
+                            ],
+                            options: [
+                                { value: '27', displayValue: '+27' },
+                                { value: '264', displayValue: '+264' },
+                            ]
+                        },
+                        {
+                            type: 'CONTROL',
+                            subType: 'NUMBER_INPUT',
+                            layout: { stretchLarge: 35, stretchSmall: 70 },
+                            name: 'mobileNumber',
+                            validations: [
+                                { type: 'required' }
+                            ]
+                        },
+                        {
+                            type: 'CONTROL',
+                            subType: 'HIDDEN_INPUT',
                             layout: { stretchLarge: 50, stretchSmall: 100 },
                             name: 'password',
                             validations: [
@@ -33,7 +56,7 @@ export const TestModule = {
                         },
                         {
                             type: 'CONTROL',
-                            subType: 'TEXT_INPUT',
+                            subType: 'HIDDEN_INPUT',
                             layout: { stretchLarge: 50, stretchSmall: 100 },
                             name: 'confirmPassword',
                             validations: [
@@ -43,7 +66,8 @@ export const TestModule = {
                     ]
                 },
                 {
-                    name: 'registrationOtp',
+                    name: 'otp',
+                    icon: 'cicon-contact',
                     elements: [
                         {
                             type: 'CONTROL',
@@ -57,27 +81,47 @@ export const TestModule = {
                     ]
                 },
                 {
-                    name: 'profileInformation',
+                    name: 'profile',
+                    icon: 'cicon-user',
                     elements: [
                         {
                             type: 'CONTROL',
+                            subType: 'AUTOCOMPLETE_INPUT',
+                            layout: { stretchLarge: 15, stretchSmall: 30 },
+                            name: 'title',
+                            validations: [
+                                { type: 'required' }
+                            ],
+                            options: [
+                                { value: '0', displayValue: 'Mr' },
+                                { value: '1', displayValue: 'Mrs' },
+                                { value: '2', displayValue: 'Ms' }
+                            ],
+                        },
+                        {
+                            type: 'CONTROL',
                             subType: 'TEXT_INPUT',
-                            layout: { stretchLarge: 50, stretchSmall: 100 },
-                            name: 'firstName'
+                            layout: { stretchLarge: 35, stretchSmall: 70 },
+                            name: 'firstName',
+                            validations: [
+                                { type: 'required' }
+                            ]
                         },
                         {
                             type: 'CONTROL',
                             subType: 'TEXT_INPUT',
                             layout: { stretchLarge: 50, stretchSmall: 100 },
-                            name: 'lastName'
-                        },
-                        {
-                            type: 'CONTROL',
-                            subType: 'TEXT_INPUT',
-                            layout: { stretchLarge: 50, stretchSmall: 100 },
-                            name: 'mobileNumber'
+                            name: 'lastName',
+                            validations: [
+                                { type: 'required' }
+                            ]
                         }
                     ]
+                },
+                {
+                    name: 'done',
+                    icon: 'cicon-tick',
+                    elements: []
                 }
             ]
         }

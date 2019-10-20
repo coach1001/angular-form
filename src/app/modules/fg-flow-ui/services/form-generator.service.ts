@@ -8,6 +8,8 @@ import { FgTextControlComponent } from '../controls/fg-text-control/fg-text-cont
 import { FgNumberControlComponent } from '../controls/fg-number-control/fg-number-control.component';
 import { FgRadioGroupControlComponent } from '../controls/fg-radio-group-control/fg-radio-group-control.component';
 import { FgSwitchControlComponent } from '../controls/fg-switch-control/fg-switch-control.component';
+import { FgHiddenTextControlComponent } from '../controls/fg-hidden-text-control/fg-hidden-text-control.component';
+import { FgAutocompleteControlComponent } from '../controls/fg-autocomplete-control/fg-autocomplete-control.component';
 
 @Injectable({
   providedIn: 'root'
@@ -206,6 +208,8 @@ export class FormGeneratorService {
       case 'NUMBER_INPUT': return FgNumberControlComponent;
       case 'RADIO_GROUP_INPUT': return FgRadioGroupControlComponent;
       case 'SWITCH_INPUT': return FgSwitchControlComponent;
+      case 'HIDDEN_INPUT': return FgHiddenTextControlComponent;
+      case 'AUTOCOMPLETE_INPUT': return FgAutocompleteControlComponent;
       default: break;
     }
   }

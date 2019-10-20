@@ -1,5 +1,8 @@
 @import '~@angular/material/theming';
 @include mat-core();
+@import './sass/variables.scss';
+@import './fonts.scss';
+@import './icons.scss';
 
 html {
   overflow: -moz-scrollbars-vertical; 
@@ -133,6 +136,12 @@ $custom-typography: mat-typography-config(
 
 @include angular-material-typography($custom-typography);
 
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+}
+
 .mat-error {
   font-weight: 500;
   font-size: 12px;
@@ -165,12 +174,28 @@ input[type=number]::-webkit-outer-spin-button {
   margin: 0;
 }
 
-button {
-  &.add {
-    margin-top: 24px !important;
-  }
+.mat-raised-button {
   padding: 8px 24px !important;
   min-width: 140px !important;
+}
+
+.mat-stroked-button {
+  padding: 8px 24px !important;
+  min-width: 140px !important;
+}
+
+.mat-accent {
+  &.outline {
+    background-color: transparent;
+    border: 2px $accent-color solid;
+  }
+}
+
+.mat-primary {
+  &.outline {
+    background-color: transparent;
+    border: 2px $primary-color solid;
+  }
 }
 
 ndc-dynamic {
@@ -184,4 +209,35 @@ ndc-dynamic {
 
 h2 {
   margin-block-start: 0px;
+}
+
+.container {
+  padding: 36px;
+  &.lt-md {
+    padding: 24px 0;
+  }
+}
+
+[class^="cicon-"], [class*=" cicon-"] {
+  &.mat-accent {
+    color: white;
+    &.mat-icon {
+      color: $accent-color;
+    }
+    &.outline {
+      color: $accent-color;
+    }
+  }
+  &.mat-primary {
+    color: white;
+    &.mat-icon {
+      color: $primary-color;
+    }
+    &.outline {
+      color: $primary-color;
+    }
+  }
+  &.medium {
+    font-size: 36px;
+  }
 }

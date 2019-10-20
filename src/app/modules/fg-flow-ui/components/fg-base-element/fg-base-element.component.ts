@@ -3,6 +3,7 @@ import { FormControl, FormGroup, FormArray } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import * as jexl from 'jexl';
+import * as changeCase from 'change-case';
 
 @Component({
   template: '',
@@ -138,7 +139,7 @@ export abstract class FgBaseElementComponent implements OnInit, OnDestroy {
       case 'email': error = `Not a valid email address`; break;
       case 'min': error = `Minimum is ${error.value.min}`; break;
       case 'max': error = `Maximum is ${error.value.max}`; break;
-      case 'mustMatch': error = `Does not match - ${error.value.value}`; break;
+      case 'mustMatch': error = `Does not match - ${changeCase.sentenceCase(error.value.value)}`; break;
       default: break;
     }
     return error;

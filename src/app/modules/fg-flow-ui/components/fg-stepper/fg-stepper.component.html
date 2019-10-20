@@ -1,0 +1,16 @@
+<div fxLayout="column">
+    <div fxLayout="row" fxLayoutAlign="center center" class="stepper-container">
+        <ng-container *ngFor="let step of flowSteps; let sIndex = index; let isLast = last;">
+            <button mat-fab [class]="stepIcon(sIndex)" [ngClass]="{'outline': sIndex > stepIndex}"
+                [color]="stepColor(sIndex)"></button>
+            <div *ngIf="!isLast" [class]="connectorClass(sIndex)"></div>
+        </ng-container>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="center">
+        <ng-container *ngFor="let step of flowSteps; let sIndex = index; let isLast = last;">
+            <div class="step-label" [ngClass]="{'done': sIndex < stepIndex}">
+                {{stepLabel(sIndex)}}
+            </div>
+        </ng-container>
+    </div>
+</div>

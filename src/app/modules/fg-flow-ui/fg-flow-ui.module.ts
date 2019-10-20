@@ -16,6 +16,9 @@ import { FgSwitchControlComponent } from './controls/fg-switch-control/fg-switch
 import { FgBaseElementComponent } from './components/fg-base-element/fg-base-element.component';
 import { ModuleGuard } from './guards/module.guard';
 import { FgDynamicFormComponent } from './components/fg-dynamic-form/fg-dynamic-form.component';
+import { FgHiddenTextControlComponent } from './controls/fg-hidden-text-control/fg-hidden-text-control.component';
+import { FgAutocompleteControlComponent } from './controls/fg-autocomplete-control/fg-autocomplete-control.component';
+import { FgStepperComponent } from './components/fg-stepper/fg-stepper.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +30,10 @@ import { FgDynamicFormComponent } from './components/fg-dynamic-form/fg-dynamic-
     FgNumberControlComponent,
     FgRadioGroupControlComponent,
     FgSwitchControlComponent,
-    FgDynamicFormComponent
+    FgDynamicFormComponent,
+    FgHiddenTextControlComponent,
+    FgAutocompleteControlComponent,
+    FgStepperComponent
   ],
   imports: [
     CommonModule,
@@ -42,19 +48,23 @@ import { FgDynamicFormComponent } from './components/fg-dynamic-form/fg-dynamic-
       FgTextControlComponent,
       FgNumberControlComponent,
       FgRadioGroupControlComponent,
-      FgSwitchControlComponent
+      FgSwitchControlComponent,
+      FgHiddenTextControlComponent,
+      FgAutocompleteControlComponent
     ]),
     DigitOnlyModule
   ],
   entryComponents: [
-    FgDynamicFormComponent
+    FgDynamicFormComponent,
+    FgStepperComponent
   ],
   providers: [
     FormGeneratorService,
     ModuleGuard
   ],
   exports: [
-    FgDynamicFormComponent
+    FgDynamicFormComponent,
+    FgStepperComponent
   ]
 })
 export class FgFlowUiModule {}

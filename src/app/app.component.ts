@@ -1,10 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormGeneratorService } from './modules/fg-flow-ui/services/form-generator.service';
-import { TestModule } from './test-flow';
-import { FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
-import { FlowService } from './modules/fg-flow-ui/services/flow.service';
+import { Router } from '@angular/router';
+import { FormDataService } from './modules/fg-flow-ui/services/form-data.service';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +13,8 @@ export class AppComponent implements OnInit, OnDestroy {
   private _destroy$: Subject<void> = new Subject<void>();
 
   constructor(
-    private _flow: FlowService) {
+    private _formData: FormDataService,
+    private _router: Router) {
   }
 
   ngOnInit(): void {
@@ -25,5 +23,10 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this._destroy$.next();
     this._destroy$.complete();
+  }
+
+  gotoRegistration(): void {
+    this._formData.clearOnNextGet$.next(true);
+    this._router.navigateByUrl('account/registration');
   }
 }

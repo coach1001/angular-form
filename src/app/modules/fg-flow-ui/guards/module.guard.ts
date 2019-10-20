@@ -5,6 +5,7 @@ import { FlowService } from '../services/flow.service';
 import * as changeCase from 'change-case';
 import { FgDynamicFormComponent } from '../components/fg-dynamic-form/fg-dynamic-form.component';
 import { StepGuard } from './step.guard';
+import * as uuidv4 from 'uuid/v4';
 
 @Injectable({
   providedIn: 'root'
@@ -20,29 +21,38 @@ export class ModuleGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     if (this._flow.currentFlow$.value != null && this._flow.currentFlow$.value.flowStarted) {
-      return true;
+      const flowId = next.queryParams.flowId;
+      if(flowId == null) {
+        this._router.navigateByUrl(`${state.url}?flowId=${uuidv4()}`);
+//        this._router.navigate([state.url], {
+//          queryParams 
+//        });
+        return false;
+      } else {
+        return true;
+      }
     } else {
-      
+      const flowId = next.queryParams.flowId;
       const module = next.data.module;
       const urlSegments = state.url.split('/');
       urlSegments.shift();
-
       const route = next.url[0].path;
       const flow = urlSegments[1];
       const step = urlSegments[2];
 
       // Check if module registered if not get and add it to definitions
       this._flow.fetchModule(module);
+
       // Check if routes registered if not create and register the routes
       const startUrl = this._flow.checkIfRouteRegistered(route, flow);
       if (startUrl != null) {
-        this._router.navigateByUrl(startUrl);
+        this._router.navigateByUrl(`${startUrl}?flowId=${flowId == null ? uuidv4() : flowId}`);
       } else {
-        this._flow.startFlow(module, flow);
+        this._flow.initFlow(module, flow);
         if(this._flow.currentFlow$.value != null) {
-          const startUrls = this.buildRoutes(route, module, flow, this._flow.currentFlow$.value.flow.steps, step);
-          this._flow.registerRoute(route, flow, startUrls.startPathForFlow);
-          this._router.navigateByUrl(startUrls.startUrl);
+          const routeConfig = this.buildRoutes(route, module, flow, this._flow.currentFlow$.value.flow.steps, step);
+          this._flow.registerRoute(module, flow, routeConfig.startPathForFlow, routeConfig.routes);
+          this._router.navigateByUrl(`${routeConfig.startUrl}?flowId=${flowId == null ? uuidv4() : flowId}`);
         }
       }
       return false;
@@ -53,6 +63,8 @@ export class ModuleGuard implements CanActivate {
   buildRoutes(routeIn: string, module: string, flow: string, steps: any, startStep: string): any {
     let startPathForFlow = '';
     let startUrl = '';
+    let routes = [];
+
     const moduleMainRoute = this._router.config.find(route => route.data.module === module);
     if(moduleMainRoute != null) {
       moduleMainRoute.children = [];
@@ -82,11 +94,17 @@ export class ModuleGuard implements CanActivate {
         }
       }
       moduleMainRoute.children.push(route);
+      routes.push({
+        module,
+        flow,
+        stepIndex,
+        absolutePath: `/${routeIn}/${path}`
+      })
     });
-    console.log(this._router.config);
     return {
       startPathForFlow,
-      startUrl
+      startUrl,
+      routes
     }
   }
 }
