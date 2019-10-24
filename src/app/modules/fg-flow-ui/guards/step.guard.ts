@@ -15,7 +15,7 @@ export class StepGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     this._flow.currentFlowId$.next(next.queryParams.flowId);
-    this._flow.setCurrentFlowAndStep(next.data.module, next.data.flow, next.data.stepIndex);
+    this._flow.setCurrentFlowAndStep(next.data.module, next.data.flow, next.data.stepName);
     return true;
   }
   

@@ -56,7 +56,7 @@ export class ModuleGuard implements CanActivate {
           if(currentFlow.flow.resumable || !environment.production) {
             this._router.navigateByUrl(`${routeConfig.startUrl}?flowId=${flowId == null ? uuidv4() : flowId}`);
           } else {
-            this._formData.clearOnNextGet$.next(true);
+            this._formData.clearFlowOnNextGet$.next(true);
             this._router.navigateByUrl(`${routeConfig.startPathForFlow}?flowId=${flowId == null ? uuidv4() : flowId}`);
           }
         }
@@ -96,6 +96,7 @@ export class ModuleGuard implements CanActivate {
         data: {
           module,
           flow,
+          stepName: step.name,
           stepIndex
         }
       }
@@ -104,6 +105,7 @@ export class ModuleGuard implements CanActivate {
         module,
         flow,
         stepIndex,
+        stepName: step.name,
         absolutePath: `/${routeIn}/${path}`
       })
     });

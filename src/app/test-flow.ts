@@ -6,6 +6,10 @@ export const TestModule = {
             flow: 'registration',
             stepper: 'flat-linear',
             resumable: false,
+            actions: [
+                { trigger: 'POST_FLOW', type: 'SERVER_TASK', value: 'register-user' },
+                { trigger: 'POST_FLOW', type: 'ABSOLUTE_REDIRECT', value: '/' }
+            ],
             steps: [
                 {
                     name: 'signup',
@@ -122,12 +126,6 @@ export const TestModule = {
                 {
                     name: 'done',
                     icon: 'cicon-tick',
-                    routing: {
-                        event: 'NEXT_STEP',
-                        type: 'ABSOLUTE_PATH',
-                        value: '/',
-                        expression: 'true'
-                    },
                     elements: []
                 }
             ]

@@ -20,12 +20,12 @@ export class FgStepperComponent implements OnInit, OnDestroy {
   constructor(private _flow: FlowService) { }
 
   ngOnInit() {
-    combineLatest(this._flow.currentFlow$, this._flow.currentStepIndex$)
+    combineLatest(this._flow.currentFlow$, this._flow.currentStepName$)
       .pipe(
         takeUntil(this._destroy$)
       ).subscribe(value => {
         this.flowSteps = value[0].flow.steps;
-        this.stepIndex = value[1];
+        this.stepIndex = this.flowSteps.findIndex(step => step.name === value[1])
       });
   }
 
@@ -97,8 +97,8 @@ export class FgStepperComponent implements OnInit, OnDestroy {
   }
 
   gotoStep(index: number): void {
-    if (index !== this.stepIndex && !environment.production) {
-      this._flow.gotoStep(index);
+    if ((index !== this.stepIndex && !environment.production) || index < this.stepIndex) {
+      this._flow.gotoStep(this.flowSteps[index].name);
     }
   }
 

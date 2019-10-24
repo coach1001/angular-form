@@ -19,6 +19,10 @@ import { FgDynamicFormComponent } from './components/fg-dynamic-form/fg-dynamic-
 import { FgHiddenTextControlComponent } from './controls/fg-hidden-text-control/fg-hidden-text-control.component';
 import { FgAutocompleteControlComponent } from './controls/fg-autocomplete-control/fg-autocomplete-control.component';
 import { FgStepperComponent } from './components/fg-stepper/fg-stepper.component';
+import { FlowService } from './services/flow.service';
+import { FormDataService } from './services/form-data.service';
+import { FlowBackendService } from './services/flow-backend.service';
+import { StepGuard } from './guards/step.guard';
 
 @NgModule({
   declarations: [
@@ -60,7 +64,11 @@ import { FgStepperComponent } from './components/fg-stepper/fg-stepper.component
   ],
   providers: [
     FormGeneratorService,
-    ModuleGuard
+    FlowService,
+    FormDataService,
+    FlowBackendService,
+    ModuleGuard,
+    StepGuard
   ],
   exports: [
     FgDynamicFormComponent,

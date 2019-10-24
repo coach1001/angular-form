@@ -1,10 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Injector } from '@angular/core';
 import { FormGroup, FormArray, FormControl } from '@angular/forms';
 import { FgArrayComponent } from '../fg-array/fg-array.component';
 import { takeUntil } from 'rxjs/operators';
-import { FormGeneratorService } from '../../services/form-generator.service';
 import * as changeCase from 'change-case';
 import { FgBaseElementComponent } from '../fg-base-element/fg-base-element.component';
+import { FormGeneratorService } from '../../services/form-generator.service';
 
 @Component({
   selector: 'app-fg-group',
@@ -27,7 +27,7 @@ export class FgGroupComponent extends FgBaseElementComponent {
     this.controlKeys = Object.keys(this.controlIn.controls);
     this.parentCleared$
       .pipe(
-        takeUntil(this.destroy$)
+        takeUntil(this._destroy$)
       ).subscribe(_ => {
         if (!this._formGenerator.isEmpty(<FormGroup>this.controlIn)) {
           this.cleared$.next();
@@ -35,7 +35,7 @@ export class FgGroupComponent extends FgBaseElementComponent {
       });
     this.parentReset$
       .pipe(
-        takeUntil(this.destroy$)
+        takeUntil(this._destroy$)
       ).subscribe(_ => {
         this.reset$.next();
       });

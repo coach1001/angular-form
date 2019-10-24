@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Injector } from '@angular/core';
 import { FgBaseElementComponent } from '../../components/fg-base-element/fg-base-element.component';
 
 @Component({

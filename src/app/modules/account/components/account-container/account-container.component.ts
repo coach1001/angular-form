@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FlowService } from 'src/app/modules/fg-flow-ui/services/flow.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-account-container',
@@ -7,7 +8,7 @@ import { FlowService } from 'src/app/modules/fg-flow-ui/services/flow.service';
   styleUrls: ['./account-container.component.scss']
 })
 export class AccountContainerComponent {
-
+  
   constructor(
     private _flow: FlowService
   ) { }

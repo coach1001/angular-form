@@ -1,11 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Injector } from '@angular/core';
 import { FormArray, FormGroup, FormControl } from '@angular/forms';
 import { FgGroupComponent } from '../fg-group/fg-group.component';
 import cloneDeep from 'lodash-es/cloneDeep';
 import { takeUntil } from 'rxjs/operators';
-import { FormGeneratorService } from '../../services/form-generator.service';
 import * as changeCase from 'change-case';
 import { FgBaseElementComponent } from '../fg-base-element/fg-base-element.component';
+import { FormGeneratorService } from '../../services/form-generator.service';
 
 @Component({
   selector: 'app-fg-array',
@@ -29,7 +29,7 @@ export class FgArrayComponent extends FgBaseElementComponent {
     this.initKeys();
     this.parentCleared$
       .pipe(
-        takeUntil(this.destroy$)
+        takeUntil(this._destroy$)
       ).subscribe(_ => {
         if (this.controlIn['controls'].length !== 0) {
           this.controlIn.clear();
@@ -39,7 +39,7 @@ export class FgArrayComponent extends FgBaseElementComponent {
       });
     this.parentReset$
       .pipe(
-        takeUntil(this.destroy$)
+        takeUntil(this._destroy$)
       ).subscribe(_ => {
         this.reset$.next();
         this.initKeys();
@@ -79,7 +79,6 @@ export class FgArrayComponent extends FgBaseElementComponent {
       parentReset$: this.reset$,
       parentCleared$: this.cleared$
     };
-
   }
 
   addRow() {
@@ -98,5 +97,4 @@ export class FgArrayComponent extends FgBaseElementComponent {
       this.initKeys();
     }
   }
-
 }

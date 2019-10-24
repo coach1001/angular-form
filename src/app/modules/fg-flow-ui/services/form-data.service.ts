@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { environment } from '../../../../environments/environment';
 
-interface StepData {
+export interface IFlowData {
   module: string,
   flow: string,
   flowId: string,
-  stepName: number;
   updatedAt: Date;
-  data: any;
+  flowData: any;
+  flowContext: any;
 }
 
 @Injectable({
@@ -16,75 +17,107 @@ interface StepData {
 export class FormDataService {
 
   public persistData = true;
-  public stepData$: BehaviorSubject<Array<StepData>> = new BehaviorSubject(null);
-  public clearOnNextGet$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  public allFlowData$: BehaviorSubject<Array<IFlowData>> = new BehaviorSubject(null);
+  public clearFlowOnNextGet$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor() { }
 
-  setStepData(flowId: string, module: string, flow: string, stepIndex: number, data: any) {
-    this.clearOnNextGet$.next(false);
-    const currentData = this.stepData$.value;
-    if (currentData == null) {
-      const newStepDataArray = [];
-      newStepDataArray.push(<StepData>{ module, flow, stepIndex, data, flowId });
-      this.stepData$.next(newStepDataArray);
+  setStepData(flowId: string, module: string, flow: string, stepName: string, data: any) {
+    this.clearFlowOnNextGet$.next(false);
+    const allFlowData = this.allFlowData$.value;
+    if (allFlowData == null) {
+      const newAllFlowData = [];
+      const flowData = {};
+      flowData[stepName] = data;
+      newAllFlowData.push(<IFlowData>{module, flow, flowId, updatedAt: new Date(), flowData });
+      this.allFlowData$.next(newAllFlowData);
     } else {
-      const stepDataIndex = currentData.findIndex(stepData =>
-        stepData.module === module &&
-        stepData.flow === flow &&
-        stepData.stepIndex === stepIndex &&
-        stepData.flowId === flowId
-      );
-      if (stepDataIndex < 0) {
-        currentData.push(<StepData>{ module, flow, stepIndex, data, flowId, updatedAt: new Date() });
+      const flowDataIndex = allFlowData.findIndex(stepData => stepData.flowId === flowId);
+      if (flowDataIndex < 0) {
+        const flowData = {};
+        flowData[stepName] = data;
+        allFlowData.push(<IFlowData>{ module, flow, flowId, updatedAt: new Date(), flowData });
       } else {
-        currentData[stepDataIndex] = <StepData>{ module, flow, stepIndex, data, flowId, updatedAt: new Date() };
+        allFlowData[flowDataIndex].flowData[stepName] = data;
+        allFlowData[flowDataIndex].updatedAt = new Date();
       }
-      this.stepData$.next(currentData);
+      this.allFlowData$.next(allFlowData);
     }
     if (this.persistData) {
-      localStorage.setItem('fg.stepData', JSON.stringify(this.stepData$.value));
+      if (environment.production) {
+        localStorage.setItem('fg.stepData', btoa(JSON.stringify(this.allFlowData$.value)));
+      } else {
+        localStorage.setItem('fg.stepData', JSON.stringify(this.allFlowData$.value));
+      }
     }
   }
 
-  getStepData(flowId: string, module: string, flow: string, stepIndex: number) {
-    let currentData = this.stepData$.value;
-    if (currentData == null) {
+  getFlowData(flowId: string) {
+    let allFlowData = this.allFlowData$.value;
+    if (allFlowData == null) {
       if (this.persistData) {
-        const persistantData = JSON.parse(localStorage.getItem('fg.stepData'));
-        this.stepData$.next(persistantData);
+        let persistantData = null;
+        if (environment.production) {
+          persistantData = JSON.parse(atob(localStorage.getItem('fg.stepData')));
+        } else {
+          persistantData = JSON.parse(localStorage.getItem('fg.stepData'));
+        }
+        this.allFlowData$.next(persistantData);
       } else {
         return null;
       }
     }
-    currentData = this.stepData$.value;
-    if (currentData == null) return null;
-    const stepDataIndex = currentData.findIndex(stepData =>
-      stepData.module === module &&
-      stepData.flow === flow &&
-      stepData.stepIndex == stepIndex &&
-      stepData.flowId === flowId
+    allFlowData = this.allFlowData$.value;
+    if (allFlowData == null) return null;
+    return allFlowData.find(flow => 
+      flow.flowId === flowId)
+  }
+
+  getStepData(flowId: string, module: string, flow: string, stepName: string) {
+    let allFlowData = this.allFlowData$.value;
+    if (allFlowData == null) {
+      if (this.persistData) {
+        let persistantData = null;
+        if (environment.production) {
+          persistantData = JSON.parse(atob(localStorage.getItem('fg.stepData')));
+        } else {
+          persistantData = JSON.parse(localStorage.getItem('fg.stepData'));
+        }
+        this.allFlowData$.next(persistantData);
+      } else {
+        return null;
+      }
+    }
+    allFlowData = this.allFlowData$.value;
+    if (allFlowData == null) return null;
+    const flowDataIndex = allFlowData.findIndex(flowData =>
+      flowData.flowId === flowId
     );
-    const clearStepData = this.clearOnNextGet$.value;
-    if (stepDataIndex < 0 && !clearStepData) return null;
-    if (clearStepData) {
-      this.clearOnNextGet$.next(false);
-      let indexesToDelete = currentData.filter(stepData =>
-        stepData.module === module &&
-        stepData.flow === flow
-      ).map(step => step.stepIndex);
+    const clearFlowData = this.clearFlowOnNextGet$.value;
+    if (flowDataIndex < 0 && !clearFlowData) return null;
+    if (clearFlowData) {
+      this.clearFlowOnNextGet$.next(false);
+      let indexesToDelete = allFlowData.filter(flowData =>
+        flowData.module === module &&
+        flowData.flow === flow
+      ).map((_, index) => index);
       if (indexesToDelete.length < 1) return null;
       indexesToDelete = indexesToDelete.reverse();
       indexesToDelete.forEach(index => {
-        currentData.splice(index, 1);
+        allFlowData.splice(index, 1);
       });
+      this.allFlowData$.next(allFlowData);
       if (this.persistData) {
-        localStorage.setItem('fg.stepData', JSON.stringify(this.stepData$.value));
+        if(environment.production) {
+          localStorage.setItem('fg.stepData', btoa(JSON.stringify(this.allFlowData$.value)));
+        } else {
+          localStorage.setItem('fg.stepData', JSON.stringify(this.allFlowData$.value));
+        }
       }
       return null;
     } else {
-      this.clearOnNextGet$.next(false);
-      return currentData[stepDataIndex].data;
+      this.clearFlowOnNextGet$.next(false);
+      return allFlowData[flowDataIndex].flowData[stepName];
     }
   }
 }

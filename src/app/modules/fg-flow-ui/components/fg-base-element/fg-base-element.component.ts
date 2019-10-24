@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import * as jexl from 'jexl';
 import * as changeCase from 'change-case';
+import { diff } from 'deep-diff';
 
 @Component({
   template: '',
@@ -26,9 +27,12 @@ export abstract class FgBaseElementComponent implements OnInit, OnDestroy {
   visible = true;
   cleared$: Subject<void> = new Subject<void>();
   reset$: Subject<void> = new Subject<void>();
-  destroy$: Subject<void> = new Subject<void>();
 
-  constructor() { }
+  protected _destroy$: Subject<void> = new Subject<void>();
+
+  constructor(
+  ) {
+  }
 
   ngOnInit() {
     this.defaultInit();
@@ -36,14 +40,14 @@ export abstract class FgBaseElementComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 
   elementInit() {
     this.parentCleared$
       .pipe(
-        takeUntil(this.destroy$)
+        takeUntil(this._destroy$)
       ).subscribe(_ => {
         if (this.controlIn.value != null) {
           this.controlIn.patchValue(null);
@@ -56,13 +60,12 @@ export abstract class FgBaseElementComponent implements OnInit, OnDestroy {
     if (this.controlIn.parent != null) {
       this.checkReactivity(this.controlIn.parent.getRawValue());
       this.controlIn.parent.valueChanges.pipe(
-        takeUntil(this.destroy$)
+        takeUntil(this._destroy$)
       ).subscribe(value => {
         this.setDefaultValue();
         this.checkReactivity(value);
       });
     }
-    
   }
 
   setDefaultValue() {
@@ -78,7 +81,6 @@ export abstract class FgBaseElementComponent implements OnInit, OnDestroy {
     const clear: Array<boolean> = [];
 
     if (this.controlIn['element'].reactivity) {
-
       this.controlIn['element'].reactivity.forEach(r => {
         const result = jexl.evalSync(r.expression, scopeValue);
         switch (r.type) {
