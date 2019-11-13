@@ -92,7 +92,7 @@ export const TestModule = {
                         {
                             type: 'CONTROL',
                             subType: 'AUTOCOMPLETE_INPUT',
-                            layout: { stretchLarge: 15, stretchSmall: 30 },
+                            layout: { stretchLarge: 16, stretchSmall: 100 },
                             name: 'title',
                             validations: [
                                 { type: 'required' }
@@ -106,7 +106,7 @@ export const TestModule = {
                         {
                             type: 'CONTROL',
                             subType: 'TEXT_INPUT',
-                            layout: { stretchLarge: 35, stretchSmall: 70 },
+                            layout: { stretchLarge: 42, stretchSmall: 100 },
                             name: 'firstName',
                             validations: [
                                 { type: 'required' }
@@ -115,7 +115,7 @@ export const TestModule = {
                         {
                             type: 'CONTROL',
                             subType: 'TEXT_INPUT',
-                            layout: { stretchLarge: 50, stretchSmall: 100 },
+                            layout: { stretchLarge: 42, stretchSmall: 100 },
                             name: 'lastName',
                             validations: [
                                 { type: 'required' }
