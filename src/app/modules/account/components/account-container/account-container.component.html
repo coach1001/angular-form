@@ -6,7 +6,7 @@
         <mat-card-content>
             <router-outlet></router-outlet>
         </mat-card-content>
-        <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutAlign.gt-sm="center center" fxLayoutGap="16px">
+        <div fxLayout.gt-sm="row" fxLayout.lt-md="column-reverse" fxLayoutAlign.gt-sm="center center" fxLayoutGap="16px">
             <button class="mat-elevation-z2 outline" mat-stroked-button color="accent" (click)="back()">Back</button>
             <button class="mat-elevation-z2" mat-raised-button color="primary" (click)="next()">Continue</button>
         </div>
