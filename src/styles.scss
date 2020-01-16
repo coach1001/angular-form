@@ -206,6 +206,14 @@ h2 {
   }
 }
 
+button {
+  &.mat-accent {
+    &.mat-raised-button {
+      color: white !important;
+    }    
+  }
+}
+
 * {
   text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
   text-rendering: optimizeLegibility !important;
