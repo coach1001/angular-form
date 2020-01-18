@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { DuiBaseArrayComponent } from '../../base/dui-base-array/dui-base-array.component';
 import { DuiFormGeneratorService } from '../../../../dui-form/services/dui-form-generator.service';
+import { DuiComponentsRegistryService } from '../../../services/dui-components-registry.service';
 
 @Component({
   selector: 'dui-default-array',
@@ -9,8 +10,10 @@ import { DuiFormGeneratorService } from '../../../../dui-form/services/dui-form-
 })
 export class DuiDefaultArrayComponent extends DuiBaseArrayComponent {
 
-  constructor(private _fgs_: DuiFormGeneratorService) {
-    super(_fgs_);
+  constructor(
+    private _fgs_: DuiFormGeneratorService,
+    private _crs_: DuiComponentsRegistryService) {
+    super(_fgs_, _crs_);
   }
 
 }

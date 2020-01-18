@@ -1,1 +1,9 @@
-<p>dui-default-boolean works!</p>
+<form [formGroup]="parent" *ngIf="visible">
+    <mat-form-field appearance="none" floatLabel="always" fxFlex="100">
+        <mat-label>{{label}}</mat-label>
+        <mat-slide-toggle [formControlName]="name"></mat-slide-toggle>
+        <input matInput [formControlName]="name" style="display: none;" hidden>
+        <mat-hint *ngIf="hint">{{hint}}</mat-hint>
+        <mat-error>{{error}}</mat-error>
+    </mat-form-field>
+</form>

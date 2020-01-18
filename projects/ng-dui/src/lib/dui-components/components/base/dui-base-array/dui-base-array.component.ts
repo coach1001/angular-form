@@ -5,7 +5,8 @@ import { takeUntil } from 'rxjs/operators';
 import * as jexl from 'jexl';
 import * as changeCase from 'change-case';
 import cloneDeep from 'lodash-es/cloneDeep';
-import { DuiFormGeneratorService } from 'projects/ng-dui/src/lib/dui-form/services/dui-form-generator.service';
+import { DuiFormGeneratorService } from '../../../../dui-form/services/dui-form-generator.service';
+import { DuiComponentsRegistryService } from '../../../services/dui-components-registry.service';
 
 @Component({
   template: ''
@@ -34,7 +35,8 @@ export class DuiBaseArrayComponent implements OnInit, OnDestroy {
   groupKeys: Array<Array<string>>;
 
   constructor(
-    private _fgs: DuiFormGeneratorService
+    private _fgs: DuiFormGeneratorService,
+    private _crs: DuiComponentsRegistryService
   ) { }
 
   ngOnInit() {

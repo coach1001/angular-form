@@ -1,1 +1,9 @@
-<p>dui-default-number works!</p>
+<form [formGroup]="parent" *ngIf="visible">
+    <mat-form-field floatLabel="always" fxFlex="100">
+        <mat-label>{{label}}</mat-label>
+        <input matInput [formControlName]="name" digitOnly [decimal]="allowDecimal">
+        <mat-hint *ngIf="hint">{{hint}}</mat-hint>
+        <mat-error>{{error}}</mat-error>
+    </mat-form-field>
+</form>
+

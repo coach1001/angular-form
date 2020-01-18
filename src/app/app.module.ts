@@ -9,7 +9,7 @@ import { MaterialModule } from './modules/material/material.module';
 import { FgFlowUiModule } from './modules/fg-flow-ui/fg-flow-ui.module';
 import { AccountModule } from './modules/account/account.module';
 import { HttpClientModule } from '@angular/common/http';
-import { NgDuiModule } from 'projects/ng-dui/src/public-api';
+import { NgDuiModule } from 'projects/ng-dui/src/lib/ng-dui.module';
 
 @NgModule({
   declarations: [

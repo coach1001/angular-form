@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import * as jexl from 'jexl';
 import { DuiFormGeneratorService } from '../../../../dui-form/services/dui-form-generator.service';
+import { DuiComponentsRegistryService } from '../../../services/dui-components-registry.service';
 
 @Component({
   template: ''
@@ -30,7 +31,8 @@ export class DuiBaseControlComponent implements OnInit, OnDestroy {
   protected _destroy$: Subject<void> = new Subject<void>();
 
   constructor(
-    private _fgs: DuiFormGeneratorService
+    private _fgs: DuiFormGeneratorService,
+    private _crs: DuiComponentsRegistryService
   ) {
   }
 

@@ -1,1 +1,19 @@
-<p>dui-default-array works!</p>
+<h2 *ngIf="label && visible">{{label}}</h2>
+<!-- <form [formGroup]="parent" *ngIf="visible"> -->
+<form [formGroup]="parent" [ngClass]="{'hidden': !visible}">
+    <div class="group" fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap="20px grid">   
+        <mat-error *ngIf="error && controlIn.touched">{{error}}</mat-error>
+        <ng-container *ngFor="let group of groupKeys;let gIndex = index;">
+            <ng-container *ngFor="let key of group;let i = index;">
+                <div [fxFlex]="controlIn?.element?.elements[i]?.layout?.stretchLarge"
+                    [fxFlex.lt-md]="controlIn?.element?.elements[i]?.layout?.stretchSmall">
+                    <ndc-dynamic [ndcDynamicComponent]="getComponent(key, gIndex)"
+                        [ndcDynamicInputs]="getComponentInputs(key, gIndex)">
+                    </ndc-dynamic>
+                </div>
+            </ng-container>
+        </ng-container>
+    </div>
+    <button [disabled]="controlIn.disabled" type="button" class="mat-elevation-z6 add" mat-raised-button color="primary"
+        (click)="addRow()">Add</button>
+</form>
