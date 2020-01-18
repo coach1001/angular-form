@@ -131,10 +131,7 @@ export const TestModule = {
                             viewTemplate: 'defaultBoolean',
                             elementType: 2,
                             layout: { stretchLarge: 42, stretchSmall: 100 },
-                            name: 'hasDependants',
-                            validations: [
-                                { type: 'required' }
-                            ]                            
+                            name: 'hasDependants'                    
                         },
                         {
                             viewTemplate: 'defaultArray',
@@ -144,12 +141,12 @@ export const TestModule = {
                             reactivity: [
                                 { type: 'clearWhen', expression: "!hasDependants" },
                                 { type: 'visibleWhen', expression: "hasDependants" }
-                            ],
+                            ],                
                             elements: [
                                 {
                                     viewTemplate: 'defaultText',
                                     elementType: 2,
-                                    layout: { stretchLarge: 33, stretchSmall: 100 },
+                                    layout: { stretchLarge: 30, stretchSmall: 100 },
                                     name: 'firstName',
                                     validations: [
                                         { type: 'required' }
@@ -158,7 +155,7 @@ export const TestModule = {
                                 {
                                     viewTemplate: 'defaultText',
                                     elementType: 2,
-                                    layout: { stretchLarge: 33, stretchSmall: 100 },
+                                    layout: { stretchLarge: 30, stretchSmall: 100 },
                                     name: 'lastName',
                                     validations: [
                                         { type: 'required' }
@@ -167,12 +164,53 @@ export const TestModule = {
                                 {
                                     viewTemplate: 'defaultDatetime',
                                     elementType: 2,
-                                    layout: { stretchLarge: 33, stretchSmall: 100 },
+                                    layout: { stretchLarge: 30, stretchSmall: 100 },
                                     name: 'dateOfBirth',
                                     validations: [
                                         { type: 'required' }
                                     ]                                    
                                 }
+                            ]
+                        },
+                        {
+                            viewTemplate: 'defaultBoolean',
+                            elementType: 2,
+                            layout: { stretchLarge: 42, stretchSmall: 100 },
+                            name: 'hasDriversLicence'                            
+                        },
+                        {
+                            viewTemplate: 'defaultObject',
+                            elementType: 0,
+                            layout: { stretchLarge: 100, stretchSmall: 100 },
+                            name: 'driversLicenceDetails',
+                            reactivity: [
+                                { type: 'clearWhen', expression: "!hasDriversLicence" },
+                                { type: 'visibleWhen', expression: "hasDriversLicence" }
+                            ],                            
+                            elements: [                                
+                                {
+                                    viewTemplate: 'defaultSelect',
+                                    elementType: 2,
+                                    layout: { stretchLarge: 50, stretchSmall: 100 },
+                                    name: 'code',
+                                    validations: [
+                                        { type: 'required' }
+                                    ],
+                                    options: [
+                                        { value: 'A', displayValue: 'Code A' },
+                                        { value: 'B', displayValue: 'Code B' },
+                                        { value: 'C', displayValue: 'Code C' }
+                                    ],
+                                },  
+                                {
+                                    viewTemplate: 'defaultDatetime',
+                                    elementType: 2,
+                                    layout: { stretchLarge: 50, stretchSmall: 100 },
+                                    name: 'dateAcquired',
+                                    validations: [
+                                        { type: 'required' }
+                                    ]                                    
+                                }                                                                
                             ]
                         }
 

@@ -125,7 +125,7 @@ $custom-typography: mat-typography-config(
   $caption: mat-typography-level(12px, 20px, 400),
   $button: mat-typography-level(18px, 18px, 500),
   // Line-height must be unit-less fraction of the font-size.
-  $input: mat-typography-level(18px, 1.128, 500)
+  $input: mat-typography-level(18px, 1.128, 600)
 );
 
 @include angular-material-typography($custom-typography);
@@ -186,15 +186,6 @@ input[type=number]::-webkit-outer-spin-button {
   }
 }
 
-ndc-dynamic {
-  padding: 0 !important;
-  margin: 0 !important;
-}
-
-// .group {
-//   padding: 0 !important;
-// }
-
 h2 {
   margin-block-start: 0px;
 }
@@ -220,3 +211,10 @@ button {
   -webkit-font-smoothing: antialiased !important;
   -moz-osx-font-smoothing: grayscale !important; 
 }
+
+.bool-switch {
+  .mat-form-field-wrapper {
+      padding-bottom: 0 !important;
+  }
+}
+

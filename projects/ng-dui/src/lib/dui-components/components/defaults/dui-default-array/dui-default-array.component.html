@@ -8,10 +8,12 @@
                 <div [fxFlex]="controlIn?.element?.elements[i]?.layout?.stretchLarge"
                     [fxFlex.lt-md]="controlIn?.element?.elements[i]?.layout?.stretchSmall">
                     <dui-dynamic [inputs]="getComponentInputs(key, gIndex)"></dui-dynamic>
-                </div>
+                </div>                
             </ng-container>
+            <button class="cicon-dustbin no-padding" mat-mini-fab color="warn" (click)="deleteRow(gIndex)"></button>
         </ng-container>
     </div>
+
     <button [disabled]="controlIn.disabled" type="button" class="mat-elevation-z6 add" mat-raised-button color="primary"
         (click)="addRow()">Add</button>
 </form>
