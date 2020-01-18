@@ -10,6 +10,7 @@ import { FgFlowUiModule } from './modules/fg-flow-ui/fg-flow-ui.module';
 import { AccountModule } from './modules/account/account.module';
 import { HttpClientModule } from '@angular/common/http';
 import { NgDuiModule } from 'projects/ng-dui/src/lib/ng-dui.module';
+import { AccountDuiModule } from './modules/account-dui/account-dui.module';
 
 @NgModule({
   declarations: [
@@ -26,10 +27,11 @@ import { NgDuiModule } from 'projects/ng-dui/src/lib/ng-dui.module';
     MaterialModule,
     NgDuiModule.forRoot({
       flowConfigSystem: 'portal',
-      production: true
+      production: false
     }),
-    FgFlowUiModule,
-    AccountModule
+    // FgFlowUiModule,
+    // AccountModule,
+    AccountDuiModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,11 +1,10 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy, AfterViewInit, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import * as jexl from 'jexl';
 import * as changeCase from 'change-case';
 import { DuiFormGeneratorService } from '../../../../dui-form/services/dui-form-generator.service';
-import { DuiComponentsRegistryService } from '../../../services/dui-components-registry.service';
 
 @Component({
   template: ''
@@ -33,8 +32,7 @@ export class DuiBaseObjectComponent implements OnInit, OnDestroy  {
   controlKeys: Array<string> = [];
 
   constructor(
-    private _fgs: DuiFormGeneratorService,    
-    private _crs: DuiComponentsRegistryService
+    private _fgs: DuiFormGeneratorService
   ) {}
 
   ngOnInit() {

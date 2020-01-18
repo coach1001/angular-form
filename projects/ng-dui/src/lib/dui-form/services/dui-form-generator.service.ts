@@ -1,10 +1,11 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { FormArray, FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { BehaviorSubject, Subject } from 'rxjs';
 import cloneDeep from 'lodash-es/cloneDeep';
 import { MustMatch } from '../form-validators/must-match.validator';
 import { RequiredIf } from '../form-validators/required-if.validator';
 import * as changeCase from 'change-case';
+import { ElementType } from './dui-elements.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -36,14 +37,14 @@ export class DuiFormGeneratorService {
   }
 
   processElement_r(element, currFormElm: FormGroup): FormGroup {
-    switch (element.type) {
-      case 'CONTROL':
+    switch (element.elementType) {
+      case ElementType.Control:
         this.processControl(element, currFormElm)
         break;
-      case 'OBJECT':
+      case ElementType.Object:
         this.processObject_r(element, currFormElm);
         break;
-      case 'ARRAY':
+      case ElementType.Array:
         this.processArray_r(element, currFormElm);
         break;
       default: break;

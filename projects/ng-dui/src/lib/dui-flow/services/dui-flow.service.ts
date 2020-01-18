@@ -16,7 +16,7 @@ export interface IFlowDefinition {
 @Injectable({
   providedIn: 'root'
 })
-export class DuiFlowService implements OnInit {
+export class DuiFlowService {
 
   public moduleDefinitions$: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   public currentFlow$: BehaviorSubject<IFlowDefinition> = new BehaviorSubject(null);
@@ -35,10 +35,8 @@ export class DuiFlowService implements OnInit {
     private _fds: DuiFormDataService,
     private _rt: Router,
     private _fbs: DuiFlowBackendService
-  ) { }
-
-  ngOnInit() {
-    this.system = this._config.flowConfigSystem;
+  ) { 
+    this.system = _config.flowConfigSystem;
   }
 
   fetchModule(module: string): void {

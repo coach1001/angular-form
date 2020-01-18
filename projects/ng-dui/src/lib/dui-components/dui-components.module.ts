@@ -13,6 +13,7 @@ import { DuiDefaultNumberComponent } from './components/defaults/dui-default-num
 import { DuiDefaultSelectComponent } from './components/defaults/dui-default-select/dui-default-select.component';
 import { DuiDefaultMultiselectComponent } from './components/defaults/dui-default-multiselect/dui-default-multiselect.component';
 import { DuiDefaultDatetimeComponent } from './components/defaults/dui-default-datetime/dui-default-datetime.component';
+
 import { MaterialModule } from '../material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -21,6 +22,8 @@ import { DuiComponentsRegistryService } from './services/dui-components-registry
 import { DuiFormComponent } from './components/dui-form/dui-form.component';
 import { DuiFormModule } from '../dui-form/dui-form.module';
 import { DuiFlowModule } from '../dui-flow/dui-flow.module';
+import { DuiDefaultHideableTextComponent } from './components/defaults/dui-default-hideable-text/dui-default-hideable-text.component';
+
 
 @NgModule({
   declarations: [
@@ -38,18 +41,19 @@ import { DuiFlowModule } from '../dui-flow/dui-flow.module';
     DuiDefaultSelectComponent,
     DuiDefaultMultiselectComponent,
     DuiDefaultDatetimeComponent,
-    DuiFormComponent
-
+    DuiDefaultHideableTextComponent,
+    DuiFormComponent,
+    
   ],
   imports: [
-    CommonModule,    
+    CommonModule,
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
     MaterialModule,
     DigitOnlyModule,
     DuiFormModule,
-    DuiFlowModule   
+    DuiFlowModule
   ],
   entryComponents: [
     DuiDynamicComponent,
@@ -60,7 +64,9 @@ import { DuiFlowModule } from '../dui-flow/dui-flow.module';
     DuiDefaultNumberComponent,
     DuiDefaultSelectComponent,
     DuiDefaultMultiselectComponent,
-    DuiDefaultDatetimeComponent
+    DuiDefaultDatetimeComponent,
+    DuiDefaultHideableTextComponent,
+    DuiFormComponent
   ],
   exports: [
     DynamicAnchorDirective,
@@ -76,25 +82,28 @@ import { DuiFlowModule } from '../dui-flow/dui-flow.module';
     DuiDefaultNumberComponent,
     DuiDefaultSelectComponent,
     DuiDefaultMultiselectComponent,
-    DuiDefaultDatetimeComponent    
+    DuiDefaultDatetimeComponent,
+    DuiDefaultHideableTextComponent,
+    DuiFormComponent
   ],
   providers: [
     DuiComponentsRegistryService
   ]
 })
-export class DuiComponentsModule { 
+export class DuiComponentsModule {
   constructor(private _crs: DuiComponentsRegistryService) {
-    
+
     _crs.addComponent('defaultObject', DuiDefaultObjectComponent);
     _crs.addComponent('defaultArray', DuiDefaultArrayComponent);
-    
+
     _crs.addComponent('defaultText', DuiDefaultTextComponent);
     _crs.addComponent('defaultBoolean', DuiDefaultBooleanComponent);
     _crs.addComponent('defaultNumber', DuiDefaultNumberComponent);
     _crs.addComponent('defaultSelect', DuiDefaultSelectComponent);
     _crs.addComponent('defaultMultiselect', DuiDefaultMultiselectComponent);
     _crs.addComponent('defaultDatetime', DuiDefaultDatetimeComponent);
-    
+    _crs.addComponent('defaultHideableText', DuiDefaultHideableTextComponent);
+
   }
 
 }

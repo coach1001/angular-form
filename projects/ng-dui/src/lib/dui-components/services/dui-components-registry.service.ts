@@ -18,7 +18,10 @@ export class DuiComponentsRegistryService {
   }
 
   getComponent(key: string): any {
-    return this._registry.find(item => item.key === key).value;
+    const item = this._registry.find(item => item.key === key);
+    if (item != null) {
+      return item.value;
+    }
   }
 
 }
