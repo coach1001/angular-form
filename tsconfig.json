@@ -18,6 +18,14 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "ng-dui": [
+        "dist/ng-dui"
+      ],
+      "ng-dui/*": [
+        "dist/ng-dui/*"
+      ]
+    }
   }
 }

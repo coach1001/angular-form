@@ -134,6 +134,41 @@
           }
         }
       }
+    },
+    "ng-dui": {
+      "projectType": "library",
+      "root": "projects/ng-dui",
+      "sourceRoot": "projects/ng-dui/src",
+      "prefix": "",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/ng-dui/tsconfig.lib.json",
+            "project": "projects/ng-dui/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ng-dui/src/test.ts",
+            "tsConfig": "projects/ng-dui/tsconfig.spec.json",
+            "karmaConfig": "projects/ng-dui/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/ng-dui/tsconfig.lib.json",
+              "projects/ng-dui/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "defaultProject": "angular-form"

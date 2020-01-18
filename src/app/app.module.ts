@@ -9,6 +9,7 @@ import { MaterialModule } from './modules/material/material.module';
 import { FgFlowUiModule } from './modules/fg-flow-ui/fg-flow-ui.module';
 import { AccountModule } from './modules/account/account.module';
 import { HttpClientModule } from '@angular/common/http';
+import { NgDuiModule } from 'projects/ng-dui/src/public-api';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,10 @@ import { HttpClientModule } from '@angular/common/http';
     ReactiveFormsModule,
     FlexLayoutModule,
     MaterialModule,
+    NgDuiModule.forRoot({
+      flowConfigSystem: 'portal',
+      production: true
+    }),
     FgFlowUiModule,
     AccountModule
   ],
