@@ -35,7 +35,7 @@ export class DuiFlowService {
     private _fds: DuiFormDataService,
     private _rt: Router,
     private _fbs: DuiFlowBackendService
-  ) { 
+  ) {
     this.system = _config.flowConfigSystem;
   }
 
@@ -48,8 +48,9 @@ export class DuiFlowService {
     }
   }
 
-  registerRoute(module: string, flow: string, startUrl: string, routes: any) {
+  registerRoute(routePrefix: string, module: string, flow: string, startUrl: string, routes: any) {
     this.routeRegistration.push({
+      routePrefix,
       module,
       flow,
       startUrl,
@@ -57,9 +58,9 @@ export class DuiFlowService {
     });
   }
 
-  checkIfRouteRegistered(route: string, flow: string): string {
+  checkIfRouteRegistered(routePrefix: string, moduleFromUrl: string, flowFromUrl: string): string {
     const registered = this.routeRegistration
-      .find(value => value.route === route && value.flow === flow);
+      .find(value => value.module === moduleFromUrl && value.routePrefix === routePrefix && value.flow === flowFromUrl);
     if (registered != null) {
       return registered.startUrl;
     } else {
@@ -79,14 +80,14 @@ export class DuiFlowService {
     this.currentStep$.next(this.currentFlow$.value.flow.steps.find(step => step.name === stepName));
   }
 
-  initFlow(module: string, flow: string): void {
+  initFlow(module: string, flow: string, unregisteredFlow: boolean): void {
     const moduleDefinitions = this.moduleDefinitions$.value;
     const moduleDefinition = moduleDefinitions
       .find(m => m.system === this.system && m.module === module)
     if (!moduleDefinition) return;
     const flowDefinition = moduleDefinition.flows.find(f => f.flow === flow);
     if (!flowDefinition) return;
-    if (!this.currentFlow$.value || !this.currentFlow$.value.flowStarted) {
+    if (!this.currentFlow$.value || !this.currentFlow$.value.flowStarted || unregisteredFlow) {
       this.currentFlow$.next({ flow: flowDefinition, module: module, flowStarted: true });
       this.currentStepName$.next(this.currentFlow$.value.flow.steps[0].name);
       this.currentStep$.next(this.currentFlow$.value.flow.steps.find(step => step.name === this.currentStepName$.value));
@@ -115,12 +116,12 @@ export class DuiFlowService {
   async evalActions(actions: any): Promise<boolean> {
     let continueFlow = true;
     for (const action of actions) {
-      if(continueFlow) {
-        switch(action.type) {
+      if (continueFlow) {
+        switch (action.type) {
           case 'SERVER_TASK': await this.RunServerTask(); console.log('SERVER_TASK'); break;
           case 'ABSOLUTE_REDIRECT': console.log('ABSOLUTE_REDIRECT');
             this._rt.navigateByUrl(action.value); continueFlow = false; break;
-          default: break;          
+          default: break;
         }
       }
     }
@@ -131,7 +132,7 @@ export class DuiFlowService {
     let continueFlow = true;
     const currentFlow = this.currentFlow$.value.flow;
     switch (trigger) {
-      case 'POST_FLOW': this.evalActions(currentFlow.actions) ; break;
+      case 'POST_FLOW': this.evalActions(currentFlow.actions); break;
       default: break;
     }
     return continueFlow;
@@ -190,4 +191,5 @@ export class DuiFlowService {
       return;
     }
   }
+
 }

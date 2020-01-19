@@ -1,7 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router, Route } from '@angular/router';
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router, Route, UrlSegment } from '@angular/router';
 import { Observable } from 'rxjs';
-import * as changeCase from 'change-case';
 import { StepGuard } from './step.guard';
 import * as uuidv4 from 'uuid/v4';
 import { DuiFormComponent } from '../dui-components/components/dui-form/dui-form.component';
@@ -24,7 +23,9 @@ export class ModuleGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (this._fs.currentFlow$.value != null && this._fs.currentFlow$.value.flowStarted) {
+    const unregisteredFlow = state['unregisteredFlow'] != null ? state['unregisteredFlow'] : false 
+    
+    if (this._fs.currentFlow$.value != null && this._fs.currentFlow$.value.flowStarted && !unregisteredFlow) {
       const flowId = next.queryParams.flowId;
       if (flowId == null) {
         this._rt.navigateByUrl(`${state.url}?flowId=${uuidv4()}`);
@@ -33,27 +34,54 @@ export class ModuleGuard implements CanActivate {
         return true;
       }
     } else {
+
       const flowId = next.queryParams.flowId;
-      const module = next.data.module;
-      const urlSegments = state.url.split('/');
-      urlSegments.shift();
-      const route = next.url[0].path;
-      const flow = urlSegments[1];
-      const step = urlSegments[2];
+      const moduleFromRouteData = next.data.module;
+      const urlSegments = <UrlSegment[]>this._rt.parseUrl(state.url).root.children['primary'].segments;
+
+      let routePrefix = '';
+      let flowFromUrl = '';
+      let stepFromUrl = '';
+
+      let foundModule = false;
+      let setFlow = false;
+      let setStep = false;
+
+      urlSegments.forEach(segment => {
+        if (foundModule) {
+          if (setFlow) {
+            setFlow = false;
+            setStep = true;
+            flowFromUrl = segment.path;
+          } else if (setStep) {
+            setStep = false;
+            stepFromUrl = segment.path;
+          }
+        }
+        if (segment.path === moduleFromRouteData && !foundModule) {
+          foundModule = true;
+          setFlow = true;
+        } else if (!foundModule) {
+          routePrefix += `${segment.path}/`;
+        }
+      });
+      routePrefix = routePrefix.substring(0, routePrefix.length - 1);
 
       // Check if module registered if not get and add it to definitions
-      this._fs.fetchModule(module);
+      this._fs.fetchModule(moduleFromRouteData);
 
       // Check if routes registered if not create and register the routes
-      const startUrl = this._fs.checkIfRouteRegistered(route, flow);
+      const startUrl = this._fs.checkIfRouteRegistered(routePrefix, moduleFromRouteData, flowFromUrl);
+
       if (startUrl != null) {
         this._rt.navigateByUrl(`${startUrl}?flowId=${flowId == null ? uuidv4() : flowId}`);
       } else {
-        this._fs.initFlow(module, flow);
+        this._fs.initFlow(moduleFromRouteData, flowFromUrl, unregisteredFlow);        
         const currentFlow = this._fs.currentFlow$.value;
         if (currentFlow != null) {
-          const routeConfig = this.buildRoutes(route, module, flow, currentFlow.flow.steps, step);
-          this._fs.registerRoute(module, flow, routeConfig.startPathForFlow, routeConfig.routes);
+          const routeConfig = this.buildRoutes(routePrefix, moduleFromRouteData, flowFromUrl, currentFlow.flow.steps, stepFromUrl);
+          console.log(this._rt.config);
+          this._fs.registerRoute(routePrefix, moduleFromRouteData, flowFromUrl, routeConfig.startPathForFlow, routeConfig.routes);
           if (currentFlow.flow.resumable || !this._config.production) {
             this._rt.navigateByUrl(`${routeConfig.startUrl}?flowId=${flowId == null ? uuidv4() : flowId}`);
           } else {
@@ -67,48 +95,67 @@ export class ModuleGuard implements CanActivate {
   };
 
 
-  buildRoutes(routeIn: string, module: string, flow: string, steps: any, startStep: string): any {
+  buildRoutes(routePrefix: string, moduleFromRouteData: string, flowFromUrl: string, steps: any, stepFromUrl: string): any {
+
     let startPathForFlow = '';
     let startUrl = '';
     let routes = [];
 
-    const moduleMainRoute = this._rt.config.find(route => route.data.module === module);
+    const moduleMainRoute = this._rt.config.find(route => route.data.module === moduleFromRouteData);
+
+    let flowRoute;
+
     if (moduleMainRoute != null) {
-      moduleMainRoute.children = [];
+      moduleMainRoute.children.unshift({
+        path: flowFromUrl
+      });
+      flowRoute = moduleMainRoute.children[0];
+      flowRoute.children = [];
     } else {
       return;
     }
+
     steps.forEach((step, stepIndex) => {
-      const path = `${changeCase.kebab(flow)}/${changeCase.kebab(step.name)}`;
+
+      const stepSegment = step.name;
+
       if (stepIndex === 0) {
-        const startPathToReroute = `${routeIn}/${changeCase.kebab(flow)}`;
-        const startRoute: Route = {
-          path: startPathToReroute,
-          redirectTo: `/${routeIn}/${path}`
+        const redirectFlowToFlowStartStep: Route = {
+          path: `${routePrefix}/${moduleFromRouteData}/${flowFromUrl}`,
+          redirectTo: `${routePrefix}/${moduleFromRouteData}/${flowFromUrl}/${stepSegment}`,
+          pathMatch: 'full'
+        };
+        this._rt.config.unshift(redirectFlowToFlowStartStep);
+        startPathForFlow = `${routePrefix}/${moduleFromRouteData}/${flowFromUrl}`;
+        if (stepFromUrl == null || stepFromUrl === '') {
+          startUrl = `${routePrefix}/${moduleFromRouteData}/${flowFromUrl}/${stepSegment}`;
+        } else {
+          startUrl = `${routePrefix}/${moduleFromRouteData}/${flowFromUrl}/${stepFromUrl}`;
         }
-        this._rt.config.push(startRoute);
-        startPathForFlow = startPathToReroute;
-        startUrl = `${startPathToReroute}/${startStep}`;
       }
-      const route: Route = {
-        path: path,
+
+      const stepRoute: Route = {
+        path: stepSegment,
         component: DuiFormComponent,
         canActivate: [StepGuard],
         data: {
-          module,
-          flow,
+          module: moduleFromRouteData,
+          flow: flowFromUrl,
           stepName: step.name,
           stepIndex
         }
       }
-      moduleMainRoute.children.push(route);
+
+      flowRoute.children.push(stepRoute);
+
       routes.push({
-        module,
-        flow,
+        moduleFromRouteData,
+        flowFromUrl,
         stepIndex,
         stepName: step.name,
-        absolutePath: `/${routeIn}/${path}`
-      })
+        absolutePath: `${routePrefix}/${moduleFromRouteData}/${flowFromUrl}/${stepSegment}`
+      });
+
     });
     return {
       startPathForFlow,
@@ -116,4 +163,5 @@ export class ModuleGuard implements CanActivate {
       routes
     }
   }
+
 }

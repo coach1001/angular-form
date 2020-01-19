@@ -3,6 +3,59 @@ export const TestModule = {
     module: 'account',
     flows: [
         {
+            flow: 'passwordReset',
+            stepper: 'flat-linear',
+            resumable: false,
+            actions: [],
+            steps: [
+                {
+                    name: 'enterNewPassword',
+                    icon: 'cicon-edit',
+                    viewTemplate: 'defaultObject',
+                    elementType: 0,
+                    validations: [
+                        { type: 'mustMatch', value: ['password', 'confirmPassword'] }
+                    ],
+                    elements: [
+                        {
+                            viewTemplate: 'defaultHideableText',
+                            elementType: 2,
+                            layout: { stretchLarge: 100, stretchSmall: 100 },
+                            name: 'oldPassword',
+                            validations: [
+                                { type: 'required' }                                
+                            ]
+                        },
+                        {
+                            viewTemplate: 'defaultHideableText',
+                            elementType: 2,
+                            layout: { stretchLarge: 50, stretchSmall: 100 },
+                            name: 'newPassword',
+                            validations: [
+                                { type: 'required' }                                
+                            ]
+                        },
+                        {
+                            viewTemplate: 'defaultHideableText',
+                            elementType: 2,
+                            layout: { stretchLarge: 50, stretchSmall: 100 },
+                            name: 'confirmPassword',
+                            validations: [
+                                { type: 'required' }                                
+                            ]
+                        },
+                    ] 
+                },
+                {
+                    name: 'done',
+                    icon: 'cicon-tick',
+                    viewTemplate: 'defaultObject',
+                    elementType: 0,
+                    elements: []
+                }
+            ]
+        },
+        {
             flow: 'registration',
             stepper: 'flat-linear',
             resumable: false,
@@ -131,7 +184,7 @@ export const TestModule = {
                             viewTemplate: 'defaultBoolean',
                             elementType: 2,
                             layout: { stretchLarge: 42, stretchSmall: 100 },
-                            name: 'hasDependants'                    
+                            name: 'hasDependants'
                         },
                         {
                             viewTemplate: 'defaultArray',
@@ -141,7 +194,7 @@ export const TestModule = {
                             reactivity: [
                                 { type: 'clearWhen', expression: "!hasDependants" },
                                 { type: 'visibleWhen', expression: "hasDependants" }
-                            ],                
+                            ],
                             elements: [
                                 {
                                     viewTemplate: 'defaultText',
@@ -168,7 +221,7 @@ export const TestModule = {
                                     name: 'dateOfBirth',
                                     validations: [
                                         { type: 'required' }
-                                    ]                                    
+                                    ]
                                 }
                             ]
                         },
@@ -176,7 +229,7 @@ export const TestModule = {
                             viewTemplate: 'defaultBoolean',
                             elementType: 2,
                             layout: { stretchLarge: 42, stretchSmall: 100 },
-                            name: 'hasDriversLicence'                            
+                            name: 'hasDriversLicence'
                         },
                         {
                             viewTemplate: 'defaultObject',
@@ -186,8 +239,8 @@ export const TestModule = {
                             reactivity: [
                                 { type: 'clearWhen', expression: "!hasDriversLicence" },
                                 { type: 'visibleWhen', expression: "hasDriversLicence" }
-                            ],                            
-                            elements: [                                
+                            ],
+                            elements: [
                                 {
                                     viewTemplate: 'defaultSelect',
                                     elementType: 2,
@@ -197,11 +250,11 @@ export const TestModule = {
                                         { type: 'required' }
                                     ],
                                     options: [
-                                        { value: {id: 'A', metaData: {}}, displayValue: 'Code A' },
-                                        { value: {id: 'B', metaData: {}}, displayValue: 'Code B' },
-                                        { value: {id: 'C', metaData: {}}, displayValue: 'Code C' }
+                                        { value: { id: 'A', metaData: {} }, displayValue: 'Code A' },
+                                        { value: { id: 'B', metaData: {} }, displayValue: 'Code B' },
+                                        { value: { id: 'C', metaData: {} }, displayValue: 'Code C' }
                                     ],
-                                },  
+                                },
                                 {
                                     viewTemplate: 'defaultDatetime',
                                     elementType: 2,
@@ -209,8 +262,8 @@ export const TestModule = {
                                     name: 'dateAcquired',
                                     validations: [
                                         { type: 'required' }
-                                    ]                                    
-                                }                                                                
+                                    ]
+                                }
                             ]
                         },
                         {
@@ -220,8 +273,8 @@ export const TestModule = {
                             name: 'dateOfBirth',
                             validations: [
                                 { type: 'required' }
-                            ]                                    
-                        } 
+                            ]
+                        }
                     ]
                 },
                 {

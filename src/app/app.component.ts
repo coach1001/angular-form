@@ -27,6 +27,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
   gotoRegistration(): void {
     this._formData.clearFlowOnNextGet$.next(true);
-    this._router.navigateByUrl('account/registration');
+    this._router.navigateByUrl('flow/account/registration');
+  }
+
+  gotoResetPassword(): void {
+    this._formData.clearFlowOnNextGet$.next(true);
+    this._router.navigateByUrl('flow/account/passwordReset');
   }
 }

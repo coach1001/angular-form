@@ -6,8 +6,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from './modules/material/material.module';
-import { FgFlowUiModule } from './modules/fg-flow-ui/fg-flow-ui.module';
-import { AccountModule } from './modules/account/account.module';
 import { HttpClientModule } from '@angular/common/http';
 import { NgDuiModule } from 'projects/ng-dui/src/lib/ng-dui.module';
 import { AccountDuiModule } from './modules/account-dui/account-dui.module';
@@ -29,8 +27,6 @@ import { AccountDuiModule } from './modules/account-dui/account-dui.module';
       flowConfigSystem: 'portal',
       production: false
     }),
-    // FgFlowUiModule,
-    // AccountModule,
     AccountDuiModule
   ],
   providers: [],
