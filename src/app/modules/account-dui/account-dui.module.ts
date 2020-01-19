@@ -4,26 +4,24 @@ import { AccountDuiContainerComponent } from './components/account-dui-container
 import { AccountDuiRoutingModule } from './account-dui-routing.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MaterialModule } from '../material/material.module';
-import { AccountDuiStepperComponent } from './components/account-dui-stepper/account-dui-stepper.component';
+import { DuiComponentsModule } from 'projects/ng-dui/src/lib/dui-components/dui-components.module';
 
 @NgModule({
   declarations: [
-    AccountDuiContainerComponent,
-    AccountDuiStepperComponent
+    AccountDuiContainerComponent
   ],
   imports: [
     CommonModule,
     AccountDuiRoutingModule,
     FlexLayoutModule,
-    MaterialModule
+    MaterialModule,
+    DuiComponentsModule
   ],
   entryComponents: [
-    AccountDuiContainerComponent,
-    AccountDuiStepperComponent    
+    AccountDuiContainerComponent 
   ],
   exports: [
-    AccountDuiContainerComponent,
-    AccountDuiStepperComponent    
+    AccountDuiContainerComponent    
   ]
 })
 export class AccountDuiModule { }

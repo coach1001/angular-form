@@ -80,8 +80,7 @@ export class ModuleGuard implements CanActivate {
         this._fs.initFlow(moduleFromRouteData, flowFromUrl, unregisteredFlow);
         const currentFlow = this._fs.currentFlow$.value;
         if (currentFlow != null) {
-          const routeConfig = this.buildRoutes(routePrefix, moduleFromRouteData, flowFromUrl, currentFlow.flow.steps, stepFromUrl);
-          console.log(this._rt.config);
+          const routeConfig = this.buildRoutes(routePrefix, moduleFromRouteData, flowFromUrl, currentFlow.flow.steps, stepFromUrl);          
           this._fs.registerRoute(routePrefix, moduleFromRouteData, flowFromUrl, routeConfig.startPathForFlow, routeConfig.routes);
           if (currentFlow.flow.resumable || !this._config.production) {
             this._rt.navigateByUrl(`${routeConfig.startUrl}?flowId=${flowId == null ? uuidv4() : flowId}`);

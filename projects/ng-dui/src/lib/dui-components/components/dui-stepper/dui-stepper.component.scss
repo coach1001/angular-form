@@ -1,5 +1,3 @@
-@import '../../../../../sass/variables.scss';
-
 .stepper-container {
   margin-top: 30px;
 }
@@ -9,16 +7,16 @@
     margin-left: -2px;
     margin-right: -2px;
     &.done-to-done {
-      border: 1px $accent-color solid;
+      border: 1px green solid;
     }
     &.done-to-current {
       border-style: solid;
-      border-image: linear-gradient(to right, $accent-color 0%, $primary-color 100%);
+      border-image: linear-gradient(to right, green 0%,  100%);
       border-image-slice: 1;
       border-width: 1px;
     }
     &.current-to-next {
-      border: 1px $primary-color solid;
+      border: 1px green solid;
     }
 }
 
@@ -28,10 +26,10 @@
   font-size: 15px;
   margin-top: 10px;
   font-family: Montserrat, sans-serif;
-  color: $primary-color;
+  color: green;
   font-weight: normal;
   &.done {
-    color: $accent-color;
+    color: green;
   }
   &.current {
     font-weight: bold;
@@ -44,14 +42,14 @@
 }
 
 .chevrons {
-  color: $primary-color;
+  color: green;
   font-weight: bold;
   font-size: 30px;
   cursor: pointer;
 }
 
 .mobile-stepper-icon {
-  background-color: $primary-color;
+  background-color: green;
   color: white;
   font-size: 32px;
 }
@@ -63,19 +61,19 @@
   &.mat-primary {
     color: white;
     &.mat-icon {
-      color: $primary-color;
+      color: green;
     }
     &.outline {
-      color: $primary-color;
+      color: green;
     }        
   }
   &.mat-accent {
     color: white;
     &.mat-icon {
-      color: $accent-color;
+      color: green;
     }
     &.outline {
-      color: $accent-color;
+      color: green;
     }        
   }
 }

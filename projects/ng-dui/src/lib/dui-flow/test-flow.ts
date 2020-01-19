@@ -5,7 +5,7 @@ export const TestModule = {
         {
             flow: 'passwordReset',
             stepper: 'flat-linear',
-            resumable: false,
+            resumable: true,
             actions: [],
             steps: [
                 {
@@ -58,7 +58,7 @@ export const TestModule = {
         {
             flow: 'registration',
             stepper: 'flat-linear',
-            resumable: false,
+            resumable: true,
             actions: [
                 { trigger: 'POST_FLOW', type: 'SERVER_TASK', value: 'register-user' },
                 { trigger: 'POST_FLOW', type: 'ABSOLUTE_REDIRECT', value: '/' }

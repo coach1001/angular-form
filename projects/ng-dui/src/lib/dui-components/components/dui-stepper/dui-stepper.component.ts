@@ -1,9 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 import { combineLatest, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import * as changeCase from 'change-case';
 import { DuiFlowService } from '../../../dui-flow/services/dui-flow.service';
-import { NgDuiConfig } from '../../../config/ng-dui.config';
+import { NgDuiConfigService } from '../../../services/ng-dui-config.service'
 
 @Component({
   selector: 'dui-stepper',
@@ -18,8 +18,9 @@ export class DuiStepperComponent implements OnInit, OnDestroy {
   flowSteps: Array<any> = [];
 
   constructor(
-    private _fs: DuiFlowService,
-    private _cs: NgDuiConfig) { }
+    @Inject(NgDuiConfigService) private _config,
+    private _fs: DuiFlowService) 
+    { }
 
   ngOnInit() {
     combineLatest(this._fs.currentFlow$, this._fs.currentStepName$)
@@ -99,7 +100,7 @@ export class DuiStepperComponent implements OnInit, OnDestroy {
   }
 
   gotoStep(index: number): void {
-    if ((index !== this.stepIndex && !this._cs.production) || index < this.stepIndex) {
+    if ((index !== this.stepIndex && !this._config.production) || index < this.stepIndex) {
       this._fs.gotoStep(this.flowSteps[index].name);
     }
   }

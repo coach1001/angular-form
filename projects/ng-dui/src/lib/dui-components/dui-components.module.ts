@@ -23,6 +23,7 @@ import { DuiFormComponent } from './components/dui-form/dui-form.component';
 import { DuiFormModule } from '../dui-form/dui-form.module';
 import { DuiFlowModule } from '../dui-flow/dui-flow.module';
 import { DuiDefaultHideableTextComponent } from './components/defaults/dui-default-hideable-text/dui-default-hideable-text.component';
+import { DuiStepperComponent } from './components/dui-stepper/dui-stepper.component';
 
 
 @NgModule({
@@ -43,7 +44,7 @@ import { DuiDefaultHideableTextComponent } from './components/defaults/dui-defau
     DuiDefaultDatetimeComponent,
     DuiDefaultHideableTextComponent,
     DuiFormComponent,
-    
+    DuiStepperComponent    
   ],
   imports: [
     CommonModule,
@@ -52,8 +53,8 @@ import { DuiDefaultHideableTextComponent } from './components/defaults/dui-defau
     FlexLayoutModule,
     MaterialModule,
     DigitOnlyModule,
-    DuiFormModule,
-    DuiFlowModule
+    DuiFlowModule,
+    DuiFormModule    
   ],
   entryComponents: [
     DuiDynamicComponent,
@@ -66,7 +67,8 @@ import { DuiDefaultHideableTextComponent } from './components/defaults/dui-defau
     DuiDefaultMultiselectComponent,
     DuiDefaultDatetimeComponent,
     DuiDefaultHideableTextComponent,
-    DuiFormComponent
+    DuiFormComponent,
+    DuiStepperComponent
   ],
   exports: [
     DynamicAnchorDirective,
@@ -84,7 +86,8 @@ import { DuiDefaultHideableTextComponent } from './components/defaults/dui-defau
     DuiDefaultMultiselectComponent,
     DuiDefaultDatetimeComponent,
     DuiDefaultHideableTextComponent,
-    DuiFormComponent
+    DuiFormComponent,
+    DuiStepperComponent
   ],
   providers: [
     DuiComponentsRegistryService
