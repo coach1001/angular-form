@@ -14,7 +14,7 @@ export const TestModule = {
                     viewTemplate: 'defaultObject',
                     elementType: 0,
                     validations: [
-                        { type: 'mustMatch', value: ['password', 'confirmPassword'] }
+                        { type: 'mustMatch', value: ['newPassword', 'confirmPassword'] }
                     ],
                     elements: [
                         {

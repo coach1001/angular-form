@@ -23,8 +23,9 @@ export class ModuleGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    const unregisteredFlow = state['unregisteredFlow'] != null ? state['unregisteredFlow'] : false 
-    
+
+    const unregisteredFlow = state['unregisteredFlow'] != null ? state['unregisteredFlow'] : false
+
     if (this._fs.currentFlow$.value != null && this._fs.currentFlow$.value.flowStarted && !unregisteredFlow) {
       const flowId = next.queryParams.flowId;
       if (flowId == null) {
@@ -76,7 +77,7 @@ export class ModuleGuard implements CanActivate {
       if (startUrl != null) {
         this._rt.navigateByUrl(`${startUrl}?flowId=${flowId == null ? uuidv4() : flowId}`);
       } else {
-        this._fs.initFlow(moduleFromRouteData, flowFromUrl, unregisteredFlow);        
+        this._fs.initFlow(moduleFromRouteData, flowFromUrl, unregisteredFlow);
         const currentFlow = this._fs.currentFlow$.value;
         if (currentFlow != null) {
           const routeConfig = this.buildRoutes(routePrefix, moduleFromRouteData, flowFromUrl, currentFlow.flow.steps, stepFromUrl);
@@ -101,7 +102,7 @@ export class ModuleGuard implements CanActivate {
     let startUrl = '';
     let routes = [];
 
-    const moduleMainRoute = this._rt.config.find(route => route.data.module === moduleFromRouteData);
+    const moduleMainRoute = this._rt.config.find(route => route.data && route.data.module === moduleFromRouteData);
 
     let flowRoute;
 
@@ -138,6 +139,7 @@ export class ModuleGuard implements CanActivate {
         path: stepSegment,
         component: DuiFormComponent,
         canActivate: [StepGuard],
+        runGuardsAndResolvers: 'always',
         data: {
           module: moduleFromRouteData,
           flow: flowFromUrl,
