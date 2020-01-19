@@ -13,9 +13,8 @@ export class DuiDefaultHideableTextComponent extends DuiBaseControlComponent {
   hidden = true;
 
   constructor(
-    private _fgs_: DuiFormGeneratorService,
-    private _crs_: DuiComponentsRegistryService) {
-    super(_fgs_, _crs_);
+    private _fgs_: DuiFormGeneratorService) {
+    super(_fgs_);
   }
 
 }

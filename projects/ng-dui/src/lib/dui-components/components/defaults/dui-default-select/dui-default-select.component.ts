@@ -16,16 +16,21 @@ export class DuiDefaultSelectComponent extends DuiBaseControlComponent {
   currentSelectedValue: any;
 
   constructor(
-    private _fgs_: DuiFormGeneratorService,
-    private _crs_: DuiComponentsRegistryService) {
-    super(_fgs_, _crs_);
+    private _fgs_: DuiFormGeneratorService) {
+    super(_fgs_);
   }
   
   get displayFn(): (value?: any) => string | undefined {
     return (value?: any): string | undefined => {
-      const option = this.controlIn['element'].options.find(option_ => option_.value === value);
-      if (option == null) return undefined;
-      return option.displayValue;
+      if(typeof value === 'object' && value != null) {
+        const option = this.controlIn['element'].options.find(option_ => option_.value.id === value.id);
+        if (option == null) return undefined;
+        return option.displayValue;
+      } else {
+        const option = this.controlIn['element'].options.find(option_ => option_.value === value);
+        if (option == null) return undefined;
+        return option.displayValue;
+      }      
     }
   }
 

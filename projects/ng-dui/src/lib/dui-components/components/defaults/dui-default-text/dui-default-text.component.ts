@@ -11,9 +11,8 @@ import { DuiComponentsRegistryService } from '../../../services/dui-components-r
 export class DuiDefaultTextComponent extends DuiBaseControlComponent {
 
   constructor(
-    private _fgs_: DuiFormGeneratorService,
-    private _crs_: DuiComponentsRegistryService) {
-    super(_fgs_, _crs_);
+    private _fgs_: DuiFormGeneratorService) {
+    super(_fgs_);
   }
 
 }

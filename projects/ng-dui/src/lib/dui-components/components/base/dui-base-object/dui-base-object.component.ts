@@ -123,17 +123,6 @@ export class DuiBaseObjectComponent implements OnInit, OnDestroy  {
     }
   }
 
-  getComponent(controlKey: string) {
-    /*const control = this.controlIn.controls[controlKey];
-    if (control instanceof FormGroup) {
-      return FgGroupComponent;
-    } else if (control instanceof FormArray) {
-      return FgArrayComponent;
-    } else if (control instanceof FormControl) {
-      return this._formGenerator.getControl(control['element'].subType);
-    }*/
-  }
-
   getComponentInputs(controlKey: string) {
     const control = this.controlIn.controls[controlKey];
     return {

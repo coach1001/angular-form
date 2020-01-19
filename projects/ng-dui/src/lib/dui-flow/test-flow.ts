@@ -197,9 +197,9 @@ export const TestModule = {
                                         { type: 'required' }
                                     ],
                                     options: [
-                                        { value: 'A', displayValue: 'Code A' },
-                                        { value: 'B', displayValue: 'Code B' },
-                                        { value: 'C', displayValue: 'Code C' }
+                                        { value: {id: 'A', metaData: {}}, displayValue: 'Code A' },
+                                        { value: {id: 'B', metaData: {}}, displayValue: 'Code B' },
+                                        { value: {id: 'C', metaData: {}}, displayValue: 'Code C' }
                                     ],
                                 },  
                                 {
@@ -212,8 +212,16 @@ export const TestModule = {
                                     ]                                    
                                 }                                                                
                             ]
-                        }
-
+                        },
+                        {
+                            viewTemplate: 'defaultDatetime',
+                            elementType: 2,
+                            layout: { stretchLarge: 50, stretchSmall: 100 },
+                            name: 'dateOfBirth',
+                            validations: [
+                                { type: 'required' }
+                            ]                                    
+                        } 
                     ]
                 },
                 {

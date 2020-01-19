@@ -31,8 +31,7 @@ export class DuiBaseControlComponent implements OnInit, OnDestroy {
   protected _destroy$: Subject<void> = new Subject<void>();
 
   constructor(
-    private _fgs: DuiFormGeneratorService,
-    private _crs: DuiComponentsRegistryService
+    private _fgs: DuiFormGeneratorService
   ) {
   }
 
