@@ -11,7 +11,7 @@
     }
     &.done-to-current {
       border-style: solid;
-      border-image: linear-gradient(to right, green 0%,  100%);
+      border-image-source: linear-gradient(to right, green 0%,  100%);
       border-image-slice: 1;
       border-width: 1px;
     }
