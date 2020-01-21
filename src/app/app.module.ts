@@ -25,7 +25,7 @@ import { AccountDuiModule } from './modules/account-dui/account-dui.module';
     MaterialModule,
     NgDuiModule.forRoot({
       flowConfigSystem: 'portal',
-      production: true
+      production: false
     }),
     AccountDuiModule
   ],

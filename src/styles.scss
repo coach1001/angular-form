@@ -225,7 +225,7 @@ button {
       border: 1px $accent-color solid !important;
     }
     &.done-to-current {
-      border-image: linear-gradient(to right, $accent-color 0%, $primary-color 100%) !important;
+      border-image-source: linear-gradient(to right, $accent-color 0%, $primary-color 100%) !important;
     }
     &.current-to-next {
       border: 1px $primary-color solid !important;
