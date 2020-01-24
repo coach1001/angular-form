@@ -31,14 +31,14 @@ export class DuiFormDataService {
       const newAllFlowData = [];
       const flowData = {};
       flowData[stepName] = data;
-      newAllFlowData.push(<IFlowData>{module, flow, flowId, updatedAt: new Date(), flowData });
+      newAllFlowData.push(<IFlowData>{module, flow, flowId, updatedAt: new Date(), flowData, flowContext: {} });
       this.allFlowData$.next(newAllFlowData);
     } else {
       const flowDataIndex = allFlowData.findIndex(stepData => stepData.flowId === flowId);
       if (flowDataIndex < 0) {
         const flowData = {};
         flowData[stepName] = data;
-        allFlowData.push(<IFlowData>{ module, flow, flowId, updatedAt: new Date(), flowData });
+        allFlowData.push(<IFlowData>{ module, flow, flowId, updatedAt: new Date(), flowData, flowContext: {}  });
       } else {
         allFlowData[flowDataIndex].flowData[stepName] = data;
         allFlowData[flowDataIndex].updatedAt = new Date();

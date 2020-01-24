@@ -13,14 +13,14 @@ export const TestModule = {
                 {
                     name: 'enterNewPassword',
                     icon: 'cicon-edit',
-                    viewTemplate: 'defaultObject',
+                    uiTemplate: 'defaultObject',
                     elementType: ElementType.Object,
                     validations: [
                         { type: 'mustMatch', value: ['newPassword', 'confirmPassword'] }
                     ],
                     elements: [
                         {
-                            viewTemplate: 'defaultHideableText',
+                            uiTemplate: 'defaultHideableText',
                             elementType: ElementType.Control,
                             layout: { stretchLarge: 100, stretchSmall: 100 },
                             name: 'oldPassword',
@@ -29,7 +29,7 @@ export const TestModule = {
                             ]
                         },
                         {
-                            viewTemplate: 'defaultHideableText',
+                            uiTemplate: 'defaultHideableText',
                             elementType: ElementType.Control,
                             layout: { stretchLarge: 50, stretchSmall: 100 },
                             name: 'newPassword',
@@ -38,7 +38,7 @@ export const TestModule = {
                             ]
                         },
                         {
-                            viewTemplate: 'defaultHideableText',
+                            uiTemplate: 'defaultHideableText',
                             elementType: ElementType.Control,
                             layout: { stretchLarge: 50, stretchSmall: 100 },
                             name: 'confirmPassword',
@@ -51,7 +51,7 @@ export const TestModule = {
                 {
                     name: 'done',
                     icon: 'cicon-tick',
-                    viewTemplate: 'defaultObject',
+                    uiTemplate: 'defaultObject',
                     elementType: ElementType.Object,
                     elements: []
                 }
@@ -69,14 +69,14 @@ export const TestModule = {
                 {
                     name: 'signup',
                     icon: 'cicon-profile-add',
-                    viewTemplate: 'defaultObject',
+                    uiTemplate: 'defaultObject',
                     elementType: ElementType.Object,
                     validations: [
                         { type: 'mustMatch', value: ['password', 'confirmPassword'] }
                     ],
                     elements: [
                         {
-                            viewTemplate: 'defaultText',
+                            uiTemplate: 'defaultText',
                             elementType: ElementType.Control,
                             layout: { stretchLarge: 50, stretchSmall: 100 },
                             name: 'email',
@@ -86,7 +86,7 @@ export const TestModule = {
                             ]
                         },
                         {
-                            viewTemplate: 'defaultSelect',
+                            uiTemplate: 'defaultSelect',
                             elementType: ElementType.Control,
                             layout: { stretchLarge: 15, stretchSmall: 30 },
                             name: 'mobilePrefix',
@@ -99,7 +99,7 @@ export const TestModule = {
                             ]
                         },
                         {
-                            viewTemplate: 'defaultNumber',
+                            uiTemplate: 'defaultNumber',
                             elementType: ElementType.Control,
                             layout: { stretchLarge: 35, stretchSmall: 70 },
                             name: 'mobileNumber',
@@ -108,7 +108,7 @@ export const TestModule = {
                             ]
                         },
                         {
-                            viewTemplate: 'defaultHideableText',
+                            uiTemplate: 'defaultHideableText',
                             elementType: ElementType.Control,
                             layout: { stretchLarge: 50, stretchSmall: 100 },
                             name: 'password',
@@ -117,7 +117,7 @@ export const TestModule = {
                             ]
                         },
                         {
-                            viewTemplate: 'defaultHideableText',
+                            uiTemplate: 'defaultHideableText',
                             elementType: ElementType.Control,
                             layout: { stretchLarge: 50, stretchSmall: 100 },
                             name: 'confirmPassword',
@@ -130,11 +130,11 @@ export const TestModule = {
                 {
                     name: 'otp',
                     icon: 'cicon-contact',
-                    viewTemplate: 'defaultObject',
+                    uiTemplate: 'defaultObject',
                     elementType: ElementType.Object,
                     elements: [
                         {
-                            viewTemplate: 'defaultNumber',
+                            uiTemplate: 'defaultNumber',
                             elementType: ElementType.Control,
                             layout: { stretchLarge: 50, stretchSmall: 100 },
                             name: 'otpInput',
@@ -147,11 +147,11 @@ export const TestModule = {
                 {
                     name: 'profile',
                     icon: 'cicon-user',
-                    viewTemplate: 'defaultObject',
+                    uiTemplate: 'defaultObject',
                     elementType: ElementType.Object,
                     elements: [
                         {
-                            viewTemplate: 'defaultSelect',
+                            uiTemplate: 'defaultSelect',
                             elementType: ElementType.Control,
                             layout: { stretchLarge: 16, stretchSmall: 100 },
                             name: 'title',
@@ -165,7 +165,7 @@ export const TestModule = {
                             ],
                         },
                         {
-                            viewTemplate: 'defaultText',
+                            uiTemplate: 'defaultText',
                             elementType: ElementType.Control,
                             layout: { stretchLarge: 42, stretchSmall: 100 },
                             name: 'firstName',
@@ -174,7 +174,7 @@ export const TestModule = {
                             ]
                         },
                         {
-                            viewTemplate: 'defaultText',
+                            uiTemplate: 'defaultText',
                             elementType: ElementType.Control,
                             layout: { stretchLarge: 42, stretchSmall: 100 },
                             name: 'lastName',
@@ -183,13 +183,13 @@ export const TestModule = {
                             ]
                         },
                         {
-                            viewTemplate: 'defaultBoolean',
+                            uiTemplate: 'defaultBoolean',
                             elementType: ElementType.Control,
                             layout: { stretchLarge: 42, stretchSmall: 100 },
                             name: 'hasDependants'
                         },
                         {
-                            viewTemplate: 'defaultArray',
+                            uiTemplate: 'defaultArray',
                             elementType: ElementType.Array,
                             layout: { stretchLarge: 100, stretchSmall: 100 },
                             name: 'dependants',
@@ -199,7 +199,7 @@ export const TestModule = {
                             ],
                             elements: [
                                 {
-                                    viewTemplate: 'defaultText',
+                                    uiTemplate: 'defaultText',
                                     elementType: ElementType.Control,
                                     layout: { stretchLarge: 30, stretchSmall: 100 },
                                     name: 'firstName',
@@ -208,7 +208,7 @@ export const TestModule = {
                                     ]
                                 },
                                 {
-                                    viewTemplate: 'defaultText',
+                                    uiTemplate: 'defaultText',
                                     elementType: ElementType.Control,
                                     layout: { stretchLarge: 30, stretchSmall: 100 },
                                     name: 'lastName',
@@ -217,7 +217,7 @@ export const TestModule = {
                                     ]
                                 },
                                 {
-                                    viewTemplate: 'defaultDatetime',
+                                    uiTemplate: 'defaultDatetime',
                                     elementType: ElementType.Control,
                                     layout: { stretchLarge: 30, stretchSmall: 100 },
                                     name: 'dateOfBirth',
@@ -228,13 +228,13 @@ export const TestModule = {
                             ]
                         },
                         {
-                            viewTemplate: 'defaultBoolean',
+                            uiTemplate: 'defaultBoolean',
                             elementType: ElementType.Control,
                             layout: { stretchLarge: 42, stretchSmall: 100 },
                             name: 'hasDriversLicence'
                         },
                         {
-                            viewTemplate: 'defaultObject',
+                            uiTemplate: 'defaultObject',
                             elementType: ElementType.Object,
                             layout: { stretchLarge: 100, stretchSmall: 100 },
                             name: 'driversLicenceDetails',
@@ -244,7 +244,7 @@ export const TestModule = {
                             ],
                             elements: [
                                 {
-                                    viewTemplate: 'defaultSelect',
+                                    uiTemplate: 'defaultSelect',
                                     elementType: ElementType.Control,
                                     layout: { stretchLarge: 50, stretchSmall: 100 },
                                     name: 'code',
@@ -258,7 +258,7 @@ export const TestModule = {
                                     ],
                                 },
                                 {
-                                    viewTemplate: 'defaultDatetime',
+                                    uiTemplate: 'defaultDatetime',
                                     elementType: ElementType.Control,
                                     layout: { stretchLarge: 50, stretchSmall: 100 },
                                     name: 'dateAcquired',
@@ -269,7 +269,7 @@ export const TestModule = {
                             ]
                         },
                         {
-                            viewTemplate: 'defaultDatetime',
+                            uiTemplate: 'defaultDatetime',
                             elementType: ElementType.Control,
                             layout: { stretchLarge: 50, stretchSmall: 100 },
                             name: 'dateOfBirth',
@@ -282,8 +282,8 @@ export const TestModule = {
                 {
                     name: 'done',
                     icon: 'cicon-tick',
-                    viewTemplate: 'defaultObject',
-                    elementType: ElementType.Object,
+                    uiTemplate: 'defaultObject',
+                    elementType: 0,
                     elements: []
                 }
             ]
