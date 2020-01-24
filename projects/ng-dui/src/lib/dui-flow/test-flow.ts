@@ -1,3 +1,5 @@
+import { ElementType } from '../dui-form/services/dui-elements.enum';
+
 export const TestModule = {
     system: 'portal',
     module: 'account',
@@ -12,14 +14,14 @@ export const TestModule = {
                     name: 'enterNewPassword',
                     icon: 'cicon-edit',
                     viewTemplate: 'defaultObject',
-                    elementType: 0,
+                    elementType: ElementType.Object,
                     validations: [
                         { type: 'mustMatch', value: ['newPassword', 'confirmPassword'] }
                     ],
                     elements: [
                         {
                             viewTemplate: 'defaultHideableText',
-                            elementType: 2,
+                            elementType: ElementType.Control,
                             layout: { stretchLarge: 100, stretchSmall: 100 },
                             name: 'oldPassword',
                             validations: [
@@ -28,7 +30,7 @@ export const TestModule = {
                         },
                         {
                             viewTemplate: 'defaultHideableText',
-                            elementType: 2,
+                            elementType: ElementType.Control,
                             layout: { stretchLarge: 50, stretchSmall: 100 },
                             name: 'newPassword',
                             validations: [
@@ -37,7 +39,7 @@ export const TestModule = {
                         },
                         {
                             viewTemplate: 'defaultHideableText',
-                            elementType: 2,
+                            elementType: ElementType.Control,
                             layout: { stretchLarge: 50, stretchSmall: 100 },
                             name: 'confirmPassword',
                             validations: [
@@ -50,7 +52,7 @@ export const TestModule = {
                     name: 'done',
                     icon: 'cicon-tick',
                     viewTemplate: 'defaultObject',
-                    elementType: 0,
+                    elementType: ElementType.Object,
                     elements: []
                 }
             ]
@@ -68,14 +70,14 @@ export const TestModule = {
                     name: 'signup',
                     icon: 'cicon-profile-add',
                     viewTemplate: 'defaultObject',
-                    elementType: 0,
+                    elementType: ElementType.Object,
                     validations: [
                         { type: 'mustMatch', value: ['password', 'confirmPassword'] }
                     ],
                     elements: [
                         {
                             viewTemplate: 'defaultText',
-                            elementType: 2,
+                            elementType: ElementType.Control,
                             layout: { stretchLarge: 50, stretchSmall: 100 },
                             name: 'email',
                             validations: [
@@ -85,7 +87,7 @@ export const TestModule = {
                         },
                         {
                             viewTemplate: 'defaultSelect',
-                            elementType: 2,
+                            elementType: ElementType.Control,
                             layout: { stretchLarge: 15, stretchSmall: 30 },
                             name: 'mobilePrefix',
                             validations: [
@@ -98,7 +100,7 @@ export const TestModule = {
                         },
                         {
                             viewTemplate: 'defaultNumber',
-                            elementType: 2,
+                            elementType: ElementType.Control,
                             layout: { stretchLarge: 35, stretchSmall: 70 },
                             name: 'mobileNumber',
                             validations: [
@@ -107,7 +109,7 @@ export const TestModule = {
                         },
                         {
                             viewTemplate: 'defaultHideableText',
-                            elementType: 2,
+                            elementType: ElementType.Control,
                             layout: { stretchLarge: 50, stretchSmall: 100 },
                             name: 'password',
                             validations: [
@@ -116,7 +118,7 @@ export const TestModule = {
                         },
                         {
                             viewTemplate: 'defaultHideableText',
-                            elementType: 2,
+                            elementType: ElementType.Control,
                             layout: { stretchLarge: 50, stretchSmall: 100 },
                             name: 'confirmPassword',
                             validations: [
@@ -129,11 +131,11 @@ export const TestModule = {
                     name: 'otp',
                     icon: 'cicon-contact',
                     viewTemplate: 'defaultObject',
-                    elementType: 0,
+                    elementType: ElementType.Object,
                     elements: [
                         {
                             viewTemplate: 'defaultNumber',
-                            elementType: 2,
+                            elementType: ElementType.Control,
                             layout: { stretchLarge: 50, stretchSmall: 100 },
                             name: 'otpInput',
                             validations: [
@@ -146,11 +148,11 @@ export const TestModule = {
                     name: 'profile',
                     icon: 'cicon-user',
                     viewTemplate: 'defaultObject',
-                    elementType: 0,
+                    elementType: ElementType.Object,
                     elements: [
                         {
                             viewTemplate: 'defaultSelect',
-                            elementType: 2,
+                            elementType: ElementType.Control,
                             layout: { stretchLarge: 16, stretchSmall: 100 },
                             name: 'title',
                             validations: [
@@ -164,7 +166,7 @@ export const TestModule = {
                         },
                         {
                             viewTemplate: 'defaultText',
-                            elementType: 2,
+                            elementType: ElementType.Control,
                             layout: { stretchLarge: 42, stretchSmall: 100 },
                             name: 'firstName',
                             validations: [
@@ -173,7 +175,7 @@ export const TestModule = {
                         },
                         {
                             viewTemplate: 'defaultText',
-                            elementType: 2,
+                            elementType: ElementType.Control,
                             layout: { stretchLarge: 42, stretchSmall: 100 },
                             name: 'lastName',
                             validations: [
@@ -182,13 +184,13 @@ export const TestModule = {
                         },
                         {
                             viewTemplate: 'defaultBoolean',
-                            elementType: 2,
+                            elementType: ElementType.Control,
                             layout: { stretchLarge: 42, stretchSmall: 100 },
                             name: 'hasDependants'
                         },
                         {
                             viewTemplate: 'defaultArray',
-                            elementType: 1,
+                            elementType: ElementType.Array,
                             layout: { stretchLarge: 100, stretchSmall: 100 },
                             name: 'dependants',
                             reactivity: [
@@ -198,7 +200,7 @@ export const TestModule = {
                             elements: [
                                 {
                                     viewTemplate: 'defaultText',
-                                    elementType: 2,
+                                    elementType: ElementType.Control,
                                     layout: { stretchLarge: 30, stretchSmall: 100 },
                                     name: 'firstName',
                                     validations: [
@@ -207,7 +209,7 @@ export const TestModule = {
                                 },
                                 {
                                     viewTemplate: 'defaultText',
-                                    elementType: 2,
+                                    elementType: ElementType.Control,
                                     layout: { stretchLarge: 30, stretchSmall: 100 },
                                     name: 'lastName',
                                     validations: [
@@ -216,7 +218,7 @@ export const TestModule = {
                                 },
                                 {
                                     viewTemplate: 'defaultDatetime',
-                                    elementType: 2,
+                                    elementType: ElementType.Control,
                                     layout: { stretchLarge: 30, stretchSmall: 100 },
                                     name: 'dateOfBirth',
                                     validations: [
@@ -227,13 +229,13 @@ export const TestModule = {
                         },
                         {
                             viewTemplate: 'defaultBoolean',
-                            elementType: 2,
+                            elementType: ElementType.Control,
                             layout: { stretchLarge: 42, stretchSmall: 100 },
                             name: 'hasDriversLicence'
                         },
                         {
                             viewTemplate: 'defaultObject',
-                            elementType: 0,
+                            elementType: ElementType.Object,
                             layout: { stretchLarge: 100, stretchSmall: 100 },
                             name: 'driversLicenceDetails',
                             reactivity: [
@@ -243,7 +245,7 @@ export const TestModule = {
                             elements: [
                                 {
                                     viewTemplate: 'defaultSelect',
-                                    elementType: 2,
+                                    elementType: ElementType.Control,
                                     layout: { stretchLarge: 50, stretchSmall: 100 },
                                     name: 'code',
                                     validations: [
@@ -257,7 +259,7 @@ export const TestModule = {
                                 },
                                 {
                                     viewTemplate: 'defaultDatetime',
-                                    elementType: 2,
+                                    elementType: ElementType.Control,
                                     layout: { stretchLarge: 50, stretchSmall: 100 },
                                     name: 'dateAcquired',
                                     validations: [
@@ -268,7 +270,7 @@ export const TestModule = {
                         },
                         {
                             viewTemplate: 'defaultDatetime',
-                            elementType: 2,
+                            elementType: ElementType.Control,
                             layout: { stretchLarge: 50, stretchSmall: 100 },
                             name: 'dateOfBirth',
                             validations: [
@@ -281,7 +283,7 @@ export const TestModule = {
                     name: 'done',
                     icon: 'cicon-tick',
                     viewTemplate: 'defaultObject',
-                    elementType: 0,
+                    elementType: ElementType.Object,
                     elements: []
                 }
             ]

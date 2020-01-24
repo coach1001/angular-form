@@ -1,7 +1,9 @@
 <form [formGroup]="parent" *ngIf="visible">
     <mat-form-field floatLabel="always" fxFlex="100">
         <mat-label>{{label}}</mat-label>
-        <input matInput [formControlName]="name" [matDatepicker]="picker" placeholder="Choose a date">
+        <input 
+            matInput [formControlName]="name" [matDatepicker]="picker" placeholder="Choose a date"
+            (dateInput)="change('input', $event)" (dateChange)="change('change', $event)">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
         <mat-hint *ngIf="hint">{{hint}}</mat-hint>
