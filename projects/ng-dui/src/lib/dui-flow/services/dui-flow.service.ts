@@ -4,7 +4,8 @@ import { Router } from '@angular/router';
 import { DuiFormGeneratorService } from '../../dui-form/services/dui-form-generator.service';
 import { DuiFormDataService } from '../../dui-form/services/dui-form-data.service';
 import { DuiFlowBackendService } from './dui-flow-backend.service';
-import { TestModule } from '../test-flow';
+// import { TestModule } from '../test-flow.spec';
+import { TestModule } from '../validation-test-flow.spec';
 import { NgDuiConfigService } from '../../services/ng-dui-config.service';
 
 export interface IFlowDefinition {

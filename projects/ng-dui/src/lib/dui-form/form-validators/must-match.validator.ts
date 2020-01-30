@@ -1,9 +1,9 @@
-import { FormGroup } from '@angular/forms';
+import { FormGroup, ValidationErrors } from '@angular/forms';
 
 // custom validator to check that two fields match
-export function MustMatch(controlName: string, matchingControlName: string) {
-    return (formGroup: FormGroup) => {
-        const control = formGroup.controls[controlName];
+export function MustMatch(controlName: string, metadata: any) {
+    return (formGroup: FormGroup): ValidationErrors => {
+        /*const control = formGroup.controls[controlName];
         const matchingControl = formGroup.controls[matchingControlName];
 
         if (matchingControl.errors && !matchingControl.errors.mustMatch) {
@@ -16,6 +16,7 @@ export function MustMatch(controlName: string, matchingControlName: string) {
             matchingControl.setErrors({ mustMatch: { value: controlName } });
         } else {
             matchingControl.setErrors(null);
-        }
+        }*/
+        return;
     }
 }

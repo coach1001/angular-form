@@ -10,6 +10,15 @@ export const TestModule = {
             resumable: true,
             actions: [],
             steps: [
+
+            ]
+        },
+        {
+            flow: 'passwordReset',
+            stepper: 'flat-linear',
+            resumable: true,
+            actions: [],
+            steps: [
                 {
                     name: 'enterNewPassword',
                     icon: 'cicon-edit',
@@ -25,7 +34,7 @@ export const TestModule = {
                             layout: { stretchLarge: 100, stretchSmall: 100 },
                             name: 'oldPassword',
                             validations: [
-                                { type: 'required' }                                
+                                { type: 'required' }
                             ]
                         },
                         {
@@ -34,7 +43,7 @@ export const TestModule = {
                             layout: { stretchLarge: 50, stretchSmall: 100 },
                             name: 'newPassword',
                             validations: [
-                                { type: 'required' }                                
+                                { type: 'required' }
                             ]
                         },
                         {
@@ -43,10 +52,10 @@ export const TestModule = {
                             layout: { stretchLarge: 50, stretchSmall: 100 },
                             name: 'confirmPassword',
                             validations: [
-                                { type: 'required' }                                
+                                { type: 'required' }
                             ]
                         },
-                    ] 
+                    ]
                 },
                 {
                     name: 'done',
