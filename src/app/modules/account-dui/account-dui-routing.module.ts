@@ -7,9 +7,9 @@ import { FlowGuard } from 'projects/ng-dui/src/lib/guards/flow.guard';
 
 const routes: Routes = [
   {
-    path: 'route/flow/account',
+    path: 'route/flow/account',        
     component: AccountDuiContainerComponent,
-    canActivate: [ModuleGuard],
+    canActivate: [ModuleGuard],    
     data: {
       module: 'account',
     },
@@ -18,7 +18,7 @@ const routes: Routes = [
         path: '**',
         data: {
           module: 'account',
-        },
+        },        
         canActivate: [FlowGuard],        
         component: DuiDynamicComponent
       }

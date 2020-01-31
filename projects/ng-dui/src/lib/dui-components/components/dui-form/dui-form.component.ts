@@ -25,16 +25,19 @@ export class DuiFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    console.log('INIT');
     this._fs.currentStep$.pipe(
       filter(value => value != null),
       takeUntil(this._destroy$)
     ).subscribe(step => {
+      console.log('BUILDING FORM');
       this._fgs.buildForm(step);
     });
     this._fgs.form$.pipe(
       filter(value => value != null),
       takeUntil(this._destroy$)
     ).subscribe(form => {
+      console.log('FORM BUILT');
       this.form = form;
       const currentStepName = this._fs.currentStepName$.value;
       const currentModule = this._fs.currentFlow$.value.module;
@@ -44,6 +47,7 @@ export class DuiFormComponent implements OnInit, OnDestroy {
       if (stepData != null) {
         this._fgs.setFormValue(this.form, stepData);
       }
+      console.log('FORM DATA SET');
     });
     this._fds.allFlowData$.pipe(
       filter(value => value != null),
@@ -52,15 +56,16 @@ export class DuiFormComponent implements OnInit, OnDestroy {
       const currentStepName = this._fs.currentStepName$.value;
       const currentModule = this._fs.currentFlow$.value.module;
       const currentFlow = this._fs.currentFlow$.value.flow.flow;
-      const currentFlowId = this._fs.currentFlowId$.value; 
+      const currentFlowId = this._fs.currentFlowId$.value;
       const stepData = this._fds.getStepData(currentFlowId, currentModule, currentFlow, currentStepName);
       if (stepData != null && this.form != null) {
         const formValue = this.form.getRawValue();
         const difference = diff(formValue, stepData);
-        if(difference != null) {
+        if (difference != null) {
           this._fgs.setFormValue(this.form, stepData);
         }
       }
+      console.log('FORM FLOW DATA CHANGED');
     });
   }
 

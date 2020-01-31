@@ -96,14 +96,18 @@ export class DuiFormDataService {
       flowData.flowId === flowId
     );
     const clearFlowData = this.clearFlowOnNextGet$.value;
-    if (flowDataIndex < 0 && !clearFlowData) return null;
+    if (flowDataIndex < 0 && !clearFlowData) {
+      return null;
+    }
     if (clearFlowData) {
       this.clearFlowOnNextGet$.next(false);
       let indexesToDelete = allFlowData.filter(flowData =>
         flowData.module === module &&
         flowData.flow === flow
       ).map((_, index) => index);
-      if (indexesToDelete.length < 1) return null;
+      if (indexesToDelete.length < 1) {
+        return null;
+      }
       indexesToDelete = indexesToDelete.reverse();
       indexesToDelete.forEach(index => {
         allFlowData.splice(index, 1);

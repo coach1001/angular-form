@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormArray, FormGroup, FormControl, FormBuilder, Validators, MinLengthValidator, AbstractControl, ValidatorFn } from '@angular/forms';
+import { FormArray, FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { BehaviorSubject, Subject } from 'rxjs';
 import cloneDeep from 'lodash-es/cloneDeep';
 import { MustMatch } from '../form-validators/must-match.validator';
@@ -19,14 +19,13 @@ export class DuiFormGeneratorService {
   form$: BehaviorSubject<FormGroup> = new BehaviorSubject(null);
 
   constructor(
-    private _formBuilder: FormBuilder,
+    private _fb: FormBuilder,
   ) { }
 
   buildForm(definition: any): void {
     this._form = null;
-    this._form = this._formBuilder.group({});
+    this._form = this._fb.group({});
     this.createStep(definition);
-    console.log(this._form);
     this.form$.next(this._form);
   }
 
@@ -55,7 +54,8 @@ export class DuiFormGeneratorService {
 
   processControl(inputElement, currFormElm: FormGroup) {
     const control = new FormControl();
-    if (inputElement.validations) {
+    control['element'] = inputElement;    
+    if (inputElement.validators) {
       let validators = [];
       inputElement.validators.forEach(validator => {
         switch (validator.name) {
@@ -66,29 +66,33 @@ export class DuiFormGeneratorService {
           case 'minLength': validators.push(Validators.minLength(validator.metadata.length)); break;
           case 'mustMatch':
             if (validator.objectScope) {
-              currFormElm.addValidator(MustMatch(inputElement.modelProperty, validator.metadata));
+              currFormElm.validator != null ?
+                currFormElm.setValidators([MustMatch(inputElement.modelProperty, validator.metadata), currFormElm.validator]) :
+                currFormElm.setValidators(MustMatch(inputElement.modelProperty, validator.metadata));
             }
             break;
           case 'requiredIf':
             if (validator.objectScope) {
-              currFormElm.addValidator(RequiredIf(inputElement.modelProperty, validator.metadata));
+              currFormElm.validator != null ?
+                currFormElm.setValidators([RequiredIf(inputElement.modelProperty, validator.metadata, this), currFormElm.validator]) :
+                currFormElm.setValidators(RequiredIf(inputElement.modelProperty, validator.metadata, this));
             }
             break;
           default: break;
         }
       });
       control.setValidators(validators);
+      control['element'].originalValidators = cloneDeep(validators);
     }
-    control['element'] = inputElement;
     currFormElm.addControl(inputElement.modelProperty, control);
     return currFormElm;
   }
 
-  processObject_r(objectElement, currFormElm: FormGroup, root = false) {
+  processObject_r(objectElement, currFormElm: FormGroup, root = false) {    
     if (!root) {
-      currFormElm.addControl(objectElement.modelProperty, this._formBuilder.group({}));
+      currFormElm.addControl(objectElement.modelProperty, this._fb.group({}));
       currFormElm = <FormGroup>currFormElm.controls[objectElement.modelProperty];
-      currFormElm['element'] = objectElement;
+      currFormElm['element'] = objectElement;      
       if (objectElement.elements && objectElement.elements.length) {
         objectElement.elements.forEach(element => {
           this.processElement_r(element, currFormElm);
@@ -96,7 +100,7 @@ export class DuiFormGeneratorService {
       }
     } else {
       currFormElm['element'] = objectElement;
-    }
+    }    
     if (objectElement.validators) {
       let validators = [];
       objectElement.validators.forEach(validator => {
@@ -106,22 +110,21 @@ export class DuiFormGeneratorService {
           default: break;
         }
       });
-      currFormElm.setValidators(validators);
+      currFormElm.setValidators(validators);      
     }
     return currFormElm;
   }
 
   processArray_r(arrayElement, currFormElm: FormGroup) {
-    currFormElm.addControl(arrayElement.modelProperty, this._formBuilder.array([]));
-    currFormElm.controls[arrayElement.modelProperty]['controls'].push(this._formBuilder.group({}));
+    currFormElm.addControl(arrayElement.modelProperty, this._fb.array([]));
+    currFormElm.controls[arrayElement.modelProperty]['controls'].push(this._fb.group({}));
     if (arrayElement.elements && arrayElement.elements.length) {
       arrayElement.elements.forEach(element => {
         this.processElement_r(element, <FormGroup>currFormElm.controls[arrayElement.modelProperty]['controls'][0]);
       });
     }
-    const rowTemplate = cloneDeep(currFormElm.controls[arrayElement.modelProperty]['controls'][0]);
-
-    if (arrayElement.validations) {
+    const rowTemplate = cloneDeep(currFormElm.controls[arrayElement.modelProperty]['controls'][0]);    
+    if (arrayElement.validators) {
       let validators = [];
       let arrayValidators = [];
       arrayElement.validators.forEach(validator => {
@@ -132,12 +135,12 @@ export class DuiFormGeneratorService {
           default: break;
         }
       });
-      rowTemplate.setValidators(validators);
+      rowTemplate.setValidators(validators);      
       currFormElm.controls[arrayElement.modelProperty].setValidators(arrayValidators);
     }
     this.recurseFormGroup(rowTemplate, 'CLEAR_VALUES');
     currFormElm.controls[arrayElement.modelProperty]['rowTemplate'] = rowTemplate;
-    currFormElm.controls[arrayElement.modelProperty]['element'] = arrayElement;
+    currFormElm.controls[arrayElement.modelProperty]['element'] = arrayElement;    
     currFormElm.controls[arrayElement.modelProperty]['controls'] = [];
   }
 
@@ -214,24 +217,11 @@ export class DuiFormGeneratorService {
       case 'email': error = `Not a valid email address`; break;
       case 'min': error = `Minimum is ${error.value.min}`; break;
       case 'max': error = `Maximum is ${error.value.max}`; break;
-      case 'mustMatch': error = `Does not match - ${changeCase.sentenceCase(error.value.value)}`; break;
+      case 'minlength': error = `Minimum length for this field is ${error.value.requiredLength}`; break;
+      case 'mustMatch': error = `Does not match - ${changeCase.sentenceCase(error.value.field)}`; break;
       default: break;
     }
     return error;
   }
 
 }
-
-declare module '@angular/forms' {
-  interface AbstractControl {
-    addValidator(validator: ValidatorFn): void;
-  }
-}
-
-AbstractControl.prototype.addValidator = function (this: AbstractControl, validator: ValidatorFn) {
-  if (validator == null) {
-    return;
-  }
-  this.clearValidators();
-  this.setValidators(this.validator ? [this.validator, validator] : validator);
-};

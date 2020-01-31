@@ -19,12 +19,14 @@ export class StepGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
     this._fs.currentFlowId$.next(next.queryParams.flowId);
-    this._fs.setCurrentFlowAndStep(next.data.module, next.data.flow, next.data.stepName);
+    this._fs.setCurrentFlowAndStep(next.data.module, next.data.flow, next.data.stepName);  
 
     if (this._fs.currentFlow$.value != null && this._fs.currentFlow$.value.flowStarted) {
       const flowId = next.queryParams.flowId;
       if (flowId == null) {
-        this._rt.navigateByUrl(`${state.url}?flowId=${uuidv4()}`);
+        const newFlowId = uuidv4();    
+        this._fs.currentFlowId$.next(newFlowId);
+        this._rt.navigateByUrl(`${state.url}?flowId=${newFlowId}`);
         return false;
       }
     }

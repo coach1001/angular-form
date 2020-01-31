@@ -52,9 +52,9 @@ export const TestModule = {
                                 },
                                 {
                                     name: 'mustMatch',
+                                    objectScope: true,
                                     metadata: {
                                         targetField: 'password',
-                                        objectScope: true
                                     }
                                 }
                             ],
@@ -86,15 +86,49 @@ export const TestModule = {
                             validators: [
                                 {
                                     name: 'requiredIf',
+                                    objectScope: true,
                                     metadata: {
                                         triggerField: 'age',
                                         triggerValue: '21',
-                                        objectScope: true
                                     }
                                 }
                             ],
+                        },
+                        {
+                            name: 'medicalHistory',
+                            elementType: 0,
+                            uiTemplate: 'defaultObject',
+                            modelProperty: 'medicalHistory',
+                            layout: { stretchLarge: 50, stretchSmall: 100 },
+                            validators: [
+                                {
+                                    name: 'requiredIf',
+                                    objectScope: true,
+                                    metadata: {
+                                        triggerField: 'hasDiabetes',
+                                        triggerValue: 'true',
+                                    }
+                                }
+                            ],
+                            elements: [
+                                {
+                                    name: 'desease',
+                                    elementType: 2,
+                                    controlType: 0,
+                                    uiTemplate: 'defaultText',
+                                    modelProperty: 'desease',
+                                    layout: { stretchLarge: 50, stretchSmall: 100 },
+                                }
+                            ]
                         }
                     ]
+                },
+                {
+                    name: 'done',
+                    icon: 'cicon-tick',
+                    uiTemplate: 'defaultObject',
+                    elementType: 0,
+                    elements: []
                 }
             ]
         }

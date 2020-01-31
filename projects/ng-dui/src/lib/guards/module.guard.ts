@@ -137,7 +137,7 @@ export class ModuleGuard implements CanActivate {
       const stepRoute: Route = {
         path: stepSegment,
         component: DuiFormComponent,
-        canActivate: [StepGuard],
+        canActivate: [StepGuard],        
         runGuardsAndResolvers: 'always',
         data: {
           module: moduleFromRouteData,
