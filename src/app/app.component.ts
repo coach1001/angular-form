@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
-import { Router } from '@angular/router';
+import { Router, NavigationExtras } from '@angular/router';
 import { DuiFormDataService } from 'projects/ng-dui/src/lib/dui-form/services/dui-form-data.service';
 
 @Component({
@@ -32,7 +32,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
   gotoResetPassword(): void {
     this._formData.clearFlowOnNextGet$.next(true);
-    this._router.navigateByUrl('route/flow/account/passwordReset');
+    //this._router.navigateByUrl('route/flow/account/passwordReset', <NavigationExtras>{
+    //  queryParamsHandling: 'preserve'
+    //});
+    this._router.navigate(['route/flow/account/passwordReset'], { queryParamsHandling: 'merge' });
   }
-  
+
 }
