@@ -10,6 +10,7 @@ export const TestModule = {
             steps: [
                 {
                     name: 'step1',
+                    label: 'Step One',
                     elementType: 0,
                     uiTemplate: 'defaultObject',
                     modelProperty: 'step1',

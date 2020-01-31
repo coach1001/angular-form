@@ -153,7 +153,7 @@ export class DuiFormGeneratorService {
   setFormValue(group: FormGroup, value: any) {
     Object.keys(group.controls).forEach((key: string) => {
       const abstractControl = group.controls[key];
-      const controlValue = value[key] ? value[key] : null;
+      const controlValue = value[key] != null ? value[key] : null;
       if (abstractControl instanceof FormGroup) {
         this.setFormValue(abstractControl, controlValue);
       } else if (abstractControl instanceof FormArray) {
