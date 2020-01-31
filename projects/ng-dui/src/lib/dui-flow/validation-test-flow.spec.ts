@@ -95,29 +95,35 @@ export const TestModule = {
                             ],
                         },
                         {
-                            name: 'medicalHistory',
-                            elementType: 0,
-                            uiTemplate: 'defaultObject',
-                            modelProperty: 'medicalHistory',
-                            layout: { stretchLarge: 50, stretchSmall: 100 },
+                            name: 'children',
+                            elementType: 1,
+                            uiTemplate: 'defaultArray',
+                            modelProperty: 'children',
+                            layout: { stretchLarge: 100, stretchSmall: 100 },
                             validators: [
                                 {
-                                    name: 'requiredIf',
-                                    objectScope: true,
+                                    name: 'required',
                                     metadata: {
-                                        triggerField: 'hasDiabetes',
-                                        triggerValue: 'true',
+                                        required: true
                                     }
                                 }
                             ],
                             elements: [
                                 {
-                                    name: 'desease',
+                                    name: 'firstName',
                                     elementType: 2,
                                     controlType: 0,
                                     uiTemplate: 'defaultText',
-                                    modelProperty: 'desease',
-                                    layout: { stretchLarge: 50, stretchSmall: 100 },
+                                    modelProperty: 'firstName',
+                                    layout: { stretchLarge: 90, stretchSmall: 100 },
+                                    validators: [
+                                        {
+                                            name: 'required',
+                                            metadata: {
+                                                required: true
+                                            }
+                                        }
+                                    ]
                                 }
                             ]
                         }

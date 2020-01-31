@@ -7,7 +7,6 @@ export function MustMatch(controlName: string, metadata: any) {
     const matchingControl = formGroup.controls[metadata.targetField];
 
     if (control.errors && !control.errors.mustMatch) {
-      // return if another validator has already found an error on the matchingControl
       return;
     }
 

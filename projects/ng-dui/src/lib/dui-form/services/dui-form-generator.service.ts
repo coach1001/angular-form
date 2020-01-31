@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { FormArray, FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { BehaviorSubject, Subject } from 'rxjs';
 import cloneDeep from 'lodash-es/cloneDeep';
-import { MustMatch } from '../form-validators/must-match.validator';
-import { RequiredIf } from '../form-validators/required-if.validator';
 import * as changeCase from 'change-case';
 import { ElementType } from './dui-elements.enum';
+import { DuiValidatorRegistryService } from './dui-validator-registry.service';
+import { Required } from '../form-validators/required.validator';
+import { element } from 'protractor';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,7 @@ export class DuiFormGeneratorService {
 
   constructor(
     private _fb: FormBuilder,
+    private _vrs: DuiValidatorRegistryService
   ) { }
 
   buildForm(definition: any): void {
@@ -54,45 +56,33 @@ export class DuiFormGeneratorService {
 
   processControl(inputElement, currFormElm: FormGroup) {
     const control = new FormControl();
-    control['element'] = inputElement;    
+    control['element'] = inputElement;
     if (inputElement.validators) {
       let validators = [];
+      let groupValidators = [];
       inputElement.validators.forEach(validator => {
-        switch (validator.name) {
-          case 'required': validators.push(Validators.required); break;
-          case 'email': validators.push(Validators.email); break;
-          case 'min': validators.push(Validators.min(validator.value)); break;
-          case 'max': validators.push(Validators.max(validator.value)); break;
-          case 'minLength': validators.push(Validators.minLength(validator.metadata.length)); break;
-          case 'mustMatch':
-            if (validator.objectScope) {
-              currFormElm.validator != null ?
-                currFormElm.setValidators([MustMatch(inputElement.modelProperty, validator.metadata), currFormElm.validator]) :
-                currFormElm.setValidators(MustMatch(inputElement.modelProperty, validator.metadata));
-            }
-            break;
-          case 'requiredIf':
-            if (validator.objectScope) {
-              currFormElm.validator != null ?
-                currFormElm.setValidators([RequiredIf(inputElement.modelProperty, validator.metadata, this), currFormElm.validator]) :
-                currFormElm.setValidators(RequiredIf(inputElement.modelProperty, validator.metadata, this));
-            }
-            break;
-          default: break;
+        const validatorFn = this._vrs.getValidatorFn(validator.name);
+        if (validatorFn != null) {
+          validator.objectScope != null && validator.objectScope ?
+            groupValidators.push(validatorFn(inputElement.modelProperty, validator.metadata)) :
+            validators.push(validatorFn(inputElement.modelProperty, validator.metadata));
         }
       });
       control.setValidators(validators);
+      currFormElm.validator
+        ? currFormElm.setValidators([...groupValidators, currFormElm.validator])
+        : currFormElm.setValidators(validators);
       control['element'].originalValidators = cloneDeep(validators);
     }
     currFormElm.addControl(inputElement.modelProperty, control);
     return currFormElm;
   }
 
-  processObject_r(objectElement, currFormElm: FormGroup, root = false) {    
+  processObject_r(objectElement, currFormElm: FormGroup, root = false) {
     if (!root) {
       currFormElm.addControl(objectElement.modelProperty, this._fb.group({}));
       currFormElm = <FormGroup>currFormElm.controls[objectElement.modelProperty];
-      currFormElm['element'] = objectElement;      
+      currFormElm['element'] = objectElement;
       if (objectElement.elements && objectElement.elements.length) {
         objectElement.elements.forEach(element => {
           this.processElement_r(element, currFormElm);
@@ -100,17 +90,16 @@ export class DuiFormGeneratorService {
       }
     } else {
       currFormElm['element'] = objectElement;
-    }    
+    }
     if (objectElement.validators) {
       let validators = [];
       objectElement.validators.forEach(validator => {
-        switch (validator.name) {
-          case 'required': validators.push(Validators.required); break;
-          case 'minLength': validators.push(Validators.minLength(validator.metadata.length)); break;
-          default: break;
+        const validatorFn = this._vrs.getValidatorFn(validator.name);
+        if (validatorFn != null) {
+            validators.push(validatorFn(objectElement.modelProperty, validator.metadata));
         }
       });
-      currFormElm.setValidators(validators);      
+      currFormElm.setValidators(validators);
     }
     return currFormElm;
   }
@@ -123,24 +112,20 @@ export class DuiFormGeneratorService {
         this.processElement_r(element, <FormGroup>currFormElm.controls[arrayElement.modelProperty]['controls'][0]);
       });
     }
-    const rowTemplate = cloneDeep(currFormElm.controls[arrayElement.modelProperty]['controls'][0]);    
+    const rowTemplate = cloneDeep(currFormElm.controls[arrayElement.modelProperty]['controls'][0]);
     if (arrayElement.validators) {
-      let validators = [];
       let arrayValidators = [];
       arrayElement.validators.forEach(validator => {
-        switch (validator.name) {
-          case 'required': arrayValidators.push(Validators.required); break;
-          // case 'mustMatch': validators.push(MustMatch(validation.value[0], validation.value[1])); break;
-          // case 'requiredIf': validators.push(RequiredIf(validation.controlName, validation.expression)); break;
-          default: break;
+        const validatorFn = this._vrs.getValidatorFn(validator.name);
+        if (validatorFn != null) {
+            arrayValidators.push(validatorFn(arrayElement.modelProperty, validator.metadata));
         }
       });
-      rowTemplate.setValidators(validators);      
       currFormElm.controls[arrayElement.modelProperty].setValidators(arrayValidators);
     }
     this.recurseFormGroup(rowTemplate, 'CLEAR_VALUES');
     currFormElm.controls[arrayElement.modelProperty]['rowTemplate'] = rowTemplate;
-    currFormElm.controls[arrayElement.modelProperty]['element'] = arrayElement;    
+    currFormElm.controls[arrayElement.modelProperty]['element'] = arrayElement;
     currFormElm.controls[arrayElement.modelProperty]['controls'] = [];
   }
 
@@ -215,9 +200,7 @@ export class DuiFormGeneratorService {
     switch (error.key) {
       case 'required': error = `This field is required`; break;
       case 'email': error = `Not a valid email address`; break;
-      case 'min': error = `Minimum is ${error.value.min}`; break;
-      case 'max': error = `Maximum is ${error.value.max}`; break;
-      case 'minlength': error = `Minimum length for this field is ${error.value.requiredLength}`; break;
+      case 'minLength': error = `Minimum length for this field is ${error.value.requiredLength}`; break;
       case 'mustMatch': error = `Does not match - ${changeCase.sentenceCase(error.value.field)}`; break;
       default: break;
     }

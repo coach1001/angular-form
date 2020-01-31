@@ -1,9 +1,8 @@
 import { FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { DuiFormGeneratorService } from '../services/dui-form-generator.service';
 import cloneDeep from 'lodash-es/cloneDeep';
 
 // custom validator to check that two fields match
-export function RequiredIf(controlName: string, metadata: any, fgs: DuiFormGeneratorService) {
+export function RequiredIf(controlName: string, metadata: any) {
   return (formGroup: FormGroup): ValidationErrors => {
 
     const requiredIfControl = formGroup.controls[controlName];
@@ -26,7 +25,6 @@ export function RequiredIf(controlName: string, metadata: any, fgs: DuiFormGener
         requiredIfControl.updateValueAndValidity({ onlySelf: true });
       }
     }
-
     return null;
   }
 }

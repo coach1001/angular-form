@@ -146,6 +146,7 @@ export class DuiFlowService {
     const currentFlow = this.currentFlow$.value.flow.flow;
     const currentFlowId = this.currentFlowId$.value;
     this._fgs.recurseFormGroup(form, 'TOUCH_AND_VALIDATE');
+    
     if (form.valid) {
       if (this.triggerActions('BEFORE_NEXT_STEP')) {
         this._fds.setStepData(currentFlowId, currentModule, currentFlow, currentStepName, form.getRawValue());

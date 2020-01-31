@@ -37,6 +37,7 @@ export class DuiFormComponent implements OnInit, OnDestroy {
       filter(value => value != null),
       takeUntil(this._destroy$)
     ).subscribe(form => {
+      console.log(form);
       console.log('FORM BUILT');
       this.form = form;
       const currentStepName = this._fs.currentStepName$.value;
