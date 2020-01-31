@@ -32,9 +32,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   gotoResetPassword(): void {
     this._formData.clearFlowOnNextGet$.next(true);
-    //this._router.navigateByUrl('route/flow/account/passwordReset', <NavigationExtras>{
-    //  queryParamsHandling: 'preserve'
-    //});
     this._router.navigate(['route/flow/account/passwordReset'], { queryParamsHandling: 'merge' });
   }
 

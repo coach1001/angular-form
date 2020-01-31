@@ -102,9 +102,11 @@ export const TestModule = {
                             layout: { stretchLarge: 100, stretchSmall: 100 },
                             validators: [
                                 {
-                                    name: 'required',
+                                    name: 'requiredIf',
+                                    objectScope: true,
                                     metadata: {
-                                        required: true
+                                        triggerField: 'hasDiabetes',
+                                        triggerValue: 'true',
                                     }
                                 }
                             ],

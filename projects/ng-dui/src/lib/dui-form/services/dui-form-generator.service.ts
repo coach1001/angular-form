@@ -56,22 +56,23 @@ export class DuiFormGeneratorService {
 
   processControl(inputElement, currFormElm: FormGroup) {
     const control = new FormControl();
+    let validators = [];
+    let parentValidators = [];
     control['element'] = inputElement;
+
     if (inputElement.validators) {
-      let validators = [];
-      let groupValidators = [];
       inputElement.validators.forEach(validator => {
         const validatorFn = this._vrs.getValidatorFn(validator.name);
         if (validatorFn != null) {
-          validator.objectScope != null && validator.objectScope ?
-            groupValidators.push(validatorFn(inputElement.modelProperty, validator.metadata)) :
-            validators.push(validatorFn(inputElement.modelProperty, validator.metadata));
+          validator.objectScope != null && validator.objectScope
+            ? parentValidators.push(validatorFn(inputElement.modelProperty, validator.metadata))
+            : validators.push(validatorFn(inputElement.modelProperty, validator.metadata));
         }
       });
       control.setValidators(validators);
       currFormElm.validator
-        ? currFormElm.setValidators([...groupValidators, currFormElm.validator])
-        : currFormElm.setValidators(validators);
+        ? currFormElm.setValidators([...parentValidators, currFormElm.validator])
+        : currFormElm.setValidators(parentValidators);
       control['element'].originalValidators = cloneDeep(validators);
     }
     currFormElm.addControl(inputElement.modelProperty, control);
@@ -79,6 +80,9 @@ export class DuiFormGeneratorService {
   }
 
   processObject_r(objectElement, currFormElm: FormGroup, root = false) {
+    let validators = [];
+    let parentValidators = [];
+
     if (!root) {
       currFormElm.addControl(objectElement.modelProperty, this._fb.group({}));
       currFormElm = <FormGroup>currFormElm.controls[objectElement.modelProperty];
@@ -92,19 +96,27 @@ export class DuiFormGeneratorService {
       currFormElm['element'] = objectElement;
     }
     if (objectElement.validators) {
-      let validators = [];
       objectElement.validators.forEach(validator => {
         const validatorFn = this._vrs.getValidatorFn(validator.name);
         if (validatorFn != null) {
+          validator.objectScope != null && validator.objectScope ?
+            parentValidators.push(validatorFn(objectElement.modelProperty, validator.metadata)) :
             validators.push(validatorFn(objectElement.modelProperty, validator.metadata));
         }
       });
       currFormElm.setValidators(validators);
+      currFormElm.parent.validator
+        ? currFormElm.parent.setValidators([...parentValidators, currFormElm.parent.validator])
+        : currFormElm.parent.setValidators(parentValidators);
+      currFormElm['element'].originalValidators = cloneDeep(validators);
     }
     return currFormElm;
   }
 
   processArray_r(arrayElement, currFormElm: FormGroup) {
+    let arrayValidators = [];
+    let parentValidators = [];
+
     currFormElm.addControl(arrayElement.modelProperty, this._fb.array([]));
     currFormElm.controls[arrayElement.modelProperty]['controls'].push(this._fb.group({}));
     if (arrayElement.elements && arrayElement.elements.length) {
@@ -113,19 +125,28 @@ export class DuiFormGeneratorService {
       });
     }
     const rowTemplate = cloneDeep(currFormElm.controls[arrayElement.modelProperty]['controls'][0]);
+
     if (arrayElement.validators) {
-      let arrayValidators = [];
       arrayElement.validators.forEach(validator => {
         const validatorFn = this._vrs.getValidatorFn(validator.name);
         if (validatorFn != null) {
-            arrayValidators.push(validatorFn(arrayElement.modelProperty, validator.metadata));
+          if (validatorFn != null) {
+            validator.objectScope != null && validator.objectScope
+              ? parentValidators.push(validatorFn(arrayElement.modelProperty, validator.metadata))
+              : arrayValidators.push(validatorFn(arrayElement.modelProperty, validator.metadata));
+          }
         }
       });
       currFormElm.controls[arrayElement.modelProperty].setValidators(arrayValidators);
+      currFormElm.validator
+        ? currFormElm.setValidators([...parentValidators, currFormElm.validator])
+        : currFormElm.setValidators(parentValidators);
     }
+
     this.recurseFormGroup(rowTemplate, 'CLEAR_VALUES');
     currFormElm.controls[arrayElement.modelProperty]['rowTemplate'] = rowTemplate;
     currFormElm.controls[arrayElement.modelProperty]['element'] = arrayElement;
+    currFormElm.controls[arrayElement.modelProperty]['element'].originalValidators = cloneDeep(arrayValidators);
     currFormElm.controls[arrayElement.modelProperty]['controls'] = [];
   }
 
