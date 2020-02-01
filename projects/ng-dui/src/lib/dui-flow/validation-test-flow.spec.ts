@@ -53,7 +53,7 @@ export const TestModule = {
                                 },
                                 {
                                     name: 'mustMatch',
-                                    objectScope: true,
+                                    parentScope: true,
                                     metadata: {
                                         targetField: 'password',
                                     }
@@ -87,7 +87,7 @@ export const TestModule = {
                             validators: [
                                 {
                                     name: 'requiredIf',
-                                    objectScope: true,
+                                    parentScope: true,
                                     metadata: {
                                         triggerField: 'age',
                                         triggerValue: '21',
@@ -104,7 +104,7 @@ export const TestModule = {
                             validators: [
                                 {
                                     name: 'requiredIf',
-                                    objectScope: true,
+                                    parentScope: true,
                                     metadata: {
                                         triggerField: 'hasDiabetes',
                                         triggerValue: 'true',

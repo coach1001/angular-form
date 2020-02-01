@@ -64,7 +64,7 @@ export class DuiFormGeneratorService {
       inputElement.validators.forEach(validator => {
         const validatorFn = this._vrs.getValidatorFn(validator.name);
         if (validatorFn != null) {
-          validator.objectScope != null && validator.objectScope
+          validator.parentScope != null && validator.parentScope
             ? parentValidators.push(validatorFn(inputElement.modelProperty, validator.metadata))
             : validators.push(validatorFn(inputElement.modelProperty, validator.metadata));
         }
@@ -99,7 +99,7 @@ export class DuiFormGeneratorService {
       objectElement.validators.forEach(validator => {
         const validatorFn = this._vrs.getValidatorFn(validator.name);
         if (validatorFn != null) {
-          validator.objectScope != null && validator.objectScope ?
+          validator.parentScope != null && validator.parentScope ?
             parentValidators.push(validatorFn(objectElement.modelProperty, validator.metadata)) :
             validators.push(validatorFn(objectElement.modelProperty, validator.metadata));
         }
@@ -131,7 +131,7 @@ export class DuiFormGeneratorService {
         const validatorFn = this._vrs.getValidatorFn(validator.name);
         if (validatorFn != null) {
           if (validatorFn != null) {
-            validator.objectScope != null && validator.objectScope
+            validator.parentScope != null && validator.parentScope
               ? parentValidators.push(validatorFn(arrayElement.modelProperty, validator.metadata))
               : arrayValidators.push(validatorFn(arrayElement.modelProperty, validator.metadata));
           }
