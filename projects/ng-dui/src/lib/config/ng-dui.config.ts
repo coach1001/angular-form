@@ -1,5 +1,6 @@
 export interface NgDuiConfig {
-  flowConfigSystem: string;
+  system: string;
+  baseUrl: string;
   production: boolean;
 }
 

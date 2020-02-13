@@ -1,6 +1,52 @@
 import { ElementType } from '../dui-form/services/dui-elements.enum';
 
 export const TestModule = {
+    "route": "",
+    "system": "portal",
+    "module": "account",
+    "flows": [
+      {
+        "steps": [
+          {
+            "name": "Registration details",
+            "taskPath": "userRegistrationModel.userRegistrationDetails",
+            "modelProperty": "userRegistrationDetails",
+            "uiTemplate": "defaultObject",
+            "elementType": 0,
+            "elements": [
+              {
+                "name": "Email address",
+                "taskPath": "userRegistrationModel.userRegistrationDetails.emailAddress",
+                "modelProperty": "emailAddress",
+                "uiTemplate": "defaultText",
+                "elementType": 2,
+                "controlType": 0
+              },
+              {
+                "name": "Password",
+                "taskPath": "userRegistrationModel.userRegistrationDetails.password",
+                "modelProperty": "password",
+                "uiTemplate": "defaultHideableText",
+                "elementType": 2,
+                "controlType": 6
+              },
+              {
+                "name": "Confirm password",
+                "taskPath": "userRegistrationModel.userRegistrationDetails.confirmPassword",
+                "modelProperty": "confirmPassword",
+                "uiTemplate": "defaultHideableText",
+                "elementType": 2,
+                "controlType": 6
+              }
+            ]
+          }
+        ],
+        "flow": "user-registration",
+        "taskPath": "userRegistrationModel"
+      }
+    ]
+  }
+/*{
     system: 'portal',
     module: 'account',
     flows: [
@@ -298,4 +344,4 @@ export const TestModule = {
             ]
         }
     ]
-}
+}*/

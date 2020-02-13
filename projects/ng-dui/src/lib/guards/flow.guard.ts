@@ -7,6 +7,7 @@ import { ModuleGuard } from './module.guard';
   providedIn: 'root'
 })
 export class FlowGuard implements CanActivate {
+  
   constructor(private _mg: ModuleGuard) {    
   }
 

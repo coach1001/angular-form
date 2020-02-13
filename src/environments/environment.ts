@@ -5,7 +5,8 @@
 export const environment = {
   production: false,
   flowsConfig: {
-    system: 'portal'
+    system: 'portal',
+    baseUrl: 'https://localhost:44358/api',    
   }
 };
 

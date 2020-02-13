@@ -4,9 +4,11 @@ import { Router } from '@angular/router';
 import { DuiFormGeneratorService } from '../../dui-form/services/dui-form-generator.service';
 import { DuiFormDataService } from '../../dui-form/services/dui-form-data.service';
 import { DuiFlowBackendService } from './dui-flow-backend.service';
-// import { TestModule } from '../test-flow.spec';
-import { TestModule } from '../validation-test-flow.spec';
+import { TestModule } from '../test-flow.spec';
+// import { TestModule } from '../validation-test-flow.spec';
 import { NgDuiConfigService } from '../../services/ng-dui-config.service';
+import { NgDuiConfig } from '../../config/ng-dui.config';
+import { HttpClient } from '@angular/common/http';
 
 export interface IFlowDefinition {
   module: string,
@@ -24,28 +26,27 @@ export class DuiFlowService {
   public currentStep$: BehaviorSubject<any> = new BehaviorSubject(null);
   public currentStepName$: BehaviorSubject<string> = new BehaviorSubject(null);
   public currentFlowId$: BehaviorSubject<string> = new BehaviorSubject(null);
-
-  public system: string;
-
+  
   public routeRegistration: Array<any> = [];
   private readonly wait = (ms) => new Promise(res => setTimeout(res, ms));
 
   constructor(
-    @Inject(NgDuiConfigService) private _config,
+    @Inject(NgDuiConfigService) private _config: NgDuiConfig,
     private _fgs: DuiFormGeneratorService,
     private _fds: DuiFormDataService,
     private _rt: Router,
-    private _fbs: DuiFlowBackendService
-  ) {
-    this.system = _config.flowConfigSystem;
+    private _fbs: DuiFlowBackendService,
+    private _hc: HttpClient
+  ) {    
   }
 
-  fetchModule(module: string): void {
+  async fetchModule(module: string): Promise<any> {
     const currentModuleDefinitions = this.moduleDefinitions$.value;
     const moduleDefintion = currentModuleDefinitions.find(value => value.module === module);
     if (!moduleDefintion) {
-      const newModule = TestModule;
-      this.moduleDefinitions$.next([...currentModuleDefinitions, newModule]);
+      // const newModule = TestModule;
+      const response = await this._hc.get(`${this._config.baseUrl}/${this._config.system}/${module}/definition`).toPromise();
+      this.moduleDefinitions$.next([...currentModuleDefinitions, {...response}]);    
     }
   }
 
@@ -72,7 +73,7 @@ export class DuiFlowService {
   setCurrentFlowAndStep(module: string, flow: string, stepName: string) {
     const moduleDefinitions = this.moduleDefinitions$.value;
     const moduleDefinition = moduleDefinitions
-      .find(m => m.system === this.system && m.module === module)
+      .find(m => m.system === this._config.system && m.module === module)
     if (!moduleDefinition) return;
     const flowDefinition = moduleDefinition.flows.find(f => f.flow === flow);
     if (!flowDefinition) return;
@@ -84,7 +85,7 @@ export class DuiFlowService {
   initFlow(module: string, flow: string, unregisteredFlow: boolean): void {
     const moduleDefinitions = this.moduleDefinitions$.value;
     const moduleDefinition = moduleDefinitions
-      .find(m => m.system === this.system && m.module === module)
+      .find(m => m.system === this._config.system && m.module === module)
     if (!moduleDefinition) return;
     const flowDefinition = moduleDefinition.flows.find(f => f.flow === flow);
     if (!flowDefinition) return;

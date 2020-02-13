@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
-import { FormArray, FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { FormArray, FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { BehaviorSubject, Subject } from 'rxjs';
 import cloneDeep from 'lodash-es/cloneDeep';
 import * as changeCase from 'change-case';
 import { ElementType } from './dui-elements.enum';
 import { DuiValidatorRegistryService } from './dui-validator-registry.service';
-import { Required } from '../form-validators/required.validator';
-import { element } from 'protractor';
 
 @Injectable({
   providedIn: 'root'

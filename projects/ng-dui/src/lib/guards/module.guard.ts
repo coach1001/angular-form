@@ -7,6 +7,7 @@ import { DuiFormComponent } from '../dui-components/components/dui-form/dui-form
 import { DuiFlowService } from '../dui-flow/services/dui-flow.service';
 import { DuiFormDataService } from '../dui-form/services/dui-form-data.service';
 import { NgDuiConfigService } from '../services/ng-dui-config.service';
+import { NgDuiConfig } from '../config/ng-dui.config';
 
 @Injectable({
   providedIn: 'root'
@@ -14,15 +15,15 @@ import { NgDuiConfigService } from '../services/ng-dui-config.service';
 export class ModuleGuard implements CanActivate {
 
   constructor(
-    @Inject(NgDuiConfigService) private _config,
+    @Inject(NgDuiConfigService) private _config: NgDuiConfig,
     private _fs: DuiFlowService,
     private _fds: DuiFormDataService,
     private _rt: Router
   ) { }
 
-  canActivate(
+  async canActivate(
     next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    state: RouterStateSnapshot) {
 
     const unregisteredFlow = state['unregisteredFlow'] != null ? state['unregisteredFlow'] : false
 
@@ -69,7 +70,7 @@ export class ModuleGuard implements CanActivate {
       routePrefix = routePrefix.substring(0, routePrefix.length - 1);
 
       // Check if module registered if not get and add it to definitions
-      this._fs.fetchModule(moduleFromRouteData);
+      await this._fs.fetchModule(moduleFromRouteData);
 
       // Check if routes registered if not create and register the routes
       const startUrl = this._fs.checkIfRouteRegistered(routePrefix, moduleFromRouteData, flowFromUrl);

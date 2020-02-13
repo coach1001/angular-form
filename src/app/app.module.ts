@@ -9,6 +9,7 @@ import { MaterialModule } from './modules/material/material.module';
 import { HttpClientModule } from '@angular/common/http';
 import { NgDuiModule } from 'projects/ng-dui/src/lib/ng-dui.module';
 import { AccountDuiModule } from './modules/account-dui/account-dui.module';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [
@@ -24,8 +25,8 @@ import { AccountDuiModule } from './modules/account-dui/account-dui.module';
     FlexLayoutModule,
     MaterialModule,
     NgDuiModule.forRoot({
-      flowConfigSystem: 'portal',
-      production: false
+      ...environment.flowsConfig,
+      production: environment.production
     }),
     AccountDuiModule
   ],

@@ -16,9 +16,10 @@
 <router-outlet></router-outlet> -->
 <mat-toolbar color="primary">
   <mat-toolbar-row fxLayout="row" fxLayoutAlign="start center" >    
-      <a mat-button routerLink="/register">Home</a>
+      <a mat-button routerLink="/">Home</a>
      <span fxFlex></span>
-     <a mat-button routerLink="/register">Register</a>
-     <a mat-button routerLink="/login">Login</a>
+     <a mat-button (click)="gotoRegistration()">Register</a>
+     <a mat-button (click)="gotoResetPassword()">Reset Password</a>
   </mat-toolbar-row>
 </mat-toolbar>
+<router-outlet></router-outlet>
