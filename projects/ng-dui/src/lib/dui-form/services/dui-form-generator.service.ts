@@ -218,9 +218,9 @@ export class DuiFormGeneratorService {
   getErrorValidationMessage(error: any) {
     switch (error.key) {
       case 'required': error = `This field is required`; break;
-      case 'email': error = `Not a valid email address`; break;
       case 'minLength': error = `Minimum length for this field is ${error.value.requiredLength}`; break;
       case 'mustMatch': error = `Does not match - ${changeCase.sentenceCase(error.value.field)}`; break;
+      case 'invalidEmailAddress': error = `Not a valid email address`; break;
       default: break;
     }
     return error;

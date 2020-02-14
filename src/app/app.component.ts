@@ -27,7 +27,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   gotoRegistration(): void {
     this._formData.clearFlowOnNextGet$.next(true);
-    // this._router.navigateByUrl('flow/account/user-registration');
+
     this._router.navigate(['flow/account/user-registration'], { queryParamsHandling: 'merge' });
   }
 

@@ -1,9 +1,9 @@
-import { FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { FormGroup, ValidationErrors } from '@angular/forms';
 import cloneDeep from 'lodash-es/cloneDeep';
-import { Required } from './required.validator';
+import { RequiredValidator } from './required.validator';
 
 // custom validator to check that two fields match
-export function RequiredIf(controlName: string, metadata: any) {
+export function RequiredIfValidator(controlName: string, metadata: any) {
   return (formGroup: FormGroup): ValidationErrors => {
 
     const requiredIfControl = formGroup.controls[controlName];
@@ -11,7 +11,7 @@ export function RequiredIf(controlName: string, metadata: any) {
 
     if (triggerControl.value != null && triggerControl.value.toString() === metadata.triggerValue) {
       const validators = cloneDeep(requiredIfControl['element'].originalValidators);
-      validators.push(Required(controlName, { required: true }));
+      validators.push(RequiredValidator(controlName, { required: true }));
       requiredIfControl.clearValidators();
       requiredIfControl.setValidators(validators);
       requiredIfControl.updateValueAndValidity({ onlySelf: true });

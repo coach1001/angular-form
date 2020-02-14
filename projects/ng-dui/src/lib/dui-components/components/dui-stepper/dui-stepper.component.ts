@@ -4,7 +4,7 @@ import { takeUntil } from 'rxjs/operators';
 import * as changeCase from 'change-case';
 import { DuiFlowService } from '../../../dui-flow/services/dui-flow.service';
 import { NgDuiConfigService } from '../../../services/ng-dui-config.service'
-import { NgDuiConfig } from 'ng-dui/lib/config/ng-dui.config';
+import { NgDuiConfig } from '../../../config/ng-dui.config';
 
 @Component({
   selector: 'dui-stepper',
