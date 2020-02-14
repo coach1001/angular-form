@@ -5,10 +5,12 @@ import { AccountDuiRoutingModule } from './account-dui-routing.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MaterialModule } from '../material/material.module';
 import { DuiComponentsModule } from 'projects/ng-dui/src/lib/dui-components/dui-components.module';
+import { RegistrationDoneComponent } from './components/registration-done/registration-done.component';
 
 @NgModule({
   declarations: [
-    AccountDuiContainerComponent
+    AccountDuiContainerComponent,
+    RegistrationDoneComponent
   ],
   imports: [
     CommonModule,
@@ -18,10 +20,8 @@ import { DuiComponentsModule } from 'projects/ng-dui/src/lib/dui-components/dui-
     DuiComponentsModule
   ],
   entryComponents: [
-    AccountDuiContainerComponent 
-  ],
-  exports: [
-    AccountDuiContainerComponent    
+    AccountDuiContainerComponent,
+    RegistrationDoneComponent 
   ]
 })
 export class AccountDuiModule { }

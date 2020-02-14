@@ -1,8 +1,10 @@
 <div fxLayout="column" fxHide.lt-md>
     <div fxLayout="row" fxLayoutAlign="center center" class="stepper-container">
         <ng-container *ngFor="let step of flowSteps; let sIndex = index; let isLast = last;">
-            <button mat-fab (click)="gotoStep(sIndex)" [class]="stepIcon(sIndex)"
-                [ngClass]="{'outline': sIndex > stepIndex}" [color]="stepColor(sIndex)"></button>
+            <button mat-fab (click)="gotoStep(sIndex)" [ngClass]="{'outline': sIndex > stepIndex}"
+                [color]="stepColor(sIndex)">
+                <mat-icon>{{stepIcon(sIndex)}}</mat-icon>
+            </button>
             <div *ngIf="!isLast" [class]="connectorClass(sIndex)"></div>
         </ng-container>
     </div>
@@ -23,5 +25,5 @@
     <div fxLayout="row" fxLayoutAlign="center center" class="step-label mobile">
         {{'STEP ' + (stepIndex + 1) + ' of ' + flowSteps.length + ' - ' + stepLabel(stepIndex)}}
     </div>
-    <hr/>
+    <hr />
 </div>

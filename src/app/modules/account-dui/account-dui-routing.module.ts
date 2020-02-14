@@ -18,9 +18,12 @@ const routes: Routes = [
         path: '**',
         data: {
           module: 'account',
+          staticComponents: [
+            { name: 'done', }                      
+          ]
         },
         canActivate: [FlowGuard],
-        component: DuiDynamicComponent
+        component: DuiDynamicComponent,
       }
     ]
   }

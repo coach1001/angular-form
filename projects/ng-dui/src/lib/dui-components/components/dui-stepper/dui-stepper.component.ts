@@ -43,17 +43,16 @@ export class DuiStepperComponent implements OnInit, OnDestroy {
     return changeCase.sentenceCase(step.name).toUpperCase();
   }
 
-  stepIcon(index: number): string {
-    let _icon = 'desktop-stepper-icon mat-elevation-z2 medium ';
+  stepIcon(index: number): string {        
     if (index < this.stepIndex) {
-      _icon += 'cicon-tick'
+      return 'done';
     } else {
       const step = this.flowSteps[index];
       if (step != null) {
-        _icon += step.icon;
+        return step.icon;
       }
     }
-    return _icon;
+    return '';
   }
 
   stepIconMobile(): string {

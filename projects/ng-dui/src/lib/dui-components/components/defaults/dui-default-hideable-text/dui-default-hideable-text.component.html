@@ -2,8 +2,9 @@
     <mat-form-field floatLabel="always" fxFlex="100">
         <mat-label>{{label}}</mat-label>
         <input [type]="hidden ? 'password' : 'text'" matInput [formControlName]="name">
-        <mat-icon color="primary" (click)="hidden = !hidden" matSuffix
-            [ngClass]="{'cicon-show-password': hidden, 'cicon-hide-password': !hidden}"></mat-icon>
+        <mat-icon color="primary" (click)="hidden = !hidden" matSuffix>
+            {{hidden ? 'visibility' : 'visibility_off'}}
+        </mat-icon>
         <mat-hint *ngIf="hint">{{hint}}</mat-hint>
         <mat-error>{{error}}</mat-error>
     </mat-form-field>

@@ -25,7 +25,7 @@ export class ModuleGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot) {
 
-    const unregisteredFlow = state['unregisteredFlow'] != null ? state['unregisteredFlow'] : false
+    const unregisteredFlow = state['unregisteredFlow'] != null ? state['unregisteredFlow'] : false;
 
     if (this._fs.currentFlow$.value != null && this._fs.currentFlow$.value.flowStarted && !unregisteredFlow) {
       const flowId = next.queryParams.flowId;
