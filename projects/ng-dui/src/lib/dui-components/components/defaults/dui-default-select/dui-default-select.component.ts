@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { DuiBaseControlComponent } from '../../base/dui-base-control/dui-base-control.component';
 import { DuiFormGeneratorService } from '../../../../dui-form/services/dui-form-generator.service';
 import { MatAutocompleteSelectedEvent } from '@angular/material';
-import { DuiComponentsRegistryService } from '../../../services/dui-components-registry.service';
 
 @Component({
   selector: 'dui-default-select',
@@ -22,14 +21,10 @@ export class DuiDefaultSelectComponent extends DuiBaseControlComponent {
   
   get displayFn(): (value?: any) => string | undefined {
     return (value?: any): string | undefined => {
-      if(typeof value === 'object' && value != null) {
-        const option = this.controlIn['element'].options.find(option_ => option_.value.id === value.id);
+      if(value != null) {
+        const option = this.controlIn['element'].options.find(option_ => option_.key === value.key);
         if (option == null) return undefined;
-        return option.displayValue;
-      } else {
-        const option = this.controlIn['element'].options.find(option_ => option_.value === value);
-        if (option == null) return undefined;
-        return option.displayValue;
+        return option.display;
       }      
     }
   }
