@@ -14,7 +14,7 @@ export class DuiBaseControlComponent implements OnInit, OnDestroy {
   @Input()
   controlIn: FormGroup | FormArray | FormControl;
   @Input()
-  name: string;
+  modelProperty: string;
   @Input()
   label: string;
   @Input()

@@ -1,8 +1,8 @@
 <form [formGroup]="parent" *ngIf="visible">
     <mat-form-field class="bool-switch" appearance="none" floatLabel="always" fxFlex="100">
         <mat-label>{{label}}</mat-label>
-        <mat-slide-toggle [formControlName]="name"></mat-slide-toggle>
-        <input matInput [formControlName]="name" style="display: none;" hidden>
+        <mat-slide-toggle [formControlName]="modelProperty"></mat-slide-toggle>
+        <input matInput [formControlName]="modelProperty" style="display: none;" hidden>
         <mat-hint *ngIf="hint">{{hint}}</mat-hint>
         <mat-error>{{error}}</mat-error>
     </mat-form-field>

@@ -1,7 +1,7 @@
 <form [formGroup]="parent" *ngIf="visible">
     <mat-form-field floatLabel="always" fxFlex="100">
         <mat-label>{{label}}</mat-label>
-        <input [type]="hidden ? 'password' : 'text'" matInput [formControlName]="name">
+        <input [type]="hidden ? 'password' : 'text'" matInput [formControlName]="modelProperty">
         <mat-icon color="primary" (click)="hidden = !hidden" matSuffix>
             {{hidden ? 'visibility' : 'visibility_off'}}
         </mat-icon>

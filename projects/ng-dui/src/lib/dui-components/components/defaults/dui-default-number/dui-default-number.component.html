@@ -1,7 +1,7 @@
 <form [formGroup]="parent" *ngIf="visible">
     <mat-form-field floatLabel="always" fxFlex="100">
         <mat-label>{{label}}</mat-label>
-        <input matInput [formControlName]="name" digitOnly [decimal]="allowDecimal">
+        <input matInput [formControlName]="modelProperty" digitOnly [decimal]="allowDecimal">
         <mat-hint *ngIf="hint">{{hint}}</mat-hint>
         <mat-error>{{error}}</mat-error>
     </mat-form-field>

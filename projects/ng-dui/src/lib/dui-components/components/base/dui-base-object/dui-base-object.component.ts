@@ -14,7 +14,7 @@ export class DuiBaseObjectComponent implements OnInit, OnDestroy  {
   @Input()
   controlIn: FormGroup;
   @Input()
-  name: string;
+  modelProperty: string;
   @Input()
   label: string;
   @Input()
@@ -128,8 +128,8 @@ export class DuiBaseObjectComponent implements OnInit, OnDestroy  {
     return {
       controlIn: control,
       parent: this.controlIn,
-      name: controlKey,
-      label: changeCase.sentenceCase(controlKey),
+      modelProperty: controlKey,
+      label: control['element'].name ? control['element'].name : changeCase.sentenceCase(controlKey),
       hint: control['element'].hint,
       parentReset$: this.reset$,
       parentCleared$: this.cleared$

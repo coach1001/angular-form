@@ -15,7 +15,7 @@ export class DuiBaseArrayComponent implements OnInit, OnDestroy {
   @Input()
   controlIn: FormArray;
   @Input()
-  name: string;
+  modelProperty: string;
   @Input()
   label: string;
   @Input()
@@ -144,8 +144,8 @@ export class DuiBaseArrayComponent implements OnInit, OnDestroy {
     return {
       controlIn: control,
       parent: this.controlIn.controls[rowIndex],
-      name: controlKey,
-      label: changeCase.sentenceCase(controlKey),
+      modelProperty: controlKey,
+      label: control['element'].name ? control['element'].name : changeCase.sentenceCase(controlKey),
       hint: control['element'].hint,
       parentReset$: this.reset$,
       parentCleared$: this.cleared$
