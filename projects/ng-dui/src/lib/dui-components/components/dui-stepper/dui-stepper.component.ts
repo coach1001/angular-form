@@ -56,7 +56,7 @@ export class DuiStepperComponent implements OnInit, OnDestroy {
   }
 
   stepIconMobile(): string {
-    return `${this.flowSteps[this.stepIndex].icon} mobile-stepper-icon medium mat-fab`;
+    return `${this.flowSteps[this.stepIndex].icon}`;
   }
 
   stepColor(index: number): string {
@@ -64,6 +64,16 @@ export class DuiStepperComponent implements OnInit, OnDestroy {
       return 'accent';
     } else if (index >= this.stepIndex) {
       return 'primary';
+    } else {
+      return 'primary'
+    }
+  }
+
+  stepIconColor(index: number): string {
+    if (index < this.stepIndex) {
+      return 'white';
+    } else if (index == this.stepIndex) {
+      return '';
     } else {
       return 'primary'
     }

@@ -1,3 +1,7 @@
+$primary-color: #79378b;
+$accent-color: #93cd3f;
+$warn-color: #c90404;
+
 .stepper-container {
   margin-top: 30px;
 }
@@ -7,16 +11,16 @@
     margin-left: -2px;
     margin-right: -2px;
     &.done-to-done {
-      border: 1px green solid;
+      border: 1px $accent-color solid !important;
     }
     &.done-to-current {
       border-style: solid;
-      border-image-source: linear-gradient(to right, green 0%,  100%);
+      border-image-source: linear-gradient(to right, $accent-color 0%, $primary-color 100%) !important;
       border-image-slice: 1;
       border-width: 1px;
     }
     &.current-to-next {
-      border: 1px green solid;
+      border: 1px $primary-color solid !important;
     }
 }
 
@@ -26,10 +30,10 @@
   font-size: 15px;
   margin-top: 10px;
   font-family: Montserrat, sans-serif;
-  color: green;
+  color: $primary-color !important;
   font-weight: normal;
   &.done {
-    color: green;
+    color: $accent-color !important;
   }
   &.current {
     font-weight: bold;
@@ -42,40 +46,39 @@
 }
 
 .chevrons {
-  color: green;
+  color: $primary-color !important;
   font-weight: bold;
-  font-size: 30px;
-  cursor: pointer;
+  font-size: 34px;
+  height: 34px;
+  width: 34px;
+  line-height: unset;
+  cursor: pointer;  
 }
 
 .mobile-stepper-icon {
-  background-color: green;
-  color: white;
-  font-size: 32px;
+  color: white !important;
+  background-color: $primary-color !important;
 }
 
 .desktop-stepper-icon {
-  &.medium {
+  mat-icon {
+    height: 32px;
+    width: 32px;
     font-size: 32px;
+    line-height: unset;     
   }
-  &.mat-primary {
-    color: white;
-    &.mat-icon {
-      color: green;
-    }
-    &.outline {
-      color: green;
-    }        
-  }
+}
+
+.desktop-stepper-icon {
   &.mat-accent {
-    color: white;
-    &.mat-icon {
-      color: green;
+    mat-icon {
+      color: white;
     }
-    &.outline {
-      color: green;
-    }        
   }
+}
+
+.outline {
+  cursor: default !important;
 }
 
 .hide-chevron {

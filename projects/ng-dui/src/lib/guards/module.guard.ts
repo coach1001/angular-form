@@ -33,6 +33,7 @@ export class ModuleGuard implements CanActivate {
         this._rt.navigateByUrl(`${state.url}?flowId=${uuidv4()}`);
         return false;
       } else {
+        this._fs.currentFlowId$.next(flowId);
         return true;
       }
     } else {

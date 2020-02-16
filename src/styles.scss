@@ -208,71 +208,15 @@ button {
   }
 }
 
-* {
-  text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
-  text-rendering: geometricPrecision !important;
-  -webkit-font-smoothing: antialiased !important;
-  -moz-osx-font-smoothing: grayscale !important; 
-}
-
 .bool-switch {
   .mat-form-field-wrapper {
       padding-bottom: 0 !important;
   }
 }
 
-.step-connector {
-    &.done-to-done {
-      border: 1px $accent-color solid !important;
-    }
-    &.done-to-current {
-      border-image-source: linear-gradient(to right, $accent-color 0%, $primary-color 100%) !important;
-    }
-    &.current-to-next {
-      border: 1px $primary-color solid !important;
-    }
-}
-
-.step-label {
-  color: $primary-color !important;
-  &.done {
-    color: $accent-color !important;
-  }
-}
-
-.chevrons {
-  color: $primary-color !important;
-}
-
-.mobile-stepper-icon {
-  background-color: $primary-color !important;
-}
-
-.desktop-stepper-icon {
-  &.mat-primary {
-    &.mat-icon {
-      color: $primary-color !important;
-    }
-    &.outline {
-      color: $primary-color !important;
-    }        
-  }
-  &.mat-accent {
-    &.mat-icon {
-      color: $accent-color !important;
-    }
-    &.outline {
-      color: $accent-color !important;
-    }        
-  }
-}
-
-.outline {
-  cursor: default !important;
-}
 
 body {
   margin: 0 !important;
-  overflow-x: hidden;
+  overflow-x: hidden !important;
   overflow-y: scroll;
 }

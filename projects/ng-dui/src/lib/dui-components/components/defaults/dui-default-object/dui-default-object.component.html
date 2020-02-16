@@ -1,5 +1,5 @@
 <h2 *ngIf="label && visible">{{label}}</h2>
-<form [formGroup]="parent" *ngIf="visible" fxLayout="row wrap" fxLayoutGap="20px grid" autocomplete="false">
+<form [formGroup]="parent" *ngIf="visible" fxLayout="row wrap" fxLayoutGap="22px grid" autocomplete="false">
     <ng-container *ngFor="let key of controlKeys;let i = index;">
         <div [fxFlex]="controlIn?.element?.elements[i]?.layout?.stretchLarge || 100" 
             [fxFlex.lt-md]="controlIn.element.elements[i]?.layout?.stretchSmall || 100">

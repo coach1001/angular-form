@@ -1,9 +1,14 @@
 <div fxLayout="column" fxHide.lt-md>
     <div fxLayout="row" fxLayoutAlign="center center" class="stepper-container">
         <ng-container *ngFor="let step of flowSteps; let sIndex = index; let isLast = last;">
-            <button mat-fab (click)="gotoStep(sIndex)" [ngClass]="{'outline': sIndex > stepIndex}"
+            <!-- <button mat-fab (click)="gotoStep(sIndex)" [ngClass]="{'outline': sIndex > stepIndex}"
                 [color]="stepColor(sIndex)">
-                <mat-icon>{{stepIcon(sIndex)}}</mat-icon>
+                <mat-icon class="desktop-stepper-icon medium">{{stepIcon(sIndex)}}</mat-icon>
+            </button> -->
+            <button 
+                [color]="stepColor(sIndex)"
+                [ngClass]="{'desktop-stepper-icon': true, 'outline': sIndex > stepIndex}" mat-fab (click)="gotoStep(sIndex)">
+                <mat-icon [color]="stepIconColor(sIndex)">{{stepIcon(sIndex)}}</mat-icon>
             </button>
             <div *ngIf="!isLast" [class]="connectorClass(sIndex)"></div>
         </ng-container>
@@ -17,13 +22,25 @@
     </div>
 </div>
 <div fxLayout="column" fxHide.gt-sm>
+    
     <div fxLayout="row" fxLayoutAlign="space-between center" class="stepper-container">
-        <div class="cicon-arrow-left chevrons" (click)="back()" [ngClass]="{'hide-chevron': hideBack()}"></div>
-        <button [class]="stepIconMobile()"></button>
-        <div class="cicon-arrow-right chevrons" (click)="next()" [ngClass]="{'hide-chevron': hideNext()}"></div>
+        <div (click)="back()" [ngClass]="{'hide-chevron': hideBack()}">
+            <mat-icon class="chevrons right">chevron_left</mat-icon>
+        </div>
+
+        <button class="mobile-stepper-icon" mat-fab>
+            <mat-icon>{{stepIconMobile()}}</mat-icon>
+        </button>
+
+        <div (click)="next()" [ngClass]="{'hide-chevron': hideNext()}">
+            <mat-icon class="chevrons left">chevron_right</mat-icon>
+        </div>
     </div>
+
     <div fxLayout="row" fxLayoutAlign="center center" class="step-label mobile">
         {{'STEP ' + (stepIndex + 1) + ' of ' + flowSteps.length + ' - ' + stepLabel(stepIndex)}}
     </div>
+    
     <hr />
+
 </div>
