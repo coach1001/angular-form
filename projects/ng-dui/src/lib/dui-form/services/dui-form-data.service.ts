@@ -24,23 +24,27 @@ export class DuiFormDataService {
     @Inject(NgDuiConfigService) private _config
   ) { }
 
-  setStepData(flowId: string, module: string, flow: string, stepName: string, data: any) {
+  setStepData(flowId: string, module: string, flow: string, modelProperty: string, data: any, context: any) {
     this.clearFlowOnNextGet$.next(false);
     const allFlowData = this.allFlowData$.value;
     if (allFlowData == null) {
       const newAllFlowData = [];
       const flowData = {};
-      flowData[stepName] = data;
-      newAllFlowData.push(<IFlowData>{module, flow, flowId, updatedAt: new Date(), flowData, flowContext: {} });
+      flowData[modelProperty] = data;
+      context = {
+        flowId
+      };
+      newAllFlowData.push(<IFlowData>{module, flow, flowId, updatedAt: new Date(), flowData, flowContext: context });
       this.allFlowData$.next(newAllFlowData);
     } else {
       const flowDataIndex = allFlowData.findIndex(stepData => stepData.flowId === flowId);
       if (flowDataIndex < 0) {
         const flowData = {};
-        flowData[stepName] = data;
-        allFlowData.push(<IFlowData>{ module, flow, flowId, updatedAt: new Date(), flowData, flowContext: {}  });
+        flowData[modelProperty] = data;
+        allFlowData.push(<IFlowData>{ module, flow, flowId, updatedAt: new Date(), flowData, flowContext: context });
       } else {
-        allFlowData[flowDataIndex].flowData[stepName] = data;
+        allFlowData[flowDataIndex].flowData[modelProperty] = data;
+        allFlowData[flowDataIndex].flowContext = context;
         allFlowData[flowDataIndex].updatedAt = new Date();
       }
       this.allFlowData$.next(allFlowData);
@@ -75,7 +79,7 @@ export class DuiFormDataService {
       flow.flowId === flowId)
   }
 
-  getStepData(flowId: string, module: string, flow: string, stepName: string) {
+  getStepData(flowId: string, module: string, flow: string, modelProperty: string) {
     let allFlowData = this.allFlowData$.value;
     if (allFlowData == null) {
       if (this.persistData) {
@@ -123,7 +127,7 @@ export class DuiFormDataService {
       return null;
     } else {
       this.clearFlowOnNextGet$.next(false);
-      return allFlowData[flowDataIndex].flowData[stepName];
+      return allFlowData[flowDataIndex].flowData[modelProperty];
     }
   }
 }

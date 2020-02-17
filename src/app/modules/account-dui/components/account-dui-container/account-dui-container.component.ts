@@ -19,12 +19,12 @@ export class AccountDuiContainerComponent implements OnInit {
     this.currentStep$ = this._fs.currentStep$;
   }
 
-  back(): void {
-    this._fs.backStep();
+  async back() {
+    await this._fs.backStep();
   }
 
-  next(): void {
-    this._fs.nextStep();
+  async next() {
+    await this._fs.nextStep();
   }
 
 }

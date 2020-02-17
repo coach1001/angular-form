@@ -9,6 +9,7 @@ import { TestModule } from '../test-flow.spec';
 import { NgDuiConfigService } from '../../services/ng-dui-config.service';
 import { NgDuiConfig } from '../../config/ng-dui.config';
 import { HttpClient } from '@angular/common/http';
+import { TaskType } from '../../dui-form/services/dui-task.enum';
 
 export interface IFlowDefinition {
   module: string,
@@ -26,27 +27,24 @@ export class DuiFlowService {
   public currentStep$: BehaviorSubject<any> = new BehaviorSubject(null);
   public currentStepName$: BehaviorSubject<string> = new BehaviorSubject(null);
   public currentFlowId$: BehaviorSubject<string> = new BehaviorSubject(null);
-  
+
   public routeRegistration: Array<any> = [];
-  private readonly wait = (ms) => new Promise(res => setTimeout(res, ms));
 
   constructor(
     @Inject(NgDuiConfigService) private _config: NgDuiConfig,
     private _fgs: DuiFormGeneratorService,
     private _fds: DuiFormDataService,
     private _rt: Router,
-    private _fbs: DuiFlowBackendService,
     private _hc: HttpClient
-  ) {    
+  ) {
   }
 
   async fetchModule(module: string): Promise<any> {
     const currentModuleDefinitions = this.moduleDefinitions$.value;
     const moduleDefintion = currentModuleDefinitions.find(value => value.module === module);
     if (!moduleDefintion) {
-      // const newModule = TestModule;
       const response = await this._hc.get(`${this._config.baseUrl}/${this._config.system}/${module}/definition`).toPromise();
-      this.moduleDefinitions$.next([...currentModuleDefinitions, {...response}]);    
+      this.moduleDefinitions$.next([...currentModuleDefinitions, { ...response }]);
     }
   }
 
@@ -109,90 +107,89 @@ export class DuiFlowService {
     });
   }
 
-  async RunServerTask() {
-    const currentFlowId = this.currentFlowId$.value;
-    const flowData = this._fds.getFlowData(currentFlowId)
-    await this._fbs.runTask(flowData)
+  async RunStepTasks(taskType: string, formValue: any, flowContext: any): Promise<any> {
+    const currentStep = this.currentStep$.value;
+    const currentModule = this.currentFlow$.value.module;
+    const currentFlow = this.currentFlow$.value.flow.flow;
+    const taskPath = currentStep.taskPath;
+    return await this._hc.post(`${this._config.baseUrl}/${this._config.system}/${currentModule}/${currentFlow}/run-task`, {
+      data: formValue,
+      context: flowContext,
+      taskType,
+      taskPath
+    }).toPromise();
   }
 
-  async evalActions(actions: any): Promise<boolean> {
-    let continueFlow = true;
-    for (const action of actions) {
-      if (continueFlow) {
-        switch (action.type) {
-          case 'SERVER_TASK': await this.RunServerTask(); console.log('SERVER_TASK'); break;
-          case 'ABSOLUTE_REDIRECT': console.log('ABSOLUTE_REDIRECT');
-            this._rt.navigateByUrl(action.value); continueFlow = false; break;
-          default: break;
-        }
-      }
-    }
-    return continueFlow;
-  }
+  async nextStep(): Promise<void> {
 
-  triggerActions(trigger: string) {
-    let continueFlow = true;
-    const currentFlow = this.currentFlow$.value.flow;
-    switch (trigger) {
-      case 'POST_FLOW': this.evalActions(currentFlow.actions); break;
-      default: break;
-    }
-    return continueFlow;
-  }
+    let form = this._fgs.form$.value;
 
-  nextStep(): Promise<void> {
-    const form = this._fgs.form$.value;
     const currentStepName = this.currentStepName$.value;
+    const currentStep = this.currentStep$.value;
     const currentModule = this.currentFlow$.value.module;
     const currentFlow = this.currentFlow$.value.flow.flow;
     const currentFlowId = this.currentFlowId$.value;
-    this._fgs.recurseFormGroup(form, 'TOUCH_AND_VALIDATE');
-    
-    if (form.valid) {
-      if (this.triggerActions('BEFORE_NEXT_STEP')) {
-        this._fds.setStepData(currentFlowId, currentModule, currentFlow, currentStepName, form.getRawValue());
-        const routeConfig = this.routeRegistration.find(routeReg =>
-          routeReg.module === currentModule &&
-          routeReg.flow === currentFlow);
-        if (routeConfig == null) return;
-        const currentRouteIndex = routeConfig.routes.findIndex(route => route.stepName === currentStepName);
-        const nextRoute = routeConfig.routes[currentRouteIndex + 1];
-        if (nextRoute == null) {
-          if (currentRouteIndex === (routeConfig.routes.length - 1)) {
-            this.triggerActions('POST_FLOW');
-            return;
-          } else {
-            return;
-          }
-        } else {
-          this._rt.navigate([nextRoute.absolutePath], {
-            queryParamsHandling: 'merge'
-          });
-        }
-      } else {
-        return;
-      }
-    }
-  }
 
-  async backStep(): Promise<void> {
-    if (await this.triggerActions('BEFORE_BACK_STEP')) {
-      const currentStepName = this.currentStepName$.value;
-      const currentModule = this.currentFlow$.value.module;
-      const currentFlow = this.currentFlow$.value.flow.flow;
+    this._fgs.recurseFormGroup(form, 'TOUCH_AND_VALIDATE');
+
+    if (form.valid) {
+
+      const formValue = form.getRawValue();
+      let flowData = this._fds.getFlowData(currentFlowId);
+
+      if (flowData == null) {
+        this._fds.setStepData(currentFlowId, currentModule, currentFlow, currentStep.modelProperty, formValue, {
+          flowId: currentFlowId
+        });
+        flowData = this._fds.getFlowData(currentFlowId);
+      }
+
+      const flowDataChanges = await this.RunStepTasks(TaskType.PostTask, flowData.flowData, flowData.flowContext);
+
+      if (flowDataChanges != null) {
+        this._fds.setStepData(
+          currentFlowId,
+          currentModule,
+          currentFlow,
+          currentStep.modelProperty,
+          flowDataChanges.data[currentStep.modelProperty],
+          flowDataChanges.context);
+      }
+
       const routeConfig = this.routeRegistration.find(routeReg =>
         routeReg.module === currentModule &&
         routeReg.flow === currentFlow);
       if (routeConfig == null) return;
       const currentRouteIndex = routeConfig.routes.findIndex(route => route.stepName === currentStepName);
-      const nextRoute = routeConfig.routes[currentRouteIndex - 1];
-      if (nextRoute == null) return;
-      this._rt.navigate([nextRoute.absolutePath], {
-        queryParamsHandling: 'merge'
-      });
-    } else {
-      return;
+      const nextRoute = routeConfig.routes[currentRouteIndex + 1];
+      if (nextRoute == null) {
+        if (currentRouteIndex === (routeConfig.routes.length - 1)) {
+          return;
+        } else {
+          return;
+        }
+      } else {
+        this._rt.navigate([nextRoute.absolutePath], {
+          queryParamsHandling: 'merge'
+        });
+      }
     }
+  }
+
+  async backStep(): Promise<void> {
+    const currentStepName = this.currentStepName$.value;
+    const currentModule = this.currentFlow$.value.module;
+    const currentFlow = this.currentFlow$.value.flow.flow;
+    const routeConfig = this.routeRegistration.find(routeReg =>
+      routeReg.module === currentModule &&
+      routeReg.flow === currentFlow);
+    if (routeConfig == null) return;
+    const currentRouteIndex = routeConfig.routes.findIndex(route => route.stepName === currentStepName);
+    const nextRoute = routeConfig.routes[currentRouteIndex - 1];
+    if (nextRoute == null) return;
+    this._rt.navigate([nextRoute.absolutePath], {
+      queryParamsHandling: 'merge'
+    });
   }
 
 }

@@ -36,11 +36,11 @@ export class DuiFormComponent implements OnInit, OnDestroy {
       takeUntil(this._destroy$)
     ).subscribe(form => {
       this.form = form;
-      const currentStepName = this._fs.currentStepName$.value;
+      const currentStep = this._fs.currentStep$.value;
       const currentModule = this._fs.currentFlow$.value.module;
       const currentFlow = this._fs.currentFlow$.value.flow.flow;
       const currentFlowId = this._fs.currentFlowId$.value;
-      const stepData = this._fds.getStepData(currentFlowId, currentModule, currentFlow, currentStepName);
+      const stepData = this._fds.getStepData(currentFlowId, currentModule, currentFlow, currentStep.modelProperty);
       if (stepData != null) {
         this._fgs.setFormValue(this.form, stepData);
       }
@@ -49,11 +49,11 @@ export class DuiFormComponent implements OnInit, OnDestroy {
       filter(value => value != null),
       takeUntil(this._destroy$)
     ).subscribe(_ => {
-      const currentStepName = this._fs.currentStepName$.value;
+      const currentStep = this._fs.currentStep$.value;
       const currentModule = this._fs.currentFlow$.value.module;
       const currentFlow = this._fs.currentFlow$.value.flow.flow;
       const currentFlowId = this._fs.currentFlowId$.value;
-      const stepData = this._fds.getStepData(currentFlowId, currentModule, currentFlow, currentStepName);
+      const stepData = this._fds.getStepData(currentFlowId, currentModule, currentFlow, currentStep.modelProperty);
       if (stepData != null && this.form != null) {
         const formValue = this.form.getRawValue();
         const difference = diff(formValue, stepData);
