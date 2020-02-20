@@ -221,6 +221,21 @@ body {
   overflow-y: scroll;
 }
 
+* {
+}
+
 .mat-drawer-container {
   background-color: white;
+}
+
+form {
+  margin: 0 !important;
+}
+
+.f-height {
+  height: 100%;
+}
+
+.p-12 {
+  padding: 12px;
 }
