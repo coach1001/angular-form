@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { DuiBaseControlComponent } from '../../base/dui-base-control/dui-base-control.component';
 import { DuiFormGeneratorService } from '../../../../dui-form/services/dui-form-generator.service';
-import { MatAutocompleteSelectedEvent } from '@angular/material';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'dui-default-select',
