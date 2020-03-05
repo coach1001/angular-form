@@ -31,9 +31,13 @@ export class AppComponent implements OnInit, OnDestroy {
     this._router.navigate(['flow/account/user-registration'], { queryParamsHandling: 'merge' });
   }
 
-  gotoResetPassword(): void {
+  gotoLogin(): void {
     this._formData.clearFlowOnNextGet$.next(true);
-    this._router.navigate(['flow/account/passwordReset'], { queryParamsHandling: 'merge' });
+    this._router.navigate(['flow/account/user-login'], { queryParamsHandling: 'merge' });
+  }
+  
+  gotoChart(): void {    
+    this._router.navigate(['charting']);
   }
 
 }

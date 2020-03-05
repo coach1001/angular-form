@@ -142,6 +142,14 @@ export class DuiFlowService {
           flowId: currentFlowId
         });
         flowData = this._fds.getFlowData(currentFlowId);
+      } else {
+        this._fds.setStepData(
+          currentFlowId,
+          currentModule,
+          currentFlow,
+          currentStep.modelProperty,
+          formValue,
+          flowData.flowContext);
       }
 
       const flowDataChanges = await this.RunStepTasks(TaskType.PostTask, flowData.flowData, flowData.flowContext);

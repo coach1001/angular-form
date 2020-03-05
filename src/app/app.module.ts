@@ -10,10 +10,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgDuiModule } from 'projects/ng-dui/src/lib/ng-dui.module';
 import { AccountDuiModule } from './modules/account-dui/account-dui.module';
 import { environment } from 'src/environments/environment';
+import { ChartsModule } from 'ng2-charts';
+import { ChartCustomComponent } from './components/chart-custom/chart-custom.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,    
+    ChartCustomComponent
   ],
   imports: [
     BrowserModule,
@@ -28,7 +31,8 @@ import { environment } from 'src/environments/environment';
       ...environment.flowsConfig,
       production: environment.production
     }),
-    AccountDuiModule
+    AccountDuiModule,
+    ChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

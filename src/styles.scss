@@ -218,10 +218,7 @@ button {
 body {
   margin: 0 !important;
   overflow-x: hidden !important;
-  overflow-y: scroll;
-}
-
-* {
+//  overflow-y: scroll;
 }
 
 .mat-drawer-container {
@@ -238,4 +235,8 @@ form {
 
 .p-12 {
   padding: 12px;
+}
+
+.mat-drawer-container {
+  color: white;
 }
