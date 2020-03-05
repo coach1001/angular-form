@@ -20,7 +20,7 @@ import { DuiFlowModule } from './dui-flow/dui-flow.module';
 })
 export class NgDuiModule {
 
-  static forRoot(config: NgDuiConfig): ModuleWithProviders {
+  static forRoot(config: NgDuiConfig): ModuleWithProviders<NgDuiModule> {
     return {
       ngModule: NgDuiModule,
       providers: [

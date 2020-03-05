@@ -22,7 +22,7 @@ export class DuiDynamicComponent implements AfterViewInit {
   @Input()
   template: string;
 
-  @ViewChild(DynamicAnchorDirective, { static: false }) duiDynamicAnchor: DynamicAnchorDirective;
+  @ViewChild(DynamicAnchorDirective) duiDynamicAnchor: DynamicAnchorDirective;
 
   componentFactory: any;
   componentRef: any;
