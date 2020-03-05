@@ -10,12 +10,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgDuiModule } from 'projects/ng-dui/src/lib/ng-dui.module';
 import { AccountDuiModule } from './modules/account-dui/account-dui.module';
 import { environment } from 'src/environments/environment';
-import { ChartsModule } from 'ng2-charts';
 import { ChartCustomComponent } from './components/chart-custom/chart-custom.component';
+import { ChartModule } from 'angular-highcharts';
 
 @NgModule({
   declarations: [
-    AppComponent,    
+    AppComponent,
     ChartCustomComponent
   ],
   imports: [
@@ -32,7 +32,7 @@ import { ChartCustomComponent } from './components/chart-custom/chart-custom.com
       production: environment.production
     }),
     AccountDuiModule,
-    ChartsModule
+    ChartModule
   ],
   providers: [],
   bootstrap: [AppComponent]

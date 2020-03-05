@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ChartOptions, ChartDataSets, ChartType, ChartScales } from 'chart.js';
+import { Chart } from 'angular-highcharts';
 
 @Component({
   selector: 'app-chart-custom',
@@ -7,37 +7,31 @@ import { ChartOptions, ChartDataSets, ChartType, ChartScales } from 'chart.js';
   styleUrls: ['./chart-custom.component.scss']
 })
 export class ChartCustomComponent implements OnInit {
-
-  public startTime;
-
-  public chartScale: ChartScales = {
-    type: 'linear',
-    display: true
-  }
-
-  public scatterChartOptions: ChartOptions = {
-    responsive: true,
-    scales: {
-    }
-  };
-
-  public scatterChartData: ChartDataSets[] = [
-    {
-      data: [        
-      ],
-      label: 'Series A',
-      pointRadius: 5,
+  chart = new Chart({
+    chart: {
+      type: 'line'
     },
-  ];
-  public scatterChartType: ChartType = 'scatter';
+    title: {
+      text: 'Linechart'
+    },
+    credits: {
+      enabled: false
+    },
+    series: [
+      {
+        name: 'Line 1',
+        data: [1, 2, 3],
+        type: 'line'
+      }
+    ]
+  });
 
+  // add point to chart serie
+  add() {
+    this.chart.addPoint(Math.floor(Math.random() * 10));
+  }
   constructor() { }
 
   ngOnInit() {
-    this.startTime = new Date();
-    setInterval(_ => {
-      const lapsedTime = (new Date().getTime() - this.startTime.getTime())/1000;
-      // this.scatterChartData[0].data.push(lapsedTime, Math.sin(lapsedTime));
-    }, 50)
   }
 }
