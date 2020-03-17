@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { DuiFormGeneratorService } from '../../../../dui-form/services/dui-form-generator.service';
-import { DuiComponentsRegistryService } from '../../../services/dui-components-registry.service';
 import { DuiBaseControlComponent } from '../../base/dui-base-control/dui-base-control.component';
 
 @Component({

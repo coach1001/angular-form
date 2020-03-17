@@ -12,6 +12,7 @@ import { AccountDuiModule } from './modules/account-dui/account-dui.module';
 import { environment } from 'src/environments/environment';
 import { ChartCustomComponent } from './components/chart-custom/chart-custom.component';
 import { ChartModule } from 'angular-highcharts';
+import { LabCalculatorModule } from './modules/lab-calculator/lab-calculator.module';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { ChartModule } from 'angular-highcharts';
       production: environment.production
     }),
     AccountDuiModule,
+    LabCalculatorModule,
     ChartModule
   ],
   providers: [],

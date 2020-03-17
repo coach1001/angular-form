@@ -12,6 +12,7 @@
         <mat-toolbar-row fxHide.lt-md fxLayout="row" fxLayoutAlign="start center">
           <a mat-button routerLink="/">Home</a>
           <span fxFlex></span>
+          <a mat-button (click)="gotoA1()">TMH1-A1</a>
           <a mat-button (click)="gotoChart()">Chart</a>
           <a mat-button (click)="gotoRegistration()">Register</a>
           <a mat-button (click)="gotoLogin()">Login</a>
@@ -29,5 +30,4 @@
       </div>
     </div>
   </mat-sidenav-content>
-
 </mat-sidenav-container>

@@ -1,5 +1,5 @@
 <form [formGroup]="parent" *ngIf="visible">
-    <mat-form-field floatLabel="always" fxFlex="100">
+    <mat-form-field appearance="outline" floatLabel="always" fxFlex="100">
         <mat-label>{{label}}</mat-label>
         <input matInput [formControlName]="modelProperty" [matAutocomplete]="auto" (blur)="sanitizeInput($event)">
         <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="optionSelected($event)">

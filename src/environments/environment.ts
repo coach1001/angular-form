@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   flowsConfig: {
-    system: 'portal',
+    system: 'lab-calculator',
     baseUrl: 'https://localhost:44358/api',    
   }
 };

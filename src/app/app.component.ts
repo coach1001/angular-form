@@ -40,4 +40,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this._router.navigate(['charting']);
   }
 
+  gotoA1(): void {    
+    this._router.navigate(['flow/tmh1/a1'], { queryParamsHandling: 'merge' });
+  }
 }
