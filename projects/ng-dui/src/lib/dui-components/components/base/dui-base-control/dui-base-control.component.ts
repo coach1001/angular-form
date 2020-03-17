@@ -23,6 +23,8 @@ export class DuiBaseControlComponent implements OnInit, OnDestroy {
   parentCleared$: Subject<void> = new Subject<void>();
   @Input()
   parentReset$: Subject<void> = new Subject<void>();
+  @Input()
+  hideLabel: boolean;
 
   visible = true;
   cleared$: Subject<void> = new Subject<void>();
