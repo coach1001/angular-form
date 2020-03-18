@@ -2,6 +2,7 @@ import { Component, ViewChild, ComponentFactoryResolver, Input, AfterViewInit } 
 import { DynamicAnchorDirective } from '../../directives/dynamic-anchor.directive';
 import { DuiComponentsRegistryService } from '../../services/dui-components-registry.service';
 import { FormGroup, FormArray, FormControl } from '@angular/forms';
+import { DuiFormGeneratorService } from '../../../dui-form/services/dui-form-generator.service';
 
 @Component({
   selector: 'dui-dynamic',
@@ -27,7 +28,11 @@ export class DuiDynamicComponent implements AfterViewInit {
   componentFactory: any;
   componentRef: any;
 
-  constructor(private _cfr: ComponentFactoryResolver, private _duicr: DuiComponentsRegistryService) { }
+  constructor(
+    private _fgs: DuiFormGeneratorService,
+    private _cfr: ComponentFactoryResolver,
+    private _duicr: DuiComponentsRegistryService
+  ) { }
 
   ngAfterViewInit(): void {
     Promise.resolve(null).then(() => this.renderChildren());
@@ -56,5 +61,4 @@ export class DuiDynamicComponent implements AfterViewInit {
       }
     }
   }
-
 }

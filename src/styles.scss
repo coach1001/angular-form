@@ -208,13 +208,6 @@ h2 {
   margin-block-start: 0px;
 }
 
-.container {
-  padding: 27px;
-  &.lt-md {
-    padding: 9px 0;
-  }
-}
-
 button {
   &.mat-accent {
     &.mat-raised-button {
@@ -237,6 +230,10 @@ body {
   margin: 0 !important;
   overflow-x: hidden !important;
 //  overflow-y: scroll;
+}
+
+.mat-form-field-infix {
+  width: unset !important;
 }
 
 .mat-drawer-container {

@@ -1,4 +1,4 @@
-<form [formGroup]="parent" *ngIf="visible" [ngStyle]="gridStyle">
+<form [formGroup]="parent" *ngIf="visible">
     <mat-form-field  appearance="outline" floatLabel="always">
         <mat-label>{{label}}</mat-label>
         <input [type]="hidden ? 'password' : 'text'" matInput [formControlName]="modelProperty">

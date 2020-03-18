@@ -1,15 +1,13 @@
 <!-- <dui-stepper></dui-stepper> -->
-<hr fxHide.gt-sm/>
-<div class="container" ngClass.lt-md="lt-md">
-    <div fxFlex.gt-sm="15" fxFlex.lt-md="0"></div>
-    <mat-card class="step-card" fxFlex.gt-sm="80" fxFlex.lt-md="100" ngClass.gt-sm="mat-elevation-z2"
-        ngClass.lt-md="mat-elevation-z0 lt-md">
+<!-- <hr fxHide.gt-sm/> -->
+<div class="body-wrapper">
+    <div></div>
+    <mat-card class="step-card">
         <mat-card-content>
             <router-outlet></router-outlet>
         </mat-card-content>
         <ng-container *ngIf="(currentStep$ | async) as currentStep">
-            <div fxLayout.gt-sm="row" fxLayout.lt-md="column-reverse" fxLayoutAlign.gt-sm="center center"
-                fxLayoutGap="16px">
+            <div>
                 <ng-container *ngIf="currentStep.backButton">
                     <button class="mat-elevation-z2 outline" mat-stroked-button color="primary"
                         (click)="back()">Back</button>
@@ -20,5 +18,5 @@
             </div>
         </ng-container>
     </mat-card>
-    <div fxFlex.gt-sm="15" fxFlex.lt-md="0"></div>
+    <div></div>
 </div>

@@ -31,7 +31,6 @@ export class DuiBaseObjectComponent implements OnInit, OnDestroy {
   reset$: Subject<void> = new Subject<void>();
 
   protected _destroy$: Subject<void> = new Subject<void>();
-  private _gridStyle: object = {};
 
   constructor(
     private _fgs: DuiFormGeneratorService
@@ -40,7 +39,6 @@ export class DuiBaseObjectComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.defaultInit();
     this.elementInit();
-    this.gridConfig();
   }
 
   ngOnDestroy() {
@@ -79,13 +77,12 @@ export class DuiBaseObjectComponent implements OnInit, OnDestroy {
       });
   }
 
-  gridConfig() {
+  get gridStyleParent(): object {
     const gridConfig = this.controlIn['element']['gridConfig'];
     const spanConfig = gridConfig?.spanConfig;
     const trackConfig = gridConfig?.trackConfig;
     const mediaSize = this._fgs.getMediaSize();
-
-    this._gridStyle = {
+    const gridStyle = {
       'display': 'grid',
       'grid-gap': '10px'
     }
@@ -94,16 +91,33 @@ export class DuiBaseObjectComponent implements OnInit, OnDestroy {
     }
     if (trackConfig && trackConfig[mediaSize]) {
       if (trackConfig[mediaSize].columns && trackConfig[mediaSize].columns !== '') {
-        this._gridStyle['grid-template-columns'] = trackConfig[mediaSize].columns;
+        gridStyle['grid-template-columns'] = trackConfig[mediaSize].columns;
       }
       if (trackConfig[mediaSize].rows && trackConfig[mediaSize].rows !== '') {
-        this._gridStyle['grid-template-rows'] = trackConfig[mediaSize].rows;
+        gridStyle['grid-template-rows'] = trackConfig[mediaSize].rows;
       }
     }
+    return gridStyle;
   }
 
-  get gridStyle() {
-    return this._gridStyle;
+  gridStyleChild(controlKey: string): object {
+    const control = this.controlIn.controls[controlKey];
+    const gridConfig = control['element']['gridConfig'];
+    const spanConfig = gridConfig?.spanConfig;
+    const trackConfig = gridConfig?.trackConfig;
+    const mediaSize = this._fgs.getMediaSize();
+    const gridStyle = {};
+    if (spanConfig && spanConfig[mediaSize]) {
+      if (spanConfig[mediaSize].columns && spanConfig[mediaSize].columns !== '') {
+        gridStyle['grid-column'] = `span ${spanConfig[mediaSize].columns}`;
+      }
+      if (spanConfig[mediaSize].rows && spanConfig[mediaSize].rows !== '') {
+        gridStyle['grid-row'] = `span ${spanConfig[mediaSize].rows}`;
+      }
+    }
+    if (trackConfig && trackConfig[mediaSize]) {
+    }
+    return gridStyle;
   }
 
   setDefaultValue() {
