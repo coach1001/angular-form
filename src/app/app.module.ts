@@ -7,7 +7,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from './modules/material/material.module';
 import { HttpClientModule } from '@angular/common/http';
 import { NgDuiModule } from 'projects/ng-dui/src/lib/ng-dui.module';
-import { AccountDuiModule } from './modules/account-dui/account-dui.module';
 import { environment } from 'src/environments/environment';
 import { ChartCustomComponent } from './components/chart-custom/chart-custom.component';
 import { ChartModule } from 'angular-highcharts';
@@ -30,7 +29,6 @@ import { LabCalculatorModule } from './modules/lab-calculator/lab-calculator.mod
       ...environment.flowsConfig,
       production: environment.production
     }),
-    AccountDuiModule,
     LabCalculatorModule,
     ChartModule
   ],
