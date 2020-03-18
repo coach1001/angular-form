@@ -9,3 +9,15 @@ mat-sidenav-content {
 .side-nav-item {
     text-align: left;
 }
+
+.main-wrapper {
+    display: grid !important;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+}
+
+.header-wrapper {
+    display: grid !important;
+    grid-template-columns: auto 1fr auto auto auto auto;
+    grid-gap: 10px;
+}

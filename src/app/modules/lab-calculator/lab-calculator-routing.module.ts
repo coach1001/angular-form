@@ -7,6 +7,27 @@ import { LabCalculatorContainerComponent } from './components/lab-calculator-con
 
 const routes: Routes = [
   {
+    path: 'flow/account',
+    component: LabCalculatorContainerComponent,
+    canActivate: [ModuleGuard],
+    data: {
+      module: 'account',
+    },
+    children: [
+      {
+        path: '**',
+        data: {
+          module: 'account',
+          staticComponents: [
+            { name: 'done', }                      
+          ]
+        },
+        canActivate: [FlowGuard],
+        component: DuiDynamicComponent,
+      }
+    ]
+  },
+  {
     path: 'flow/tmh1',
     component: LabCalculatorContainerComponent,
     canActivate: [ModuleGuard],

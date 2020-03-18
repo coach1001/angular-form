@@ -16,7 +16,6 @@ import { DuiDefaultDatetimeComponent } from './components/defaults/dui-default-d
 
 import { MaterialModule } from '../material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { DigitOnlyModule } from '@uiowa/digit-only';
 import { DuiComponentsRegistryService } from './services/dui-components-registry.service';
 import { DuiFormComponent } from './components/dui-form/dui-form.component';
@@ -50,7 +49,6 @@ import { DuiStepperComponent } from './components/dui-stepper/dui-stepper.compon
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    FlexLayoutModule,
     MaterialModule,
     DigitOnlyModule,
     DuiFlowModule,

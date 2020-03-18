@@ -9,8 +9,8 @@ import { DuiFormGeneratorService } from '../../../../dui-form/services/dui-form-
 @Component({
   template: ''
 })
-export class DuiBaseObjectComponent implements OnInit, OnDestroy  {
-  
+export class DuiBaseObjectComponent implements OnInit, OnDestroy {
+
   @Input()
   controlIn: FormGroup;
   @Input()
@@ -25,19 +25,22 @@ export class DuiBaseObjectComponent implements OnInit, OnDestroy  {
   parentReset$: Subject<void> = new Subject<void>();
 
   visible = true;
+  controlKeys: Array<string> = [];
+
   cleared$: Subject<void> = new Subject<void>();
   reset$: Subject<void> = new Subject<void>();
 
   protected _destroy$: Subject<void> = new Subject<void>();
-  controlKeys: Array<string> = [];
+  private _gridStyle: object = {};
 
   constructor(
     private _fgs: DuiFormGeneratorService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.defaultInit();
     this.elementInit();
+    this.gridConfig();
   }
 
   ngOnDestroy() {
@@ -76,6 +79,33 @@ export class DuiBaseObjectComponent implements OnInit, OnDestroy  {
       });
   }
 
+  gridConfig() {
+    const gridConfig = this.controlIn['element']['gridConfig'];
+    const spanConfig = gridConfig?.spanConfig;
+    const trackConfig = gridConfig?.trackConfig;
+    const mediaSize = this._fgs.getMediaSize();
+
+    this._gridStyle = {
+      'display': 'grid',
+      'grid-gap': '10px'
+    }
+    if (spanConfig) {
+
+    }
+    if (trackConfig && trackConfig[mediaSize]) {
+      if (trackConfig[mediaSize].columns && trackConfig[mediaSize].columns !== '') {
+        this._gridStyle['grid-template-columns'] = trackConfig[mediaSize].columns;
+      }
+      if (trackConfig[mediaSize].rows && trackConfig[mediaSize].rows !== '') {
+        this._gridStyle['grid-template-rows'] = trackConfig[mediaSize].rows;
+      }
+    }
+  }
+
+  get gridStyle() {
+    return this._gridStyle;
+  }
+
   setDefaultValue() {
     if (this.controlIn['element'].defaultValue && this.controlIn.value == null) {
       this.controlIn.patchValue(this.controlIn['element'].defaultValue, { emitEvent: false });
@@ -87,7 +117,7 @@ export class DuiBaseObjectComponent implements OnInit, OnDestroy  {
     const visible: Array<boolean> = [];
     const disable: Array<boolean> = [];
     const clear: Array<boolean> = [];
-    
+
     if (this.controlIn['element'].reactivity) {
       this.controlIn['element'].reactivity.forEach(r => {
         const result = jexl.evalSync(r.expression, scopeValue);

@@ -226,4 +226,14 @@ export class DuiFormGeneratorService {
     return error;
   }
 
+  getMediaSize(): string {
+    if (window.innerWidth >= 991) {
+      return 'large';
+    } else if (window.innerWidth >= 767 && window.innerWidth < 991) {
+      return 'medium';
+    } else {
+      return 'small';
+    }
+  }
+
 }

@@ -1,5 +1,7 @@
-<div fxLayout="column" fxHide.lt-md>
-    <div fxLayout="row" fxLayoutAlign="center center" class="stepper-container">
+<!-- TODO: <div fxLayout="column" fxHide.lt-md> -->
+<div>    
+    <!-- TODO: <div fxLayout="row" fxLayoutAlign="center center" class="stepper-container"> -->
+    <div class="stepper-container">    
         <ng-container *ngFor="let step of flowSteps; let sIndex = index; let isLast = last;">
             <!-- <button mat-fab (click)="gotoStep(sIndex)" [ngClass]="{'outline': sIndex > stepIndex}"
                 [color]="stepColor(sIndex)">
@@ -13,7 +15,9 @@
             <div *ngIf="!isLast" [class]="connectorClass(sIndex)"></div>
         </ng-container>
     </div>
-    <div fxLayout="row" fxLayoutAlign="center">
+
+    <!-- TODO: <div fxLayout="row" fxLayoutAlign="center"> -->
+    <div>
         <ng-container *ngFor="let step of flowSteps; let sIndex = index; let isLast = last;">
             <div class="step-label" [ngClass]="{'done': sIndex < stepIndex, 'current': sIndex === stepIndex}">
                 {{stepLabel(sIndex)}}
@@ -21,9 +25,11 @@
         </ng-container>
     </div>
 </div>
-<div fxLayout="column" fxHide.gt-sm>
-    
-    <div fxLayout="row" fxLayoutAlign="space-between center" class="stepper-container">
+
+<!-- TODO: <div fxLayout="column" fxHide.gt-sm> -->
+<div>
+    <!-- TODO: <div fxLayout="row" fxLayoutAlign="space-between center" class="stepper-container"> -->
+    <div class="stepper-container">
         <div (click)="back()" [ngClass]="{'hide-chevron': hideBack()}">
             <mat-icon class="chevrons right">chevron_left</mat-icon>
         </div>
@@ -37,7 +43,8 @@
         </div>
     </div>
 
-    <div fxLayout="row" fxLayoutAlign="center center" class="step-label mobile">
+    <!-- TODO: <div fxLayout="row" fxLayoutAlign="center center" class="step-label mobile"> -->
+    <div>
         {{'STEP ' + (stepIndex + 1) + ' of ' + flowSteps.length + ' - ' + stepLabel(stepIndex)}}
     </div>
 

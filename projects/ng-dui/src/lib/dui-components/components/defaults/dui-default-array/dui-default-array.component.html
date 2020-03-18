@@ -1,12 +1,11 @@
 <h2 *ngIf="label && visible">{{label}}</h2>
 <form [formGroup]="parent" *ngIf="visible">
 <!-- <form [formGroup]="parent" [ngClass]="{'hidden': !visible}"> -->
-    <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap="20px grid">
+    <div>
         <mat-error *ngIf="error && controlIn.touched">{{error}}</mat-error>
         <ng-container *ngFor="let group of groupKeys;let gIndex = index;">
             <ng-container *ngFor="let key of group;let i = index;">
-                <div [fxFlex]="controlIn?.element?.elements[i]?.layout?.stretchLarge"
-                    [fxFlex.lt-md]="controlIn?.element?.elements[i]?.layout?.stretchSmall">
+                <div>
                     <dui-dynamic [inputs]="getComponentInputs(key, gIndex)"></dui-dynamic>
                 </div>                
             </ng-container>

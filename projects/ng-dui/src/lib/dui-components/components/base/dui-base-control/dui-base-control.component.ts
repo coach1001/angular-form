@@ -31,6 +31,7 @@ export class DuiBaseControlComponent implements OnInit, OnDestroy {
   reset$: Subject<void> = new Subject<void>();
 
   protected _destroy$: Subject<void> = new Subject<void>();
+  private _gridStyle: object = {};
 
   constructor(
     private _fgs: DuiFormGeneratorService
@@ -40,6 +41,7 @@ export class DuiBaseControlComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.defaultInit();
     this.elementInit();
+    this.gridConfig();
   }
 
   ngOnDestroy() {
@@ -69,6 +71,33 @@ export class DuiBaseControlComponent implements OnInit, OnDestroy {
           this.controlIn.patchValue(null);
         }
       });
+  }
+
+  gridConfig() {
+    const gridConfig = this.controlIn['element']['gridConfig'];
+    const spanConfig = gridConfig?.spanConfig;
+    const trackConfig = gridConfig?.trackConfig;
+    const mediaSize = this._fgs.getMediaSize();
+
+    this._gridStyle = {
+      width: '100%'
+    };
+
+    if (spanConfig && spanConfig[mediaSize]) {
+      if (spanConfig[mediaSize].columns && spanConfig[mediaSize].columns !== '') {
+        this._gridStyle['grid-template-columns'] = spanConfig[mediaSize].columns;
+      }
+      if (spanConfig[mediaSize].rows && spanConfig[mediaSize].rows !== '') {
+        this._gridStyle['grid-template-rows'] = spanConfig[mediaSize].rows;
+      }
+    }
+    if (trackConfig && trackConfig[mediaSize]) {
+    }
+    console.log(this._gridStyle);
+  }
+
+  get gridStyle() {
+    return this._gridStyle;
   }
 
   setDefaultValue() {
