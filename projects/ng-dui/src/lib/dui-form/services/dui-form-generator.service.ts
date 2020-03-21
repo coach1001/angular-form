@@ -5,6 +5,7 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import * as changeCase from 'change-case';
 import { ElementType } from './dui-elements.enum';
 import { DuiValidatorRegistryService } from './dui-validator-registry.service';
+import { MediaSize } from './dui-media-size.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -122,7 +123,7 @@ export class DuiFormGeneratorService {
         this.processElement_r(element, <FormGroup>currFormElm.controls[arrayElement.modelProperty]['controls'][0]);
       });
     }
-    const rowTemplate = cloneDeep(currFormElm.controls[arrayElement.modelProperty]['controls'][0]);
+    const rowTemplate = cloneDeep(currFormElm.controls[arrayElement.modelProperty]['controls'][0]);    
 
     if (arrayElement.validators) {
       arrayElement.validators.forEach(validator => {
@@ -157,7 +158,7 @@ export class DuiFormGeneratorService {
       } else if (abstractControl instanceof FormArray) {
         abstractControl['controls'] = [];
         if (controlValue != null) {
-          controlValue.forEach((val, index) => {
+          controlValue.forEach((val, index) => {            
             abstractControl['controls'].push(cloneDeep(abstractControl['rowTemplate']));
             this.setFormValue(<FormGroup>abstractControl['controls'][index], val);
           });
@@ -228,11 +229,11 @@ export class DuiFormGeneratorService {
 
   getMediaSize(): string {
     if (window.innerWidth >= 991) {
-      return 'large';
+      return MediaSize.Large; 
     } else if (window.innerWidth >= 767 && window.innerWidth < 991) {
-      return 'medium';
+      return MediaSize.Medium; 
     } else {
-      return 'small';
+      return MediaSize.Small; 
     }
   }
 

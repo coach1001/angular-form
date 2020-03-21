@@ -14,3 +14,16 @@
     padding: 0 !important;
     font-weight: bold;
 }
+
+.row-wrapper {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-gap: 10px;
+}
+
+
+.row-inner-wrapper {
+    display: grid;
+    grid-auto-flow: column;
+    grid-gap: 10px;
+}

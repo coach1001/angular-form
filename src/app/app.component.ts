@@ -43,4 +43,8 @@ export class AppComponent implements OnInit, OnDestroy {
   gotoA1(): void {    
     this._router.navigate(['flow/tmh1/a1'], { queryParamsHandling: 'merge' });
   }
+
+  gotoTestFlow(): void {
+    this._router.navigate(['flow/tmh1/test-flow'], { queryParamsHandling: 'merge' });
+  }
 }

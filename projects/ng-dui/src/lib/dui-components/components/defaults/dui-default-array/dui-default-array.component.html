@@ -1,15 +1,18 @@
 <h2 *ngIf="label && visible">{{label}}</h2>
 <form [formGroup]="parent" *ngIf="visible">
-<!-- <form [formGroup]="parent" [ngClass]="{'hidden': !visible}"> -->
+    <!-- <form [formGroup]="parent" [ngClass]="{'hidden': !visible}"> -->
     <div>
         <mat-error *ngIf="error && controlIn.touched">{{error}}</mat-error>
         <ng-container *ngFor="let group of groupKeys;let gIndex = index;">
-            <ng-container *ngFor="let key of group;let i = index;">
-                <div>
-                    <dui-dynamic [inputs]="getComponentInputs(key, gIndex)"></dui-dynamic>
-                </div>                
-            </ng-container>
-            <button class="cicon-dustbin no-padding delete" mat-mini-fab color="warn" (click)="deleteRow(gIndex)"></button>
+            <div class="row-wrapper">
+                <div class="row-inner-wrapper">
+                    <ng-container *ngFor="let key of group;let i = index;">                    
+                        <dui-dynamic [inputs]="getComponentInputs(key, gIndex)"></dui-dynamic>
+                    </ng-container>
+                </div>
+                <button class="cicon-dustbin no-padding delete" mat-mini-fab color="warn"
+                    (click)="deleteRow(gIndex)"></button>
+            </div>
         </ng-container>
     </div>
     <button [disabled]="controlIn.disabled" type="button" class="mat-elevation-z6 add" mat-raised-button color="primary"

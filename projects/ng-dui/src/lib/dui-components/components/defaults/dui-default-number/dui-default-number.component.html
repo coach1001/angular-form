@@ -1,5 +1,5 @@
 <form [formGroup]="parent" *ngIf="visible">
-    <mat-form-field  appearance="outline" floatLabel="always">
+    <mat-form-field floatLabel="always">
         <mat-label>{{label}}</mat-label>
         <input matInput [formControlName]="modelProperty" digitOnly [decimal]="allowDecimal">
         <mat-hint *ngIf="hint">{{hint}}</mat-hint>

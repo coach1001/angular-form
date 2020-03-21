@@ -3,9 +3,6 @@ import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 import { DuiFormGeneratorService } from '../../dui-form/services/dui-form-generator.service';
 import { DuiFormDataService } from '../../dui-form/services/dui-form-data.service';
-import { DuiFlowBackendService } from './dui-flow-backend.service';
-import { TestModule } from '../test-flow.spec';
-// import { TestModule } from '../validation-test-flow.spec';
 import { NgDuiConfigService } from '../../services/ng-dui-config.service';
 import { NgDuiConfig } from '../../config/ng-dui.config';
 import { HttpClient } from '@angular/common/http';
@@ -123,7 +120,7 @@ export class DuiFlowService {
   async nextStep(): Promise<void> {
 
     let form = this._fgs.form$.value;
-
+    
     const currentStepName = this.currentStepName$.value;
     const currentStep = this.currentStep$.value;
     const currentModule = this.currentFlow$.value.module;
@@ -133,8 +130,12 @@ export class DuiFlowService {
     this._fgs.recurseFormGroup(form, 'TOUCH_AND_VALIDATE');
 
     if (form.valid) {
-
       const formValue = form.getRawValue();
+
+      if(!this._config.production) {
+        console.log(formValue);
+      }
+
       let flowData = this._fds.getFlowData(currentFlowId);
 
       if (flowData == null) {

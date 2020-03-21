@@ -12,12 +12,13 @@ mat-sidenav-content {
 
 .main-wrapper {
     display: grid !important;
+    grid-gap: 20px;
     grid-template-columns: 1fr;
     grid-template-rows: auto 1fr;
 }
 
 .header-wrapper {
     display: grid !important;
-    grid-template-columns: auto 1fr auto auto auto auto;
-    grid-gap: 10px;
+    grid-template-columns: auto 1fr auto auto auto auto auto;
+    grid-gap: 5px;
 }

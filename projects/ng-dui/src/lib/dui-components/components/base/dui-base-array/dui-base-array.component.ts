@@ -139,14 +139,14 @@ export class DuiBaseArrayComponent implements OnInit, OnDestroy {
     });
   }
 
-  getComponentInputs(controlKey: string, rowIndex) {
-    const control = this.controlIn.controls[rowIndex]['controls'][controlKey];
+  getComponentInputs(controlKey: string, rowIndex) {    
+    const control = this.controlIn.controls[rowIndex]['controls'][controlKey];        
     return {
       controlIn: control,
-      parent: this.controlIn.controls[rowIndex],
+      parent: this.controlIn?.controls[rowIndex],
       modelProperty: controlKey,
-      label: control['element'].name ? control['element'].name : changeCase.sentenceCase(controlKey),
-      hint: control['element'].hint,
+      label: control['element']?.name ? control['element'].name : changeCase.sentenceCase(controlKey),
+      hint: control['element']?.hint,
       parentReset$: this.reset$,
       parentCleared$: this.cleared$
     };
@@ -169,7 +169,7 @@ export class DuiBaseArrayComponent implements OnInit, OnDestroy {
     }
   }
 
-  deleteRow(gIndex: number) {      
+  deleteRow(gIndex: number) {
     this.controlIn.controls.splice(gIndex, 1);
     this.initKeys();
   }
