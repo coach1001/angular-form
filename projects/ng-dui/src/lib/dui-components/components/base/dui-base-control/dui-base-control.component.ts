@@ -1,11 +1,9 @@
-import { Component, OnInit, Input, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, FormArray } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import * as jexl from 'jexl';
 import { DuiFormGeneratorService } from '../../../../dui-form/services/dui-form-generator.service';
-import { DuiComponentsRegistryService } from '../../../services/dui-components-registry.service';
-
 @Component({
   template: ''
 })
@@ -25,6 +23,10 @@ export class DuiBaseControlComponent implements OnInit, OnDestroy {
   parentReset$: Subject<void> = new Subject<void>();
   @Input()
   hideLabel: boolean;
+  @Input()
+  hint: string;
+  @Input()
+  allowDecimal: boolean;
 
   visible = true;
   cleared$: Subject<void> = new Subject<void>();

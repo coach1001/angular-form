@@ -4,18 +4,21 @@ import { DuiFormModule } from './dui-form/dui-form.module';
 import { NgDuiConfig } from './config/ng-dui.config';
 import { NgDuiConfigService } from './services/ng-dui-config.service';
 import { DuiFlowModule } from './dui-flow/dui-flow.module';
+import { DuiAngularMaterialComponentsModule } from './dui-angular-material-components/dui-angular-material-components.module';
 
 @NgModule({
   declarations: [],
   imports: [
     DuiFlowModule,
     DuiFormModule,    
-    DuiComponentsModule
+    DuiComponentsModule,
+    DuiAngularMaterialComponentsModule
   ],
   exports: [
     DuiFlowModule,
     DuiFormModule,
-    DuiComponentsModule
+    DuiComponentsModule,
+    DuiAngularMaterialComponentsModule
   ],
 })
 export class NgDuiModule {

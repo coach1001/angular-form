@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { DuiBaseControlComponent } from '../../base/dui-base-control/dui-base-control.component';
-import { DuiFormGeneratorService } from 'projects/ng-dui/src/lib/dui-form/services/dui-form-generator.service';
-import { DuiComponentsRegistryService } from '../../../services/dui-components-registry.service';
-
+import { DuiFormGeneratorService } from '../../../../dui-form/services/dui-form-generator.service';
 @Component({
   selector: 'dui-default-multiselect',
   templateUrl: './dui-default-multiselect.component.html',
