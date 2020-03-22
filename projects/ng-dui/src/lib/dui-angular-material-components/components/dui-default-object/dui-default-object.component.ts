@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { DuiBaseObjectComponent } from '../../base/dui-base-object/dui-base-object.component';
-import { DuiFormGeneratorService } from '../../../../dui-form/services/dui-form-generator.service';
+import { DuiFormGeneratorService } from '../../../dui-form/services/dui-form-generator.service';
+import { DuiBaseObjectComponent } from '../../../dui-components/components/base/dui-base-object/dui-base-object.component';
 
 @Component({
   selector: 'dui-default-object',

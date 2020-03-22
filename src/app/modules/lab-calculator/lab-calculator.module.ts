@@ -5,7 +5,6 @@ import { DuiComponentsModule } from 'projects/ng-dui/src/lib/dui-components/dui-
 import { LabCalculatorContainerComponent } from './components/lab-calculator-container/lab-calculator-container.component';
 import { LabCalculatorRoutingModule } from './lab-calculator-routing.module';
 
-
 @NgModule({
   declarations: [
     LabCalculatorContainerComponent    

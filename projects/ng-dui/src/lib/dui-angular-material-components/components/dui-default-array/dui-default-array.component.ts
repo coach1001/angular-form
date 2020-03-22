@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { DuiBaseArrayComponent } from '../../base/dui-base-array/dui-base-array.component';
-import { DuiFormGeneratorService } from '../../../../dui-form/services/dui-form-generator.service';
+import { DuiBaseArrayComponent } from '../../../dui-components/components/base/dui-base-array/dui-base-array.component';
+import { DuiFormGeneratorService } from '../../../dui-form/services/dui-form-generator.service';
 
 @Component({
   selector: 'dui-default-array',

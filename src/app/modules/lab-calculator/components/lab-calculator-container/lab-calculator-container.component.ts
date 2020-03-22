@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { DuiFlowService } from 'projects/ng-dui/src/lib/dui-flow/services/dui-flow.service';
 import { DuiFormGeneratorService } from 'projects/ng-dui/src/lib/dui-form/services/dui-form-generator.service';
+import { DuiFlowService } from 'projects/ng-dui/src/lib/dui-flow/services/dui-flow.service';
 import { MediaSize } from 'projects/ng-dui/src/lib/dui-form/services/dui-media-size.enum';
 
 @Component({
