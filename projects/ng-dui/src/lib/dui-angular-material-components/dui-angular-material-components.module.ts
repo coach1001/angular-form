@@ -17,7 +17,6 @@ import { DuiDefaultDatetimeComponent } from './components/dui-default-datetime/d
 import { DuiDefaultHideableTextComponent } from './components/dui-default-hideable-text/dui-default-hideable-text.component';
 import { DuiStepperComponent } from './components/dui-stepper/dui-stepper.component';
 import { DuiComponentsModule } from '../dui-components/dui-components.module';
-import { DuiDynamicComponent } from '../dui-components/components/dui-dynamic/dui-dynamic.component';
 
 @NgModule({
   imports: [
