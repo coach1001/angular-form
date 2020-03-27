@@ -11,6 +11,7 @@ import { DuiFormDataService } from 'projects/ng-dui/src/lib/dui-form/services/du
 export class AppComponent implements OnInit, OnDestroy {
 
   private _destroy$: Subject<void> = new Subject<void>();
+  isShown: boolean = false;
 
   constructor(
     private _formData: DuiFormDataService,

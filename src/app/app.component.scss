@@ -1,24 +1,20 @@
-mat-icon {
-    color: white;
-}
-
-mat-sidenav-content {
-    height: 100vh;
-}
-
-.side-nav-item {
-    text-align: left;
-}
-
 .main-wrapper {
+    height: 100%;
+    width: 100%;
     display: grid !important;
-    grid-gap: 20px;
+    grid-gap: 5px;
     grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr;
+    grid-template-rows: auto 0 1fr;
 }
 
 .header-wrapper {
     display: grid !important;
     grid-template-columns: auto 1fr auto auto auto auto auto;
-    grid-gap: 5px;
+    gap: 10px;
 }
+
+.body-wrapper {
+    display: grid !important;
+    grid-template-columns: auto 1fr auto;
+}
+
