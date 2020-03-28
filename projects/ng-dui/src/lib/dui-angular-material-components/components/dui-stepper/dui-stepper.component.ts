@@ -1,10 +1,9 @@
-import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { combineLatest, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import * as changeCase from 'change-case';
 import { DuiFlowService } from '../../../dui-flow/services/dui-flow.service';
 import { NgDuiConfigService } from '../../../services/ng-dui-config.service'
-import { NgDuiConfig } from '../../../config/ng-dui.config';
 
 @Component({
   selector: 'dui-stepper',
@@ -19,7 +18,7 @@ export class DuiStepperComponent implements OnInit, OnDestroy {
   flowSteps: Array<any> = [];
 
   constructor(
-    @Inject(NgDuiConfigService) private _config: NgDuiConfig,
+    private _config: NgDuiConfigService,
     private _fs: DuiFlowService) 
     { }
 

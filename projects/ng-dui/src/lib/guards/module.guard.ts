@@ -1,13 +1,11 @@
-import { Injectable, Inject } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router, Route, UrlSegment } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router, Route, UrlSegment } from '@angular/router';
 import { StepGuard } from './step.guard';
-import * as uuidv4 from 'uuid/v4';
 import { DuiFormComponent } from '../dui-components/components/dui-form/dui-form.component';
 import { DuiFlowService } from '../dui-flow/services/dui-flow.service';
 import { DuiFormDataService } from '../dui-form/services/dui-form-data.service';
 import { NgDuiConfigService } from '../services/ng-dui-config.service';
-import { NgDuiConfig } from '../config/ng-dui.config';
+import { uuid } from 'uuidv4';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +13,7 @@ import { NgDuiConfig } from '../config/ng-dui.config';
 export class ModuleGuard implements CanActivate {
 
   constructor(
-    @Inject(NgDuiConfigService) private _config: NgDuiConfig,
+    private _config: NgDuiConfigService,
     private _fs: DuiFlowService,
     private _fds: DuiFormDataService,
     private _rt: Router
@@ -30,7 +28,7 @@ export class ModuleGuard implements CanActivate {
     if (this._fs.currentFlow$.value != null && this._fs.currentFlow$.value.flowStarted && !unregisteredFlow) {
       const flowId = next.queryParams.flowId;
       if (flowId == null) {
-        this._rt.navigateByUrl(`${state.url}?flowId=${uuidv4()}`);
+        this._rt.navigateByUrl(`${state.url}?flowId=${uuid()}`);
         return false;
       } else {
         this._fs.currentFlowId$.next(flowId);
@@ -77,7 +75,7 @@ export class ModuleGuard implements CanActivate {
       const startUrl = this._fs.checkIfRouteRegistered(routePrefix, moduleFromRouteData, flowFromUrl);
 
       if (startUrl != null) {
-        this._rt.navigateByUrl(`${startUrl}?flowId=${flowId == null ? uuidv4() : flowId}`);
+        this._rt.navigateByUrl(`${startUrl}?flowId=${flowId == null ? uuid() : flowId}`);
       } else {
         this._fs.initFlow(moduleFromRouteData, flowFromUrl, unregisteredFlow);
         const currentFlow = this._fs.currentFlow$.value;
@@ -85,10 +83,10 @@ export class ModuleGuard implements CanActivate {
           const routeConfig = this.buildRoutes(routePrefix, moduleFromRouteData, flowFromUrl, currentFlow.flow.steps, stepFromUrl);          
           this._fs.registerRoute(routePrefix, moduleFromRouteData, flowFromUrl, routeConfig.startPathForFlow, routeConfig.routes);
           if (currentFlow.flow.resumable || !this._config.production) {
-            this._rt.navigateByUrl(`${routeConfig.startUrl}?flowId=${flowId == null ? uuidv4() : flowId}`);
+            this._rt.navigateByUrl(`${routeConfig.startUrl}?flowId=${flowId == null ? uuid() : flowId}`);
           } else {
             this._fds.clearFlowOnNextGet$.next(true);
-            this._rt.navigateByUrl(`${routeConfig.startPathForFlow}?flowId=${flowId == null ? uuidv4() : flowId}`);
+            this._rt.navigateByUrl(`${routeConfig.startPathForFlow}?flowId=${flowId == null ? uuid() : flowId}`);
           }
         }
       }

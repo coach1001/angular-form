@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { DuiFlowService } from '../dui-flow/services/dui-flow.service';
-import * as uuidv4 from 'uuid/v4';
 import { DuiFormDataService } from '../dui-form/services/dui-form-data.service';
+import { uuid } from 'uuidv4';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +21,7 @@ export class StepGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
     if (next.queryParams.flowId == null) {
-      const flowId = uuidv4();
+      const flowId = uuid();
       this._fs.currentFlowId$.next(flowId);      
       this._rt.navigate([`${state.url}`], {
         queryParams: {
@@ -34,7 +34,7 @@ export class StepGuard implements CanActivate {
       const flowData = this._fds.getFlowData(next.queryParams.flowId);
       if (flowData != null) {
         if (flowData.flow !== next.data.flow) {
-          const flowId = uuidv4();
+          const flowId = uuid();
           this._fs.currentFlowId$.next(flowId);          
           this._rt.navigate([`${state.url}`], {
             queryParams: {

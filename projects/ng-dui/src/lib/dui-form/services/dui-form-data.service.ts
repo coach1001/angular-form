@@ -21,7 +21,7 @@ export class DuiFormDataService {
   public clearFlowOnNextGet$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor(
-    @Inject(NgDuiConfigService) private _config
+    private _config: NgDuiConfigService
   ) { }
 
   setStepData(flowId: string, module: string, flow: string, modelProperty: string, data: any, context: any) {

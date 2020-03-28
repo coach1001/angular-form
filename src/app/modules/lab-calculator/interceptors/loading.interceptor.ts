@@ -3,11 +3,10 @@ import {
   HttpRequest,
   HttpHandler,
   HttpInterceptor,
-  HttpResponse,
   HttpEvent
 } from '@angular/common/http';
 import { finalize } from 'rxjs/operators';
-import { of, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class LoadingInterceptor implements HttpInterceptor {

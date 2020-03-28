@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { DuiFormGeneratorService } from 'projects/ng-dui/src/lib/dui-form/services/dui-form-generator.service';
-import { DuiFlowService } from 'projects/ng-dui/src/lib/dui-flow/services/dui-flow.service';
-import { MediaSize } from 'projects/ng-dui/src/lib/dui-form/services/dui-media-size.enum';
+import { DuiFormGeneratorService } from 'ng-dui';
+import { DuiFlowService } from 'ng-dui';
+import { MediaSize } from 'ng-dui';
 
 @Component({
   selector: 'app-lab-calculator-container',

@@ -10,7 +10,7 @@ import { ChartCustomComponent } from './components/chart-custom/chart-custom.com
 import { ChartModule } from 'angular-highcharts';
 import { LabCalculatorModule } from './modules/lab-calculator/lab-calculator.module';
 import { LoadingInterceptor } from './modules/lab-calculator/interceptors/loading.interceptor';
-import { NgDuiModule } from 'projects/ng-dui/src/lib/ng-dui.module';
+import { NgDuiModule } from 'ng-dui';
 
 @NgModule({
   declarations: [

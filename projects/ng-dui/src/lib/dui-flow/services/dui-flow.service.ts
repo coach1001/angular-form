@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { DuiFormGeneratorService } from '../../dui-form/services/dui-form-generator.service';
 import { DuiFormDataService } from '../../dui-form/services/dui-form-data.service';
 import { NgDuiConfigService } from '../../services/ng-dui-config.service';
-import { NgDuiConfig } from '../../config/ng-dui.config';
 import { HttpClient } from '@angular/common/http';
 import { TaskType } from '../../dui-form/services/dui-task.enum';
 
@@ -28,7 +27,7 @@ export class DuiFlowService {
   public routeRegistration: Array<any> = [];
 
   constructor(
-    @Inject(NgDuiConfigService) private _config: NgDuiConfig,
+    private _config: NgDuiConfigService,
     private _fgs: DuiFormGeneratorService,
     private _fds: DuiFormDataService,
     private _rt: Router,
