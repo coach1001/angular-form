@@ -1,22 +1,22 @@
-<!-- <dui-stepper></dui-stepper> -->
-<!-- <hr fxHide.gt-sm/> -->
-<!-- <div [ngStyle]="bodyGridStyle">
-    <div></div>
-    <mat-card class="step-card">
-        <mat-card-content>
-            <router-outlet></router-outlet>
-        </mat-card-content>
+<div [ngStyle]="bodyGridStyle">
+  <div></div>
+  <div>
+    <div class="card">
+      <div class="card-body">
+        <router-outlet></router-outlet>
         <ng-container *ngIf="(currentStep$ | async) as currentStep">
-            <div>
-                <ng-container *ngIf="currentStep.backButton">
-                    <button class="mat-elevation-z2 outline" mat-stroked-button color="primary"
-                        (click)="back()">Back</button>
-                </ng-container>
-                <ng-container *ngIf="currentStep.nextButton">
-                    <button class="mat-elevation-z2" mat-raised-button color="accent" (click)="next()">{{currentStep.nextButton}}</button>
-                </ng-container>
-            </div>
-        </ng-container>
-    </mat-card>
-    <div></div>
-</div> -->
+          <div class="nav-buttons-wrapper">
+            <ng-container *ngIf="currentStep.backButton">
+              <button type="button" class="btn btn-secondary btn-block" (click)="back()">Back</button>
+            </ng-container>
+            <ng-container *ngIf="currentStep.nextButton">
+              <button type="button" class="btn btn-primary btn-block" (click)="next()">{{currentStep.nextButton}}</button>
+            </ng-container>
+          </div>
+        </ng-container>    
+      </div>
+    </div>
+  </div>
+  <div>
+  </div>
+</div>

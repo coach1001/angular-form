@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
-import { DuiFormDataService } from 'projects/ng-dui/src/lib/dui-form/services/dui-form-data.service';
+import { DuiFormDataService } from 'ng-dui';
 
 @Component({
   selector: 'app-root',
@@ -18,7 +18,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private _router: Router) {
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void {    
   }
 
   ngOnDestroy(): void {

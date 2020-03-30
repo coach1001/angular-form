@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, FormArray } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import * as jexl from 'jexl';
 import { DuiFormGeneratorService } from '../../../../dui-form/services/dui-form-generator.service';
@@ -29,6 +29,7 @@ export class DuiBaseControlComponent implements OnInit, OnDestroy {
   allowDecimal: boolean;
 
   visible = true;
+  isValid$: Observable<any>;
   cleared$: Subject<void> = new Subject<void>();
   reset$: Subject<void> = new Subject<void>();
 
@@ -42,6 +43,7 @@ export class DuiBaseControlComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.defaultInit();
     this.elementInit();
+    this.customInit();
   }
 
   ngOnDestroy() {
@@ -60,6 +62,9 @@ export class DuiBaseControlComponent implements OnInit, OnDestroy {
         this.checkReactivity(value);
       });
     }
+    this.isValid$ = this.controlIn.statusChanges.pipe(
+      takeUntil(this._destroy$)
+    );
   }
 
   elementInit() {
@@ -72,6 +77,8 @@ export class DuiBaseControlComponent implements OnInit, OnDestroy {
         }
       });
   }
+
+  customInit() {}
 
   setDefaultValue() {
     if (this.controlIn['element'].defaultValue && this.controlIn.value == null) {

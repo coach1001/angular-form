@@ -36,6 +36,7 @@ export class DuiFormComponent implements OnInit, OnDestroy {
       takeUntil(this._destroy$)
     ).subscribe(form => {
       this.form = form;
+      console.log(form);
       const currentStep = this._fs.currentStep$.value;
       const currentModule = this._fs.currentFlow$.value.module;
       const currentFlow = this._fs.currentFlow$.value.flow.flow;

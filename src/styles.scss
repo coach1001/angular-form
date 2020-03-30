@@ -1,20 +1,34 @@
 @import './sass/variables.scss';
 @import './assets/fonts/montserrat.fonts.scss';
-// @import './assets/fonts/raleway.font.scss';
-// @import './assets/icons/icons.scss';
-@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 
-body {
-    margin: 0;
+body {    
+    overflow-y: scroll !important; 
     padding: 0;
-    height: 100vh;
-    width: 100vw;
+    margin: 0;
 }
 
 * {
     font-family: 'Montserrat', sans-serif !important;
+    border-radius: 0 !important;
 }
 
 .c-pointer{
     cursor: pointer;
+}
+
+.feedback {
+    height: 19px;
+    display: block !important;
+}
+
+.form-group {
+    margin-bottom: 0;
+}
+
+.form-control.is-invalid{
+    background-image: none;
+}
+
+input {
+    width: 100%;
 }

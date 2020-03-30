@@ -26,19 +26,19 @@ export class LabCalculatorContainerComponent implements OnInit {
   }
 
   async next() {
-
     await this._fs.nextStep();
   }
 
   get bodyGridStyle(): object {
     const mediaSize = this._fgs.getMediaSize();    
     const bodyWrapper = {
-      display: 'grid'
+      display: 'grid',
+      height: '100%'
     };
     if(mediaSize === MediaSize.Large) {
-      bodyWrapper['grid-template-columns'] = '2fr 8fr 2fr';      
+      bodyWrapper['grid-template-columns'] = '1fr 8fr 1fr';      
     } else if(mediaSize === MediaSize.Medium) {
-      bodyWrapper['grid-template-columns'] = '1fr 12fr 1fr' ;      
+      bodyWrapper['grid-template-columns'] = '1fr 16fr 1fr' ;      
     } else if(mediaSize === MediaSize.Small) {
       bodyWrapper['grid-template-columns'] = '0px 1fr 0px';      
     }    

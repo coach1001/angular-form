@@ -1,0 +1,8 @@
+<h4 *ngIf="label && visible">{{label}}</h4>
+<form [formGroup]="parent" *ngIf="visible" autocomplete="false">
+  <div [ngStyle]="gridStyleParent">
+    <ng-container *ngFor="let key of controlKeys;let i = index;">      
+      <dui-dynamic [ngStyle]="gridStyleChild(key)" [inputs]="getComponentInputs(key)"></dui-dynamic>
+    </ng-container>
+  </div>
+</form>

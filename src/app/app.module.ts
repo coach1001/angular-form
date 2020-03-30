@@ -10,6 +10,7 @@ import { ChartCustomComponent } from './components/chart-custom/chart-custom.com
 import { ChartModule } from 'angular-highcharts';
 import { LabCalculatorModule } from './modules/lab-calculator/lab-calculator.module';
 import { LoadingInterceptor } from './modules/lab-calculator/interceptors/loading.interceptor';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { NgDuiModule } from 'ng-dui';
 
 @NgModule({
@@ -24,10 +25,11 @@ import { NgDuiModule } from 'ng-dui';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    NgbModule,
     NgDuiModule.forRoot({
       ...environment.flowsConfig,
       production: environment.production
-    }),
+    }),        
     LabCalculatorModule,
     ChartModule
   ],

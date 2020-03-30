@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { FormGroup, FormArray } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import * as jexl from 'jexl';
 import * as changeCase from 'change-case';
@@ -26,6 +26,7 @@ export class DuiBaseArrayComponent implements OnInit, OnDestroy {
   parentReset$: Subject<void> = new Subject<void>();
 
   visible = true;
+  isValid$: Observable<any>;
   cleared$: Subject<void> = new Subject<void>();
   reset$: Subject<void> = new Subject<void>();
 
@@ -40,6 +41,7 @@ export class DuiBaseArrayComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.defaultInit();
     this.elementInit();
+    this.customInit();
   }
 
   ngOnDestroy() {
@@ -58,6 +60,9 @@ export class DuiBaseArrayComponent implements OnInit, OnDestroy {
         this.checkReactivity(value);
       });
     }
+    this.isValid$ = this.controlIn.statusChanges.pipe(
+      takeUntil(this._destroy$)
+    );
   }
 
   elementInit() {
@@ -80,6 +85,8 @@ export class DuiBaseArrayComponent implements OnInit, OnDestroy {
         this.initKeys();
       });
   }
+
+  customInit() {}
 
   setDefaultValue() {
     if (this.controlIn['element'].defaultValue && this.controlIn.value == null) {
@@ -145,7 +152,8 @@ export class DuiBaseArrayComponent implements OnInit, OnDestroy {
       controlIn: control,
       parent: this.controlIn?.controls[rowIndex],
       modelProperty: controlKey,
-      label: control['element']?.name ? control['element'].name : changeCase.sentenceCase(controlKey),
+      // label: control['element']?.name ? control['element'].name : changeCase.sentenceCase(controlKey),
+      label: control['element'].name,
       hint: control['element']?.hint,
       parentReset$: this.reset$,
       parentCleared$: this.cleared$

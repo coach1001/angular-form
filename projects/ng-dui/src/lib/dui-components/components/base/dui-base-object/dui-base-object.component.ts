@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import * as jexl from 'jexl';
 import * as changeCase from 'change-case';
@@ -25,6 +25,7 @@ export class DuiBaseObjectComponent implements OnInit, OnDestroy {
   parentReset$: Subject<void> = new Subject<void>();
 
   visible = true;
+  isValid$: Observable<any>;
   controlKeys: Array<string> = [];
 
   cleared$: Subject<void> = new Subject<void>();
@@ -39,6 +40,7 @@ export class DuiBaseObjectComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.defaultInit();
     this.elementInit();
+    this.customInit();
   }
 
   ngOnDestroy() {
@@ -57,6 +59,9 @@ export class DuiBaseObjectComponent implements OnInit, OnDestroy {
         this.checkReactivity(value);
       });
     }
+    this.isValid$ = this.controlIn.statusChanges.pipe(
+      takeUntil(this._destroy$)
+    );
   }
 
   elementInit() {
@@ -76,6 +81,8 @@ export class DuiBaseObjectComponent implements OnInit, OnDestroy {
         this.reset$.next();
       });
   }
+
+  customInit() {}
 
   get gridStyleParent(): object {
     const gridConfig = this.controlIn['element']['gridConfig'];
@@ -173,7 +180,8 @@ export class DuiBaseObjectComponent implements OnInit, OnDestroy {
       controlIn: control,
       parent: this.controlIn,
       modelProperty: controlKey,
-      label: control['element'].name ? control['element'].name : changeCase.sentenceCase(controlKey),
+      // label: control['element'].name ? control['element'].name : changeCase.sentenceCase(controlKey),
+      label: control['element'].name,
       hint: control['element'].hint,
       parentReset$: this.reset$,
       parentCleared$: this.cleared$

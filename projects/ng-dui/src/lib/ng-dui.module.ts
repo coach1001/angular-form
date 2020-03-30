@@ -3,7 +3,6 @@ import { DuiComponentsModule } from './dui-components/dui-components.module';
 import { DuiFormModule } from './dui-form/dui-form.module';
 import { NgDuiConfigService } from './services/ng-dui-config.service';
 import { DuiFlowModule } from './dui-flow/dui-flow.module';
-import { DuiAngularMaterialComponentsModule } from './dui-angular-material-components/dui-angular-material-components.module';
 import { StepGuard } from './guards/step.guard';
 import { FlowGuard } from './guards/flow.guard';
 import { ModuleGuard } from './guards/module.guard';
@@ -14,13 +13,11 @@ import { ModuleGuard } from './guards/module.guard';
     DuiFlowModule,
     DuiFormModule,
     DuiComponentsModule,
-    DuiAngularMaterialComponentsModule
   ],
   exports: [
     DuiFlowModule,
     DuiFormModule,
     DuiComponentsModule,
-    DuiAngularMaterialComponentsModule
   ],
   providers: [
     NgDuiConfigService,

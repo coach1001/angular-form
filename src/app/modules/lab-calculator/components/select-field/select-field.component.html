@@ -1,0 +1,12 @@
+<form [formGroup]="parent" *ngIf="visible">  
+    <div class="form-group">
+      <label *ngIf="label">{{label}}</label>
+      <select [ngClass]="inputClass" [formControlName]="modelProperty">
+        <ng-container *ngFor="let option of controlIn['element'].options">
+            <option [value]="option">{{displayFn(option)}}</option>
+        </ng-container>                
+      </select>
+      <small *ngIf="hint" class="form-text text-muted">{{hint}}</small>
+      <div class="invalid-feedback feedback">{{error_}}</div>  
+    </div>    
+</form>
