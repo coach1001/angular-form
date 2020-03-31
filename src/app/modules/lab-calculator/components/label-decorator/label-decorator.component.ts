@@ -9,18 +9,28 @@ import { DuiFormGeneratorService } from 'ng-dui';
 })
 export class LabelDecoratorComponent extends DuiBaseObjectComponent {
 
+  labelTextStyle = {};
+
   constructor(
     private _fgs_: DuiFormGeneratorService) {
     super(_fgs_);
   }
 
-  ngOnInit() { }
-
-  get labelTextStyle() {    
-    return {      
+  ngOnInit() {
+    let textAlign = '';
+    switch (this.controlIn['element'].metadata?.textAlign) {
+      case 'right': textAlign = 'flex-end'; break;
+      case 'left': textAlign = 'flex-start'; break;
+      case 'center': textAlign = 'center'; break;
+      default: textAlign = 'center'; break;
+    }
+    this.labelTextStyle = {
       'font-weight': 'bold',
-      'text-align': this.controlIn['element'].metadata?.textAlign ?
-        this.controlIn['element'].metadata?.textAlign : 'center'
+      'display': 'flex',
+      'align-items': 'center',
+      'justify-content': textAlign,
+      'margin-bottom': 0
     }
   }
+
 }

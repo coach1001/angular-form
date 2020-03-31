@@ -74,6 +74,7 @@ export class DuiFormGeneratorService {
         : currFormElm.setValidators(parentValidators);
       control['element'].originalValidators = cloneDeep(validators);
     }
+    inputElement.initiallyDisabled ? control.disable() : control.enable();
     currFormElm.addControl(inputElement.modelProperty, control);
     return currFormElm;
   }
@@ -82,8 +83,10 @@ export class DuiFormGeneratorService {
     let validators = [];
     let parentValidators = [];
 
-    if (!root) {
-      currFormElm.addControl(objectElement.modelProperty, this._fb.group({}));
+    if (!root) {      
+      const group = this._fb.group({});
+      objectElement.initiallyDisabled ? group.disable() : group.enable();
+      currFormElm.addControl(objectElement.modelProperty, group);
       currFormElm = <FormGroup>currFormElm.controls[objectElement.modelProperty];
       currFormElm['element'] = objectElement;
       if (objectElement.elements && objectElement.elements.length) {
@@ -115,8 +118,9 @@ export class DuiFormGeneratorService {
   processArray_r(arrayElement, currFormElm: FormGroup) {
     let arrayValidators = [];
     let parentValidators = [];
-
-    currFormElm.addControl(arrayElement.modelProperty, this._fb.array([]));
+    const array_ = this._fb.array([]);
+    arrayElement.initiallyDisabled ? array_.disable() : array_.enable();
+    currFormElm.addControl(arrayElement.modelProperty, array_);
     currFormElm.controls[arrayElement.modelProperty]['controls'].push(this._fb.group({}));
     if (arrayElement.elements && arrayElement.elements.length) {
       arrayElement.elements.forEach(element => {

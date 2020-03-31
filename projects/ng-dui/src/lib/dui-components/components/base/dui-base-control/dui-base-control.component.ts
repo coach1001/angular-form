@@ -8,7 +8,7 @@ import { DuiFormGeneratorService } from '../../../../dui-form/services/dui-form-
   template: ''
 })
 export class DuiBaseControlComponent implements OnInit, OnDestroy {
-  
+
   @Input()
   controlIn: FormGroup | FormArray | FormControl;
   @Input()
@@ -32,6 +32,8 @@ export class DuiBaseControlComponent implements OnInit, OnDestroy {
   isValid$: Observable<any>;
   cleared$: Subject<void> = new Subject<void>();
   reset$: Subject<void> = new Subject<void>();
+  prefix: any;
+  suffix: any;
 
   protected _destroy$: Subject<void> = new Subject<void>();
 
@@ -65,6 +67,8 @@ export class DuiBaseControlComponent implements OnInit, OnDestroy {
     this.isValid$ = this.controlIn.statusChanges.pipe(
       takeUntil(this._destroy$)
     );
+    this.prefix = this.setAppending('prefix');
+    this.suffix = this.setAppending('suffix');
   }
 
   elementInit() {
@@ -78,7 +82,7 @@ export class DuiBaseControlComponent implements OnInit, OnDestroy {
       });
   }
 
-  customInit() {}
+  customInit() { }
 
   setDefaultValue() {
     if (this.controlIn['element'].defaultValue && this.controlIn.value == null) {
@@ -147,4 +151,18 @@ export class DuiBaseControlComponent implements OnInit, OnDestroy {
     return error != null ? this._fgs.getErrorValidationMessage(error) : '';
   }
 
+  setAppending(append: string) {
+    const append_ = this.controlIn['element'][append];    
+    if (append_ != null) {
+      return {
+        visible: true,
+        value: append_.value,
+        innerHtml: append_.innerHtml
+      };
+    }
+    return {
+      visible: false
+    };
+  }
+  
 }

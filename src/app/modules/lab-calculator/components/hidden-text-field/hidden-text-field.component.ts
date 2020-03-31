@@ -27,5 +27,6 @@ export class HiddenTextFieldComponent extends DuiBaseControlComponent {
 
   get error_() {
     return this._esm.isErrorState(<FormControl>this.controlIn, null) ? this.error : '';
-  }  
+  }
+  
 }
