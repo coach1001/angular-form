@@ -6,6 +6,8 @@ import { DuiFormDataService } from '../../dui-form/services/dui-form-data.servic
 import { NgDuiConfigService } from '../../services/ng-dui-config.service';
 import { HttpClient } from '@angular/common/http';
 import { TaskType } from '../../dui-form/services/dui-task.enum';
+import { FormGroup } from '@angular/forms';
+import cloneDeep from 'lodash-es/cloneDeep';
 
 export interface IFlowDefinition {
   module: string,
@@ -103,6 +105,7 @@ export class DuiFlowService {
     });
   }
 
+
   async RunStepTasks(taskType: string, formValue: any, flowContext: any): Promise<any> {
     const currentStep = this.currentStep$.value;
     const currentModule = this.currentFlow$.value.module;
@@ -116,10 +119,22 @@ export class DuiFlowService {
     }).toPromise();
   }
 
+  async RunStepPeriTasks(form: FormGroup) {
+    const currentStep = this.currentStep$.value;
+    const currentFlowId = this.currentFlowId$.value;
+    const formValue = form.getRawValue();
+    let flowData = cloneDeep(this._fds.getFlowData(currentFlowId));
+    flowData.flowData[currentStep.modelProperty] = formValue;
+    const flowDataChanges = await this.RunStepTasks(TaskType.PeriTask, flowData.flowData, flowData.flowContext);
+    if (flowDataChanges != null) {
+      this._fgs.setFormValue(form, flowDataChanges.data[currentStep.modelProperty], false);      
+    }
+  }
+
   async nextStep(): Promise<void> {
 
     let form = this._fgs.form$.value;
-    
+
     const currentStepName = this.currentStepName$.value;
     const currentStep = this.currentStep$.value;
     const currentModule = this.currentFlow$.value.module;
@@ -131,7 +146,7 @@ export class DuiFlowService {
     if (form.valid) {
       const formValue = form.getRawValue();
 
-      if(!this._config.production) {
+      if (!this._config.production) {
         console.log(formValue);
       }
 

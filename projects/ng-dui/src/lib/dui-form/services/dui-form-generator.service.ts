@@ -153,7 +153,7 @@ export class DuiFormGeneratorService {
     currFormElm.controls[arrayElement.modelProperty]['controls'] = [];
   }
 
-  setFormValue(group: FormGroup, value: any) {
+  setFormValue(group: FormGroup, value: any, emitEvent = true) {
     Object.keys(group.controls).forEach((key: string) => {
       const abstractControl = group.controls[key];
       const controlValue = value[key] != null ? value[key] : null;
@@ -168,7 +168,7 @@ export class DuiFormGeneratorService {
           });
         }
       } else {
-        abstractControl.patchValue(controlValue);
+        abstractControl.patchValue(controlValue, { emitEvent });
       }
     });
   }
@@ -226,6 +226,9 @@ export class DuiFormGeneratorService {
       case 'minLength': error = `Minimum length for this field is ${error.value.requiredLength}`; break;
       case 'mustMatch': error = `Does not match - ${changeCase.sentenceCase(error.value.field)}`; break;
       case 'invalidEmailAddress': error = `Not a valid email address`; break;
+      case 'rangeMax': error = `Maximum value for this field is ${error.value.max}`; break;
+      case 'rangeMin': error = `Minimum value for this field is ${error.value.min}`; break;
+      
       default: break;
     }
     return error;

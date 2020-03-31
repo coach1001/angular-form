@@ -19,6 +19,9 @@ body {
 .feedback {
     height: 19px;
     display: block !important;
+    font-weight: 500;
+    color: #F64F5F !important;
+    font-size: 12px;
 }
 
 .form-group {
@@ -35,4 +38,8 @@ input {
 
 .input-group-text {
     font-size: 14px;
+}
+
+.form-control:disabled {
+    background-color: #D0D3D6 !important;
 }

@@ -25,7 +25,7 @@ export class ObjectComponent extends DuiBaseObjectComponent {
 
     if (this.controlIn['element']['borderConfig'] != null) {
       const borderConfig = this.getBorder(this.controlIn['element']['borderConfig']);
-      gridStyle = {...gridStyle, ...borderConfig};
+      gridStyle = { ...gridStyle, ...borderConfig };
     }
 
     if (spanConfig) {
@@ -48,12 +48,12 @@ export class ObjectComponent extends DuiBaseObjectComponent {
     const trackConfig = gridConfig?.trackConfig;
     const mediaSize = this._fgs_.getMediaSize();
     let gridStyle = {
-      padding: '7px'
+      padding: '5px'
     };
     if (control['element']['borderConfig'] != null) {
       const borderConfig = this.getBorder(control['element']['borderConfig']);
-      gridStyle = {...gridStyle, ...borderConfig};
-    }    
+      gridStyle = { ...gridStyle, ...borderConfig };
+    }
     if (spanConfig && spanConfig[mediaSize]) {
       if (spanConfig[mediaSize].columns && spanConfig[mediaSize].columns !== '') {
         gridStyle['grid-column'] = `span ${spanConfig[mediaSize].columns}`;
@@ -67,25 +67,43 @@ export class ObjectComponent extends DuiBaseObjectComponent {
     return gridStyle;
   }
 
-  getBorder(borderConfig: string) {    
+  getBorder(borderConfig: string) {
     const borderConfig_ = {};
+    const border = '1px solid #797D81';
     switch (borderConfig) {
       case BorderType.ltrb:
-        borderConfig_['border-left'] = '1px solid #dee2e6';
-        borderConfig_['border-top'] = '1px solid #dee2e6';
-        borderConfig_['border-right'] = '1px solid #dee2e6';
-        borderConfig_['border-bottom'] = '1px solid #dee2e6'; break;
+        borderConfig_['border-left'] = border;
+        borderConfig_['border-top'] = border;
+        borderConfig_['border-right'] = border;
+        borderConfig_['border-bottom'] = border; break;
       case BorderType.lrb:
-        borderConfig_['border-left'] = '1px solid #dee2e6';        
-        borderConfig_['border-right'] = '1px solid #dee2e6';
-        borderConfig_['border-bottom'] = '1px solid #dee2e6'; break;
-      case BorderType.trb:        
-        borderConfig_['border-top'] = '1px solid #dee2e6';
-        borderConfig_['border-right'] = '1px solid #dee2e6';
-        borderConfig_['border-bottom'] = '1px solid #dee2e6'; break;
+        borderConfig_['border-left'] = border;
+        borderConfig_['border-right'] = border;
+        borderConfig_['border-bottom'] = border; break;
+      case BorderType.trb:
+        borderConfig_['border-top'] = border;
+        borderConfig_['border-right'] = border;
+        borderConfig_['border-bottom'] = border; break;
       case BorderType.rb:
-        borderConfig_['border-right'] = '1px solid #dee2e6';
-        borderConfig_['border-bottom'] = '1px solid #dee2e6'; break;
+        borderConfig_['border-right'] = border;
+        borderConfig_['border-bottom'] = border; break;
+      case BorderType.ltrb:
+        borderConfig_['border-left'] = border;
+        borderConfig_['border-top'] = border;
+        borderConfig_['border-right'] = border;
+        borderConfig_['border-bottom'] = border; break;
+      case BorderType.lr:
+        borderConfig_['border-left'] = border;
+        borderConfig_['border-right'] = border; break;
+      case BorderType.r:
+        borderConfig_['border-right'] = border; break;
+      case BorderType.ltr:
+        borderConfig_['border-left'] = border;
+        borderConfig_['border-top'] = border;
+        borderConfig_['border-right'] = border; break;
+      case BorderType.tr:
+        borderConfig_['border-top'] = border;
+        borderConfig_['border-right'] = border; break;
       default: break;
     }
     return borderConfig_;

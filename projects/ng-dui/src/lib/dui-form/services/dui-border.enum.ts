@@ -2,5 +2,9 @@ export const BorderType = {
   ltrb: 'ltrb',
   lrb: 'lrb' ,
   trb: 'trb',
-  rb: 'rb'
+  ltr: 'ltr',
+  tr: 'tr',
+  rb: 'rb',
+  lr: 'lr',
+  r: 'r'
 }
