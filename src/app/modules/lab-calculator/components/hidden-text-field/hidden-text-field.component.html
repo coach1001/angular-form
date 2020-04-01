@@ -1,6 +1,6 @@
 <form [formGroup]="parent" *ngIf="visible">  
     <div class="form-group">
-      <label *ngIf="label">{{label}}</label>
+      <label class="text-light" *ngIf="label">{{label}}</label>
       
       <ng-container *ngIf="prefix?.visible">    
         <div class="input-group-append" *ngIf="!prefix.innerHtml">        

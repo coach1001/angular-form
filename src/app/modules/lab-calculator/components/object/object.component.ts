@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { DuiBaseObjectComponent } from 'projects/ng-dui/src/lib/dui-components/components/base/dui-base-object/dui-base-object.component';
 import { DuiFormGeneratorService } from 'projects/ng-dui/src/lib/dui-form/services/dui-form-generator.service';
 import { BorderType } from 'projects/ng-dui/src/lib/dui-form/services/dui-border.enum';
+import { MediaSize } from 'projects/ng-dui/src/public-api';
 
 @Component({
   selector: 'app-object',
@@ -18,27 +19,24 @@ export class ObjectComponent extends DuiBaseObjectComponent {
 
   get gridStyleParent(): object {
     const gridConfig = this.controlIn['element']['gridConfig'];
-    const spanConfig = gridConfig?.spanConfig;
-    const trackConfig = gridConfig?.trackConfig;
+    const positionConfig = this.controlIn['element']['positionConfig'];    
     const mediaSize = this._fgs_.getMediaSize();
     let gridStyle = {
-      'display': 'grid'
+      'display': 'grid',      
     }
-
     if (this.controlIn['element']['borderConfig'] != null) {
       const borderConfig = this.getBorder(this.controlIn['element']['borderConfig']);
       gridStyle = { ...gridStyle, ...borderConfig };
     }
-
-    if (spanConfig) {
+    if(gridConfig != null) {
+      // TODO: Look at all sizes
+      gridStyle['grid-template-columns'] = gridConfig.large.column;
+      gridStyle['grid-template-rows'] = gridConfig.large.row;
     }
-    if (trackConfig && trackConfig[mediaSize]) {
-      if (trackConfig[mediaSize].columns && trackConfig[mediaSize].columns !== '') {
-        gridStyle['grid-template-columns'] = trackConfig[mediaSize].columns;
-      }
-      if (trackConfig[mediaSize].rows && trackConfig[mediaSize].rows !== '') {
-        gridStyle['grid-template-rows'] = trackConfig[mediaSize].rows;
-      }
+    if(positionConfig != null) {
+      // TODO: Look at all sizes
+      gridStyle['grid-column'] = positionConfig.large.column;
+      gridStyle['grid-row'] = positionConfig.large.row;
     }
     return gridStyle;
   }
@@ -46,25 +44,42 @@ export class ObjectComponent extends DuiBaseObjectComponent {
   gridStyleChild(controlKey: string): object {
     const control = this.controlIn.controls[controlKey];
     const gridConfig = control['element']['gridConfig'];
-    const spanConfig = gridConfig?.spanConfig;
-    const trackConfig = gridConfig?.trackConfig;
+    const positionConfig = control['element']['positionConfig'];    
     const mediaSize = this._fgs_.getMediaSize();
     let gridStyle = {
-      padding: '5px'
-    };
+      padding: '5px',      
+    }
     if (control['element']['borderConfig'] != null) {
       const borderConfig = this.getBorder(control['element']['borderConfig']);
       gridStyle = { ...gridStyle, ...borderConfig };
     }
-    if (spanConfig && spanConfig[mediaSize]) {
-      if (spanConfig[mediaSize].columns && spanConfig[mediaSize].columns !== '') {
-        gridStyle['grid-column'] = `span ${spanConfig[mediaSize].columns}`;
-      }
-      if (spanConfig[mediaSize].rows && spanConfig[mediaSize].rows !== '') {
-        gridStyle['grid-row'] = `span ${spanConfig[mediaSize].rows}`;
-      }
+    if(gridConfig != null) {
+      // TODO: Look at all sizes
+      gridStyle['grid-template-columns'] = gridConfig.large.column;
+      gridStyle['grid-template-rows'] = gridConfig.large.row;
     }
-    if (trackConfig && trackConfig[mediaSize]) {
+    if(positionConfig != null) {
+      // TODO: Look at all sizes
+      gridStyle['grid-column'] = positionConfig.large.column;
+      gridStyle['grid-row'] = positionConfig.large.row;
+    }
+    return gridStyle;
+  }
+
+  gridStyleDecorator(decorator) {    
+    const positionConfig = decorator['positionConfig'];    
+    const mediaSize = this._fgs_.getMediaSize();
+    let gridStyle = {
+      padding: '5px'      
+    };
+    if (decorator['borderConfig'] != null) {
+      const borderConfig = this.getBorder(decorator['borderConfig']);
+      gridStyle = { ...gridStyle, ...borderConfig };
+    }
+    if(positionConfig != null) {
+      // TODO: Look at all sizes
+      gridStyle['grid-column'] = positionConfig.large.column;
+      gridStyle['grid-row'] = positionConfig.large.row;
     }
     return gridStyle;
   }

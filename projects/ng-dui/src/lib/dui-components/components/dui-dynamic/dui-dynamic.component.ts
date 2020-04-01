@@ -41,7 +41,11 @@ export class DuiDynamicComponent implements AfterViewInit {
   renderChildren() {
     let component;
     if (this.inputs != null) {
-      component = this._duicr.getComponent(this.inputs['controlIn']['element']?.uiTemplate);
+      if (this.inputs['controlIn']['element']?.uiTemplate != null) {
+        component = this._duicr.getComponent(this.inputs['controlIn']['element']?.uiTemplate);
+      } else if (this.inputs['controlIn'].uiTemplate != null) {
+        component = this._duicr.getComponent(this.inputs['controlIn'].uiTemplate);
+      }
     } else if (this.controlIn != null) {
       component = this._duicr.getComponent(this.controlIn['element'].uiTemplate);
     }

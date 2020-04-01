@@ -1,5 +1,6 @@
 export const ElementType = {
     Object: 'object',
     Array: 'array',
-    Control: 'control'
+    Control: 'control',
+    StaticDecorator: 'staticDecorator'
 }

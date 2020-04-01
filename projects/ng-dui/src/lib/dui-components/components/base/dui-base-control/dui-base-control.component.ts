@@ -28,8 +28,7 @@ export class DuiBaseControlComponent implements OnInit, OnDestroy {
   @Input()
   allowDecimal: boolean;
 
-  visible = true;
-  isValid$: Observable<any>;
+  visible = true;  
   cleared$: Subject<void> = new Subject<void>();
   reset$: Subject<void> = new Subject<void>();
   prefix: any;
@@ -64,9 +63,6 @@ export class DuiBaseControlComponent implements OnInit, OnDestroy {
         this.checkReactivity(value);
       });
     }
-    this.isValid$ = this.controlIn.statusChanges.pipe(
-      takeUntil(this._destroy$)
-    );
     this.prefix = this.setAppending('prefix');
     this.suffix = this.setAppending('suffix');
   }

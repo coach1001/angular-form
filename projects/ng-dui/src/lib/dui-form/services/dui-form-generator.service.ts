@@ -4,9 +4,11 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import cloneDeep from 'lodash-es/cloneDeep';
 import * as changeCase from 'change-case';
 import { ElementType } from './dui-elements.enum';
+import { ControlType } from './dui-controls.enum';
 import { DuiValidatorRegistryService } from './dui-validator-registry.service';
 import { MediaSize } from './dui-media-size.enum';
 import { NgDuiConfigService } from '../../services/ng-dui-config.service';
+
 
 @Injectable({
   providedIn: 'root'
@@ -14,10 +16,12 @@ import { NgDuiConfigService } from '../../services/ng-dui-config.service';
 export class DuiFormGeneratorService {
 
   private _form: FormGroup;
+  
   private _empty: Array<boolean> = [];
 
-  resetForm$: Subject<void> = new Subject<void>();
-  form$: BehaviorSubject<FormGroup> = new BehaviorSubject(null);
+  resetForm$  = new Subject<void>();
+  form$ = new BehaviorSubject<FormGroup>(null);
+  decorators: Array<any> = [];
 
   constructor(
     private _fb: FormBuilder,
@@ -27,6 +31,7 @@ export class DuiFormGeneratorService {
 
   buildForm(definition: any): void {
     this._form = null;
+    this.decorators = [];
     this._form = this._fb.group({});
     this.createStep(definition);
     this.form$.next(this._form);
@@ -42,7 +47,12 @@ export class DuiFormGeneratorService {
   processElement_r(element, currFormElm: FormGroup): FormGroup {
     switch (element.elementType) {
       case ElementType.Control:
-        this.processControl(element, currFormElm)
+        if (element.controlType !== ControlType.Decorator && element.controlType !== ControlType.Spacer) {
+          this.processControl(element, currFormElm)
+        } else {
+          element['parentForm'] = currFormElm;
+          this.decorators.push(element);
+        }
         break;
       case ElementType.Object:
         this.processObject_r(element, currFormElm);
@@ -55,7 +65,7 @@ export class DuiFormGeneratorService {
     return currFormElm;
   }
 
-  processControl(inputElement, currFormElm: FormGroup) {
+  processControl(inputElement, currFormElm: FormGroup) {    
     const control = new FormControl();
     let validators = [];
     let parentValidators = [];
