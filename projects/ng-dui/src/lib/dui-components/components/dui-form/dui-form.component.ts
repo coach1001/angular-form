@@ -16,6 +16,7 @@ import { TaskType } from '../../../dui-form/services/dui-task.enum';
 export class DuiFormComponent implements OnInit, OnDestroy {
 
   private _destroy$: Subject<void> = new Subject<void>();
+  private _emitForm = false;
   form: FormGroup = null;
 
   constructor(
@@ -55,6 +56,7 @@ export class DuiFormComponent implements OnInit, OnDestroy {
               takeUntil(this._destroy$)
             )
             .subscribe(val => {
+              this._emitForm = false;
               this._fs.RunStepPeriTasks(form);
             });
         }
@@ -73,7 +75,8 @@ export class DuiFormComponent implements OnInit, OnDestroy {
         const formValue = this.form.getRawValue();
         const difference = diff(formValue, stepData);
         if (difference != null) {
-          this._fgs.setFormValue(this.form, stepData);
+          this._fgs.setFormValue(this.form, stepData, this._emitForm);
+          this._emitForm = true;
         }
       }
     });

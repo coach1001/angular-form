@@ -6,6 +6,7 @@ import * as changeCase from 'change-case';
 import { ElementType } from './dui-elements.enum';
 import { DuiValidatorRegistryService } from './dui-validator-registry.service';
 import { MediaSize } from './dui-media-size.enum';
+import { NgDuiConfigService } from '../../services/ng-dui-config.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,8 @@ export class DuiFormGeneratorService {
 
   constructor(
     private _fb: FormBuilder,
-    private _vrs: DuiValidatorRegistryService
+    private _vrs: DuiValidatorRegistryService,
+    private _config: NgDuiConfigService
   ) { }
 
   buildForm(definition: any): void {
@@ -83,7 +85,7 @@ export class DuiFormGeneratorService {
     let validators = [];
     let parentValidators = [];
 
-    if (!root) {      
+    if (!root) {
       const group = this._fb.group({});
       objectElement.initiallyDisabled ? group.disable() : group.enable();
       currFormElm.addControl(objectElement.modelProperty, group);
@@ -127,7 +129,7 @@ export class DuiFormGeneratorService {
         this.processElement_r(element, <FormGroup>currFormElm.controls[arrayElement.modelProperty]['controls'][0]);
       });
     }
-    const rowTemplate = cloneDeep(currFormElm.controls[arrayElement.modelProperty]['controls'][0]);    
+    const rowTemplate = cloneDeep(currFormElm.controls[arrayElement.modelProperty]['controls'][0]);
 
     if (arrayElement.validators) {
       arrayElement.validators.forEach(validator => {
@@ -162,7 +164,7 @@ export class DuiFormGeneratorService {
       } else if (abstractControl instanceof FormArray) {
         abstractControl['controls'] = [];
         if (controlValue != null) {
-          controlValue.forEach((val, index) => {            
+          controlValue.forEach((val, index) => {
             abstractControl['controls'].push(cloneDeep(abstractControl['rowTemplate']));
             this.setFormValue(<FormGroup>abstractControl['controls'][index], val);
           });
@@ -228,19 +230,18 @@ export class DuiFormGeneratorService {
       case 'invalidEmailAddress': error = `Not a valid email address`; break;
       case 'rangeMax': error = `Maximum value for this field is ${error.value.max}`; break;
       case 'rangeMin': error = `Minimum value for this field is ${error.value.min}`; break;
-      
       default: break;
     }
     return error;
   }
 
   getMediaSize(): string {
-    if (window.innerWidth >= 991) {
-      return MediaSize.Large; 
-    } else if (window.innerWidth >= 767 && window.innerWidth < 991) {
-      return MediaSize.Medium; 
+    if (window.innerWidth >= this._config.mediaMedium) {
+      return MediaSize.Large;
+    } else if (window.innerWidth >= this._config.mediaMedium && window.innerWidth < this._config.mediaLarge) {
+      return MediaSize.Medium;
     } else {
-      return MediaSize.Small; 
+      return MediaSize.Small;
     }
   }
 

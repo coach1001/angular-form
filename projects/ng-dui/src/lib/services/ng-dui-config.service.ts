@@ -10,5 +10,7 @@ import { Injectable } from '@angular/core';
 export class NgDuiConfigService {
   system = '';
   baseUrl = '';
-  production = false;
+  production = false;  
+  mediaMedium = 767; 
+  mediaLarge = 997;
 }

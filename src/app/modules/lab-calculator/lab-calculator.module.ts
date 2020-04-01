@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DuiComponentsModule, DuiComponentsRegistryService } from 'ng-dui';
 import { LabCalculatorContainerComponent } from './components/lab-calculator-container/lab-calculator-container.component';
 import { LabCalculatorRoutingModule } from './lab-calculator-routing.module';
 import { ObjectComponent } from './components/object/object.component';
@@ -12,6 +11,9 @@ import { SelectFieldComponent } from './components/select-field/select-field.com
 import { HiddenTextFieldComponent } from './components/hidden-text-field/hidden-text-field.component';
 import { LabelDecoratorComponent } from './components/label-decorator/label-decorator.component';
 import { SpacerComponent } from './components/spacer/spacer.component';
+// import { DuiComponentsModule, DuiComponentsRegistryService } from 'ng-dui';
+import { DuiComponentsModule } from 'projects/ng-dui/src/lib/dui-components/dui-components.module';
+import { DuiComponentsRegistryService } from 'projects/ng-dui/src/lib/dui-components/services/dui-components-registry.service';
 
 @NgModule({
   declarations: [

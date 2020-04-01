@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { DuiBaseControlComponent, DuiFormGeneratorService } from 'ng-dui';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { FormControl } from '@angular/forms';
+// import { DuiBaseObjectComponent, DuiFormGeneratorService } from 'ng-dui';
+import { DuiFormGeneratorService } from 'projects/ng-dui/src/lib/dui-form/services/dui-form-generator.service';
+import { DuiBaseControlComponent } from 'projects/ng-dui/src/lib/dui-components/components/base/dui-base-control/dui-base-control.component';
 
 @Component({
   selector: 'app-text-field',

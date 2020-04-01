@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
-import { DuiBaseObjectComponent } from 'ng-dui';
-import { DuiFormGeneratorService } from 'ng-dui';
+// import { DuiBaseObjectComponent, DuiFormGeneratorService } from 'ng-dui';
+import { DuiFormGeneratorService } from 'projects/ng-dui/src/lib/dui-form/services/dui-form-generator.service';
+import { DuiBaseControlComponent } from 'projects/ng-dui/src/lib/dui-components/components/base/dui-base-control/dui-base-control.component';
 
 @Component({
   selector: 'app-label-decorator',
   templateUrl: './label-decorator.component.html',
   styleUrls: ['./label-decorator.component.scss']
 })
-export class LabelDecoratorComponent extends DuiBaseObjectComponent {
+export class LabelDecoratorComponent extends DuiBaseControlComponent {
 
   labelTextStyle = {};
 

@@ -20,12 +20,11 @@ export interface IFlowDefinition {
 })
 export class DuiFlowService {
 
-  public moduleDefinitions$: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
-  public currentFlow$: BehaviorSubject<IFlowDefinition> = new BehaviorSubject(null);
-  public currentStep$: BehaviorSubject<any> = new BehaviorSubject(null);
-  public currentStepName$: BehaviorSubject<string> = new BehaviorSubject(null);
-  public currentFlowId$: BehaviorSubject<string> = new BehaviorSubject(null);
-
+  public moduleDefinitions$ = new BehaviorSubject<Array<any>>([]);
+  public currentFlow$ = new BehaviorSubject<IFlowDefinition>(null);
+  public currentStep$ = new BehaviorSubject<any>(null);
+  public currentStepName$ = new BehaviorSubject<string>(null);
+  public currentFlowId$ = new BehaviorSubject<string>(null);  
   public routeRegistration: Array<any> = [];
 
   constructor(
@@ -122,8 +121,18 @@ export class DuiFlowService {
   async RunStepPeriTasks(form: FormGroup) {
     const currentStep = this.currentStep$.value;
     const currentFlowId = this.currentFlowId$.value;
+    const currentModule = this.currentFlow$.value.module;
+    const currentFlow = this.currentFlow$.value.flow.flow;
     const formValue = form.getRawValue();
-    let flowData = cloneDeep(this._fds.getFlowData(currentFlowId));
+    let flowData = cloneDeep(this._fds.getFlowData(currentFlowId));    
+    
+    if (flowData == null) {
+      this._fds.setStepData(currentFlowId, currentModule, currentFlow, currentStep.modelProperty, formValue, {
+        flowId: currentFlowId
+      });
+      flowData = this._fds.getFlowData(currentFlowId);
+    }
+
     flowData.flowData[currentStep.modelProperty] = formValue;
     const flowDataChanges = await this.RunStepTasks(TaskType.PeriTask, flowData.flowData, flowData.flowContext);
     if (flowDataChanges != null) {

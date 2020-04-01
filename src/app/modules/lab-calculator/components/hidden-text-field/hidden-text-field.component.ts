@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { DuiBaseControlComponent, DuiFormGeneratorService } from 'ng-dui';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { FormControl } from '@angular/forms';
+// import { DuiBaseControlComponent, DuiFormGeneratorService } from 'ng-dui';
+import { DuiBaseControlComponent } from 'projects/ng-dui/src/lib/dui-components/components/base/dui-base-control/dui-base-control.component';
+import { DuiFormGeneratorService } from 'projects/ng-dui/src/lib/dui-form/services/dui-form-generator.service';
 
 @Component({
   selector: 'app-hidden-text-field',

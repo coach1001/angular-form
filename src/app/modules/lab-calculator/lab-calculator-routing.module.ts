@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ModuleGuard } from 'ng-dui';
-import { DuiDynamicComponent } from 'ng-dui';
-import { FlowGuard } from 'ng-dui';
 import { LabCalculatorContainerComponent } from './components/lab-calculator-container/lab-calculator-container.component';
+//import { ModuleGuard, FlowGuard, DuiDynamicComponent } from 'ng-dui';
+import { ModuleGuard } from 'projects/ng-dui/src/lib/guards/module.guard';
+import { FlowGuard } from 'projects/ng-dui/src/lib/guards/flow.guard';
+import { DuiDynamicComponent } from 'projects/ng-dui/src/lib/dui-components/components/dui-dynamic/dui-dynamic.component';
 
 const routes: Routes = [
   {

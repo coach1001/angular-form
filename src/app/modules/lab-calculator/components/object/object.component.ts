@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { DuiBaseObjectComponent, DuiFormGeneratorService } from 'ng-dui';
+// import { DuiBaseObjectComponent, DuiFormGeneratorService, BorderType } from 'ng-dui';
+import { DuiBaseObjectComponent } from 'projects/ng-dui/src/lib/dui-components/components/base/dui-base-object/dui-base-object.component';
+import { DuiFormGeneratorService } from 'projects/ng-dui/src/lib/dui-form/services/dui-form-generator.service';
 import { BorderType } from 'projects/ng-dui/src/lib/dui-form/services/dui-border.enum';
 
 @Component({

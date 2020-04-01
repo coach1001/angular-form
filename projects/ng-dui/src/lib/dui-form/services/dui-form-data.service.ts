@@ -8,7 +8,7 @@ export interface IFlowData {
   flowId: string,
   updatedAt: Date;
   flowData: any;
-  flowContext: any;
+  flowContext: any;  
 }
 
 @Injectable({
@@ -17,7 +17,7 @@ export interface IFlowData {
 export class DuiFormDataService {
 
   public persistData = true;
-  public allFlowData$: BehaviorSubject<Array<IFlowData>> = new BehaviorSubject(null);
+  public allFlowData$: BehaviorSubject<Array<IFlowData>> = new BehaviorSubject(null);  
   public clearFlowOnNextGet$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor(

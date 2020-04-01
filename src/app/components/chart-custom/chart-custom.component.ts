@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Chart } from 'angular-highcharts';
-import { MediaSize, DuiFormGeneratorService } from 'ng-dui';
+// import { MediaSize, DuiFormGeneratorService } from 'ng-dui';
+import { DuiFormGeneratorService } from 'projects/ng-dui/src/lib/dui-form/services/dui-form-generator.service';
+import { MediaSize } from 'projects/ng-dui/src/lib/dui-form/services/dui-media-size.enum';
 
 @Component({
   selector: 'app-chart-custom',

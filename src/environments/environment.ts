@@ -7,6 +7,8 @@ export const environment = {
   flowsConfig: {
     system: 'lab-calculator',
     baseUrl: 'https://localhost:44358/api',    
+    mediaMedium: 767,
+    mediaLarge: 997  
   }
 };
 
