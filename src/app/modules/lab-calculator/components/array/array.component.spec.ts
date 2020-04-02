@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SpacerComponent } from './spacer.component';
+import { ArrayComponent } from './array.component';
 
-describe('SpacerComponent', () => {
-  let component: SpacerComponent;
-  let fixture: ComponentFixture<SpacerComponent>;
+describe('ArrayComponent', () => {
+  let component: ArrayComponent;
+  let fixture: ComponentFixture<ArrayComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SpacerComponent ]
+      declarations: [ ArrayComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SpacerComponent);
+    fixture = TestBed.createComponent(ArrayComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NormalNumberFieldComponent } from './normal-number-field.component';
+import { BooleanFieldComponent } from './boolean-field.component';
 
-describe('NumberFieldComponent', () => {
-  let component: NumberFieldComponent;
-  let fixture: ComponentFixture<NumberFieldComponent>;
+describe('BooleanFieldComponent', () => {
+  let component: BooleanFieldComponent;
+  let fixture: ComponentFixture<BooleanFieldComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NumberFieldComponent ]
+      declarations: [ BooleanFieldComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NumberFieldComponent);
+    fixture = TestBed.createComponent(BooleanFieldComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,15 +1,16 @@
 import { Component } from '@angular/core';
 import { LayoutService } from '../../services/layout.service';
-// import { DuiBaseObjectComponent, DuiFormGeneratorService, BorderType } from 'ng-dui';
-import { DuiBaseObjectComponent } from 'projects/ng-dui/src/lib/dui-components/components/base/dui-base-object/dui-base-object.component';
+// import { DuiBaseArrayComponent, DuiFormGeneratorService, BorderType } from 'ng-dui';
 import { DuiFormGeneratorService } from 'projects/ng-dui/src/lib/dui-form/services/dui-form-generator.service';
+import { DuiBaseArrayComponent } from 'projects/ng-dui/src/lib/dui-components/components/base/dui-base-array/dui-base-array.component';
+
 
 @Component({
-  selector: 'app-object',
-  templateUrl: './object.component.html',
-  styleUrls: ['./object.component.scss']
+  selector: 'app-array',
+  templateUrl: './array.component.html',
+  styleUrls: ['./array.component.scss']
 })
-export class ObjectComponent extends DuiBaseObjectComponent {
+export class ArrayComponent extends DuiBaseArrayComponent {
 
   constructor(
     private _fgs_: DuiFormGeneratorService,
@@ -17,7 +18,7 @@ export class ObjectComponent extends DuiBaseObjectComponent {
     super(_fgs_);
   }
 
-  get gridStyleParent(): object {
+  get gridStyleParent(): object {    
     return this._ls.gridStyleParent(this.controlIn);
   }
 

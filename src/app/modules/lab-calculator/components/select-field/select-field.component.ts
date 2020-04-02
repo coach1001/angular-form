@@ -11,15 +11,17 @@ import { DuiBaseControlComponent } from 'projects/ng-dui/src/lib/dui-components/
   styleUrls: ['./select-field.component.scss']
 })
 export class SelectFieldComponent extends DuiBaseControlComponent {
-
-  inputModel: any;
-  skipNextBlur = false;
+    
   currentSelectedValue: any;
 
   constructor(
     private _esm: ErrorStateMatcher,
     private _fgs_: DuiFormGeneratorService) {
     super(_fgs_);
+  }
+
+  customInit() {
+    this.currentSelectedValue = this.controlIn.value?.key;
   }
 
   get inputClass() {
@@ -43,31 +45,9 @@ export class SelectFieldComponent extends DuiBaseControlComponent {
     }
   }
 
-  optionSelected(event: any): void {
-    this.controlIn.setValue(event.option.value);
-    this.skipNextBlur = true;
-  }
-
-  sanitizeInput(event): void {
-    if (this.skipNextBlur) {
-      this.skipNextBlur = false;
-      return;
-    }
-    const options = this.controlIn['element'].options;
-    const controlValue = this.controlIn.value;
-    const eventValue = event.target.value;
-    const validValue = options.find(option => option.value === controlValue && option.displayValue === eventValue);
-    if (validValue != null) return;
-    if (options == null || controlValue == null) {
-      this.controlIn.setValue(null);
-      return;
-    }
-    const option = options.find(option_ => option_.displayValue === controlValue);
-    if (option == null) {
-      this.controlIn.setValue(null);
-      return;
-    }
-    this.controlIn.setValue(option.value);
+  optionSelected(event: any): void {            
+    const option = this.controlIn['element'].options.find(option_ => option_.key === event);
+    this.controlIn.setValue(option);    
   }
 
 }

@@ -1,0 +1,9 @@
+<form [formGroup]="parent" *ngIf="visible">
+  <label class="text-light" *ngIf="label">{{label}}</label>
+  <div class="check-box-wrapper">
+    <input type="checkbox" [formControlName]="modelProperty">
+  </div>  
+  <small *ngIf="hint" class="form-text text-muted">{{hint}}</small>
+  <div class="invalid-feedback feedback">{{error_}}</div>
+</form>
+

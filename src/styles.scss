@@ -1,45 +1,55 @@
 @import './sass/variables.scss';
 @import './assets/fonts/montserrat.fonts.scss';
 
-body {    
-    overflow-y: scroll !important; 
-    padding: 0;
-    margin: 0;
+body {
+  overflow-y: scroll !important;
+  padding: 0;
+  margin: 0;
 }
 
 * {
-    font-family: 'Montserrat', sans-serif !important;
-    border-radius: 0 !important;
+  font-family: 'Montserrat', sans-serif !important;
+  border-radius: 0 !important;
 }
 
-.c-pointer{
-    cursor: pointer;
+.c-pointer {
+  cursor: pointer;
 }
 
 .feedback {
-    height: 19px;
-    display: block !important;
-    font-weight: 500;
-    color: #F64F5F !important;
-    font-size: 12px;
+  height: 15px;
+  display: block !important;
+  font-weight: 500;
+  color: #F64F5F !important;
+  font-size: 12px;
+  margin-top: 0 !important;
 }
 
 .form-group {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
-.form-control.is-invalid{
-    background-image: none;
+.form-control.is-invalid {
+  background-image: none;
 }
 
 input {
-    width: 100%;
+  font-weight: 500 !important;
+}
+
+label {
+  margin-bottom: 0 !important;
+}
+
+select {
+  width: 100%;
+  font-weight: 500 !important;
 }
 
 .input-group-text {
-    font-size: 14px;
+  font-size: 14px;
 }
 
 .form-control:disabled {
-    background-color: #D0D3D6 !important;
+  background-color: #D0D3D6 !important;
 }

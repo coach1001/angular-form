@@ -1,0 +1,24 @@
+<h4 *ngIf="label && visible" class="text-light">{{label}}</h4>
+<form [formGroup]="parent" *ngIf="visible">
+    <!-- <form [formGroup]="parent" [ngClass]="{'hidden': !visible}"> -->
+    <div>
+        <mat-error *ngIf="error && controlIn.touched">{{error}}</mat-error>
+        <ng-container *ngFor="let group of groupKeys;let gIndex = index;">
+            <div class="row-wrapper">
+                <div [ngStyle]="gridStyleParent">
+                    <ng-container *ngFor="let key of group;let i = index;">
+                        <dui-dynamic [inputs]="getComponentInputs(key, gIndex)"></dui-dynamic>
+                    </ng-container>
+                    <ng-container *ngFor="let decorator of decorators;let i = index;">
+                        <dui-dynamic [ngStyle]="gridStyleDecorator(decorator)" [inputs]="getDecoratorInputs(i)">
+                        </dui-dynamic>
+                    </ng-container>
+                </div>
+                <button type="button" class="btn btn-danger btn-sm"
+                    (click)="deleteRow(gIndex)">Delete</button>
+            </div>
+        </ng-container>
+    </div>
+    <button [disabled]="controlIn.disabled" type="button" class="btn btn-primary"
+        (click)="addRow()">Add</button>
+</form>
