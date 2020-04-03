@@ -235,11 +235,13 @@ export class DuiFormGeneratorService {
   getErrorValidationMessage(error: any) {
     switch (error.key) {
       case 'required': error = `This field is required`; break;
-      case 'minLength': error = `Minimum length for this field is ${error.value.requiredLength}`; break;
+      case 'minLength': error = `Length must be greater than - ${error.value.requiredLength}`; break;
       case 'mustMatch': error = `Does not match - ${changeCase.sentenceCase(error.value.field)}`; break;
       case 'invalidEmailAddress': error = `Not a valid email address`; break;
-      case 'rangeMax': error = `Maximum value for this field is ${error.value.max}`; break;
-      case 'rangeMin': error = `Minimum value for this field is ${error.value.min}`; break;
+      case 'rangeMax': error = `Must be less than - ${error.value.max}`; break;
+      case 'rangeMin': error = `Must be greater than - ${error.value.min}`; break;
+      case 'mustBeGreaterThan': error = `Must be greater than - ${changeCase.sentenceCase(error.value.field)}`; break;
+      case 'mustBeLessThan': error = `Must be less than - ${changeCase.sentenceCase(error.value.field)}`; break;
       default: break;
     }
     return error;

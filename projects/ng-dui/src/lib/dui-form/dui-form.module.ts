@@ -9,6 +9,8 @@ import { RequiredValidator } from './form-validators/required.validator';
 import { MinLengthValidator } from './form-validators/min-length.validator';
 import { EmailAddressValidator } from './form-validators/email-address.validator';
 import { RangeValidator } from './form-validators/range.validator';
+import { MustBeGreaterThanValidator } from './form-validators/must-be-greater-than.validator';
+import { MustBeLessThanValidator } from './form-validators/must-be-less-than.validator';
 
 @NgModule({
   declarations: [],
@@ -30,6 +32,8 @@ export class DuiFormModule {
     _vrs.addValidatorFn('requiredIf', RequiredIfValidator);
     _vrs.addValidatorFn('emailAddress', EmailAddressValidator);        
     _vrs.addValidatorFn('range', RangeValidator);    
+    _vrs.addValidatorFn('mustBeGreaterThan', MustBeGreaterThanValidator);
+    _vrs.addValidatorFn('mustBeLessThan', MustBeLessThanValidator);
   }
 
 }
