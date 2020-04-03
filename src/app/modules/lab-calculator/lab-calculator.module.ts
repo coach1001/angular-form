@@ -18,9 +18,6 @@ import { LayoutService } from './services/layout.service';
 import { DuiComponentsModule } from 'projects/ng-dui/src/lib/dui-components/dui-components.module';
 import { DuiComponentsRegistryService } from 'projects/ng-dui/src/lib/dui-components/services/dui-components-registry.service';
 
-
-
-
 @NgModule({
   declarations: [
     LabCalculatorContainerComponent,
@@ -31,7 +28,7 @@ import { DuiComponentsRegistryService } from 'projects/ng-dui/src/lib/dui-compon
     SelectFieldComponent,
     HiddenTextFieldComponent,
     LabelDecoratorComponent,
-    BooleanFieldComponent,
+    BooleanFieldComponent    
   ],
   imports: [
     CommonModule,

@@ -1,10 +1,10 @@
 <h4 *ngIf="label && visible" class="text-light">{{label}}</h4>
 <form [formGroup]="parent" *ngIf="visible">
     <!-- <form [formGroup]="parent" [ngClass]="{'hidden': !visible}"> -->
-    <div>
+    <div [ngStyle]="arrayOrientationStyle">
         <mat-error *ngIf="error && controlIn.touched">{{error}}</mat-error>
         <ng-container *ngFor="let group of groupKeys;let gIndex = index;">
-            <div class="row-wrapper">
+            <div [ngStyle]="rowOrientationStyle">
                 <div [ngStyle]="gridStyleParent">
                     <ng-container *ngFor="let key of group;let i = index;">
                         <dui-dynamic [inputs]="getComponentInputs(key, gIndex)"></dui-dynamic>
@@ -21,6 +21,6 @@
             </div>
         </ng-container>
     </div>
-    <button [disabled]="controlIn.disabled" type="button" class="btn btn-primary"
+    <button [disabled]="controlIn.disabled" type="button" class="btn btn-secondary btn-block"
         (click)="addRow()">Add</button>
 </form>
