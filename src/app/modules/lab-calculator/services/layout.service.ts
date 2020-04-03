@@ -17,7 +17,7 @@ export class LayoutService {
     const positionConfig = controlIn['element']['positionConfig'];
     const mediaSize = this._fgs.getMediaSize();
     let gridStyle = {
-      'display': 'grid',
+      'display': 'grid',      
     }
     if (controlIn['element']['borderConfig'] != null) {
       const borderConfig = this.getBorder(controlIn['element']['borderConfig']);
@@ -66,7 +66,8 @@ export class LayoutService {
     const positionConfig = decorator['positionConfig'];
     const mediaSize = this._fgs.getMediaSize();
     let gridStyle = {
-      padding: '5px'
+      'padding-left': '5px',
+      'padding-right': '5px',
     };
     if (decorator['borderConfig'] != null) {
       const borderConfig = this.getBorder(decorator['borderConfig']);

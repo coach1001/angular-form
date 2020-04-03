@@ -11,3 +11,10 @@
     grid-auto-flow: column;
     grid-gap: 10px;
 }
+
+.delete-wrapper {
+    button {
+        max-height: 40px;   
+        margin-top: 27px;    
+    }    
+}

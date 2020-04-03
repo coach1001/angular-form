@@ -16,10 +16,10 @@ import { NgDuiConfigService } from '../../services/ng-dui-config.service';
 export class DuiFormGeneratorService {
 
   private _form: FormGroup;
-  
+
   private _empty: Array<boolean> = [];
 
-  resetForm$  = new Subject<void>();
+  resetForm$ = new Subject<void>();
   form$ = new BehaviorSubject<FormGroup>(null);
   decorators: Array<any> = [];
 
@@ -65,7 +65,7 @@ export class DuiFormGeneratorService {
     return currFormElm;
   }
 
-  processControl(inputElement, currFormElm: FormGroup) {    
+  processControl(inputElement, currFormElm: FormGroup) {
     const control = new FormControl();
     let validators = [];
     let parentValidators = [];
@@ -165,7 +165,7 @@ export class DuiFormGeneratorService {
     currFormElm.controls[arrayElement.modelProperty]['controls'] = [];
   }
 
-  setFormValue(group: FormGroup, value: any, emitEvent = true) {
+  setFormValue(group: FormGroup, value: any, emitEvent = true, updateDisabledOnly = false) {
     Object.keys(group.controls).forEach((key: string) => {
       const abstractControl = group.controls[key];
       const controlValue = value[key] != null ? value[key] : null;
@@ -180,7 +180,13 @@ export class DuiFormGeneratorService {
           });
         }
       } else {
-        abstractControl.patchValue(controlValue, { emitEvent });
+        if (!updateDisabledOnly) {
+          abstractControl.patchValue(controlValue, { emitEvent });
+        } else {
+          if (abstractControl.disabled) {
+            abstractControl.patchValue(controlValue, { emitEvent });
+          }
+        }
       }
     });
   }

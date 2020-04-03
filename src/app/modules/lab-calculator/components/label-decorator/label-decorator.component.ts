@@ -17,18 +17,25 @@ export class LabelDecoratorComponent extends DuiBaseControlComponent {
     super(_fgs_);
   }
 
-  ngOnInit() {    
+  ngOnInit() {
     let textAlign = '';
+    let verticalAlign = '';
     switch (this.controlIn['metadata']?.textAlign) {
       case 'right': textAlign = 'flex-end'; break;
       case 'left': textAlign = 'flex-start'; break;
       case 'center': textAlign = 'center'; break;
       default: textAlign = 'center'; break;
     }
+    switch (this.controlIn['metadata']?.verticalAlign) {
+      case 'top': verticalAlign = 'flex-start'; break;
+      case 'bottom': verticalAlign = 'flex-end'; break;
+      default: verticalAlign = 'center'; break;
+    }
     this.labelTextStyle = {
       'font-weight': '500',
       'display': 'flex',
-      'align-items': 'center',
+      'padding': '5px',
+      'align-items': verticalAlign,
       'justify-content': textAlign,
       'margin-bottom': 0
     }

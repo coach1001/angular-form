@@ -136,7 +136,7 @@ export class DuiFlowService {
     flowData.flowData[currentStep.modelProperty] = formValue;
     const flowDataChanges = await this.RunStepTasks(TaskType.PeriTask, flowData.flowData, flowData.flowContext);
     if (flowDataChanges != null) {
-      this._fgs.setFormValue(form, flowDataChanges.data[currentStep.modelProperty], false);      
+      this._fgs.setFormValue(form, flowDataChanges.data[currentStep.modelProperty], false, true);      
     }
   }
 

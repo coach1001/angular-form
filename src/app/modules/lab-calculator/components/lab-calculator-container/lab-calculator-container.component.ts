@@ -37,7 +37,7 @@ export class LabCalculatorContainerComponent implements OnInit {
       height: '100%'
     };
     if(mediaSize === MediaSize.Large) {
-      bodyWrapper['grid-template-columns'] = '1fr 8fr 1fr';      
+      bodyWrapper['grid-template-columns'] = '1fr 6fr 1fr';      
     } else if(mediaSize === MediaSize.Medium) {
       bodyWrapper['grid-template-columns'] = '1fr 16fr 1fr' ;      
     } else if(mediaSize === MediaSize.Small) {

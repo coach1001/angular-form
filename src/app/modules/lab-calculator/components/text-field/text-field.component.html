@@ -1,7 +1,9 @@
 <form [formGroup]="parent" *ngIf="visible">  
     <div class="form-group">
-      <label class="text-light" *ngIf="label">{{label}}</label>
-      <input type="text" [ngClass]="inputClass" [formControlName]="modelProperty">
+      <label class="text-light col-form-label-sm" *ngIf="label">{{label}}</label>
+      <div class="input-group input-group-sm">
+        <input type="text" [ngClass]="inputClass" [formControlName]="modelProperty">
+      </div>
       <small *ngIf="hint" class="form-text text-muted">{{hint}}</small>
       <div class="invalid-feedback feedback">{{error_}}</div>  
     </div>    

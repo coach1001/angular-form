@@ -22,7 +22,7 @@ export class HiddenTextFieldComponent extends DuiBaseControlComponent {
 
   get inputClass() {
     return {
-      'form-control': true,
+      'form-control-sm': true,
       'is-invalid': this._esm.isErrorState(<FormControl>this.controlIn, null)
     };
   }

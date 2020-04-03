@@ -52,7 +52,7 @@ export class DuiFormComponent implements OnInit, OnDestroy {
         if (hasPeriTasks != null) {
           form.valueChanges
             .pipe(
-              debounceTime(200),
+              debounceTime(500),
               takeUntil(this._destroy$)
             )
             .subscribe(val => {
