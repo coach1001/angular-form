@@ -4,12 +4,11 @@ import { RequiredValidator } from './required.validator';
 
 // custom validator to check that two fields match
 export function RequiredIfValidator(controlName: string, metadata: any) {
-  return (formGroup: FormGroup): ValidationErrors => {
 
+  return (formGroup: FormGroup): ValidationErrors => {
     const requiredIfControl = formGroup.controls[controlName];
     const triggerControl = formGroup.controls[metadata.triggerField];
-
-    if (triggerControl.value != null && triggerControl.value.toString() === metadata.triggerValue) {
+    if (triggerControl.value != null && triggerControl.value.toString().toLowerCase() === metadata.triggerValue.toString().toLowerCase()) {
       const validators = cloneDeep(requiredIfControl['element'].originalValidators);
       validators.push(RequiredValidator(controlName, { required: true }));
       requiredIfControl.clearValidators();

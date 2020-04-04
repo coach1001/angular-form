@@ -25,7 +25,7 @@ export class DuiBaseArrayComponent implements OnInit, OnDestroy {
   @Input()
   parentReset$: Subject<void> = new Subject<void>();
 
-  visible = true;  
+  visible = true;
   cleared$: Subject<void> = new Subject<void>();
   reset$: Subject<void> = new Subject<void>();
   decorators: Array<any>;
@@ -60,7 +60,7 @@ export class DuiBaseArrayComponent implements OnInit, OnDestroy {
         this.checkReactivity(value);
       });
     }
-    this.decorators = this._fgs.decorators.filter(decorator => decorator.taskPath === this.controlIn['element'].taskPath);    
+    this.decorators = this._fgs.decorators.filter(decorator => decorator.taskPath === this.controlIn['element'].taskPath);
   }
 
   elementInit() {
@@ -145,18 +145,18 @@ export class DuiBaseArrayComponent implements OnInit, OnDestroy {
   }
 
   getDecoratorInputs(decoratorIndex: number) {
-    const decorator = this.decorators[decoratorIndex];    
+    const decorator = this.decorators[decoratorIndex];
     return {
       controlIn: decorator,
       parent: this.controlIn,
-      modelProperty: null,      
+      modelProperty: null,
       label: decorator.name,
       hint: decorator.hint,
       parentReset$: this.reset$,
-      parentCleared$: this.cleared$,      
+      parentCleared$: this.cleared$,
     };
   }
-    
+
   getComponentInputs(controlKey: string, rowIndex) {
     const control = this.controlIn.controls[rowIndex]['controls'][controlKey];
     return {
@@ -184,12 +184,14 @@ export class DuiBaseArrayComponent implements OnInit, OnDestroy {
     if (this.controlIn.valid || this.controlIn.controls.length === 0) {
       this.controlIn.markAsUntouched();
       this.controlIn.controls.push(cloneDeep(this.controlIn['rowTemplate']));
+      this.controlIn.updateValueAndValidity({ onlySelf: true, emitEvent: false });
       this.initKeys();
     }
   }
 
   deleteRow(gIndex: number) {
     this.controlIn.controls.splice(gIndex, 1);
+    this.controlIn.updateValueAndValidity({ onlySelf: true, emitEvent: false });
     this.initKeys();
   }
 

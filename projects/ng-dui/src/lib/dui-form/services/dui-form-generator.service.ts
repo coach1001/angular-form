@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormArray, FormGroup, FormControl, FormBuilder } from '@angular/forms';
+import { FormArray, FormGroup, FormControl, FormBuilder, AbstractControl } from '@angular/forms';
 import { BehaviorSubject, Subject } from 'rxjs';
 import cloneDeep from 'lodash-es/cloneDeep';
 import * as changeCase from 'change-case';
@@ -191,6 +191,22 @@ export class DuiFormGeneratorService {
     });
   }
 
+  operateOnControl(abstractControl: FormControl, operation: string) {
+    if (operation === 'CLEAR_VALUES') {
+      abstractControl.patchValue(null);
+    } else if (operation === 'DISABLE') {
+      abstractControl.disable();
+    } else if (operation === 'TOUCH_AND_VALIDATE') {
+      abstractControl.markAsTouched();
+      abstractControl.updateValueAndValidity();
+    } else if (operation === 'UNTOUCHED_AND_PRISTINE') {
+      abstractControl.markAsUntouched();
+      abstractControl.markAsPristine();
+    } else if (operation === 'VALIDATE') {
+      abstractControl.updateValueAndValidity();
+    }
+  }
+
   recurseFormGroup(group: FormGroup | FormArray, operation: string = 'NO_OPERATION') {
     Object.keys(group.controls).forEach((key: string) => {
       const abstractControl = group.controls[key];
@@ -203,19 +219,7 @@ export class DuiFormGeneratorService {
         }
       } else {
         abstractControl.value != null ? this._empty.push(false) : this._empty.push(true);
-        if (operation === 'CLEAR_VALUES') {
-          abstractControl.patchValue(null);
-        } else if (operation === 'DISABLE') {
-          abstractControl.disable();
-        } else if (operation === 'TOUCH_AND_VALIDATE') {
-          abstractControl.markAsTouched();
-          abstractControl.updateValueAndValidity();
-        } else if (operation === 'UNTOUCHED_AND_PRISTINE') {
-          abstractControl.markAsUntouched();
-          abstractControl.markAsPristine();
-        } else if (operation === 'VALIDATE') {
-          abstractControl.updateValueAndValidity();
-        }
+        this.operateOnControl(abstractControl, operation)
       }
     });
     if (operation === 'DISABLE') {
@@ -248,6 +252,8 @@ export class DuiFormGeneratorService {
       case 'rangeMin': error = `Must be greater than - ${error.value.min}`; break;
       case 'mustBeGreaterThan': error = `Must be greater than - ${changeCase.sentenceCase(error.value.field)}`; break;
       case 'mustBeLessThan': error = `Must be less than - ${changeCase.sentenceCase(error.value.field)}`; break;
+      case 'collectionRangeMax': error = `Must be ${error.value.maxCount} or less rows`; break;
+      case 'collectionRangeMin': error = `Must be ${error.value.minCount} or more rows`; break;
       default: break;
     }
     return error;

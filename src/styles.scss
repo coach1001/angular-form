@@ -52,6 +52,9 @@ select {
 
 .input-group-text {
   font-size: 14px;
+  &.with-sup {
+    font-size: 10px;
+  }
 }
 
 input:disabled {

@@ -14,7 +14,7 @@
         <div class="input-group-append" *ngIf="!suffix.innerHtml">
           <span class="input-group-text">{{suffix.value}}</span>
         </div>
-        <div class="input-group-append" *ngIf="suffix.innerHtml" [innerHTML]="suffix.value">
+        <div class="input-group-append input-group-text with-sup" *ngIf="suffix.innerHtml" [innerHTML]="suffix.value">
         </div>
       </ng-container>
     </div>

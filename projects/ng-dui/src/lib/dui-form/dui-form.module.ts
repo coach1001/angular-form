@@ -11,6 +11,7 @@ import { EmailAddressValidator } from './form-validators/email-address.validator
 import { RangeValidator } from './form-validators/range.validator';
 import { MustBeGreaterThanValidator } from './form-validators/must-be-greater-than.validator';
 import { MustBeLessThanValidator } from './form-validators/must-be-less-than.validator';
+import { CollectionRangeValidator } from './form-validators/collection-range.validator';
 
 @NgModule({
   declarations: [],
@@ -34,6 +35,7 @@ export class DuiFormModule {
     _vrs.addValidatorFn('range', RangeValidator);    
     _vrs.addValidatorFn('mustBeGreaterThan', MustBeGreaterThanValidator);
     _vrs.addValidatorFn('mustBeLessThan', MustBeLessThanValidator);
+    _vrs.addValidatorFn('collectionRange', CollectionRangeValidator);
   }
 
 }
