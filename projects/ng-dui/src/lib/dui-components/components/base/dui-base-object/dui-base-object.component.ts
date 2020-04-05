@@ -24,7 +24,7 @@ export class DuiBaseObjectComponent implements OnInit, OnDestroy {
   @Input()
   parentReset$: Subject<void> = new Subject<void>();
 
-  visible = true;  
+  visible = true;
   controlKeys: Array<string> = [];
 
   cleared$: Subject<void> = new Subject<void>();
@@ -58,8 +58,8 @@ export class DuiBaseObjectComponent implements OnInit, OnDestroy {
         this.setDefaultValue();
         this.checkReactivity(value);
       });
-    }    
-    this.decorators = this._fgs.decorators.filter(decorator => decorator.taskPath === this.controlIn['element'].taskPath);    
+    }
+    this.decorators = this._fgs.decorators.filter(decorator => decorator.taskPath === this.controlIn['element'].taskPath);
   }
 
   elementInit() {
@@ -173,18 +173,18 @@ export class DuiBaseObjectComponent implements OnInit, OnDestroy {
   }
 
   getDecoratorInputs(decoratorIndex: number) {
-    const decorator = this.decorators[decoratorIndex];    
+    const decorator = this.decorators[decoratorIndex];
     return {
       controlIn: decorator,
       parent: this.controlIn,
-      modelProperty: null,      
+      modelProperty: null,
       label: decorator.name,
       hint: decorator.hint,
       parentReset$: this.reset$,
-      parentCleared$: this.cleared$,      
+      parentCleared$: this.cleared$,
     };
   }
-  
+
   getComponentInputs(controlKey: string) {
     const control = this.controlIn.controls[controlKey];
     return {

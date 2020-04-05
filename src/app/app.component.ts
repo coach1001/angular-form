@@ -43,18 +43,22 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   gotoA1(): void {
+    this._formData.clearFlowOnNextGet$.next(true);
     this._router.navigate(['flow/tmh1/a1'], { queryParamsHandling: 'merge' });
   }
 
   gotoA2A3A4(): void {
+    this._formData.clearFlowOnNextGet$.next(true);
     this._router.navigate(['flow/tmh1/a2a3a4'], { queryParamsHandling: 'merge' });
   }
 
   gotoA7(): void {
+    this._formData.clearFlowOnNextGet$.next(true);
     this._router.navigate(['flow/tmh1/a7'], { queryParamsHandling: 'merge' });
   }
   
   gotoTestFlow(): void {
+    this._formData.clearFlowOnNextGet$.next(true);
     this._router.navigate(['flow/tmh1/test-flow'], { queryParamsHandling: 'merge' });
   }
 

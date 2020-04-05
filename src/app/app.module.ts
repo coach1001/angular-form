@@ -13,6 +13,7 @@ import { LoadingInterceptor } from './modules/lab-calculator/interceptors/loadin
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 // import { NgDuiModule } from 'ng-dui';
 import { NgDuiModule } from 'projects/ng-dui/src/lib/ng-dui.module';
+import { AuthenticationModule } from './modules/authentication/authentication.module';
 
 @NgModule({
   declarations: [
@@ -25,12 +26,13 @@ import { NgDuiModule } from 'projects/ng-dui/src/lib/ng-dui.module';
     BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule,    
     NgbModule,
     NgDuiModule.forRoot({
       ...environment.flowsConfig,
       production: environment.production
     }),
+    AuthenticationModule,
     LabCalculatorModule,
     ChartModule
   ],

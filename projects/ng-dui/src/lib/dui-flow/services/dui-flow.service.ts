@@ -8,6 +8,9 @@ import { HttpClient } from '@angular/common/http';
 import { TaskType } from '../../dui-form/services/dui-task.enum';
 import { FormGroup } from '@angular/forms';
 import cloneDeep from 'lodash-es/cloneDeep';
+import { DuiTaskRegistryService } from '../../dui-tasks/services/dui-task-registry.service';
+import { ExecuteOn } from '../../dui-tasks/services/dui-execute-on.enum';
+import { takeLast } from 'rxjs/operators';
 
 export interface IFlowDefinition {
   module: string,
@@ -24,7 +27,7 @@ export class DuiFlowService {
   public currentFlow$ = new BehaviorSubject<IFlowDefinition>(null);
   public currentStep$ = new BehaviorSubject<any>(null);
   public currentStepName$ = new BehaviorSubject<string>(null);
-  public currentFlowId$ = new BehaviorSubject<string>(null);  
+  public currentFlowId$ = new BehaviorSubject<string>(null);
   public routeRegistration: Array<any> = [];
 
   constructor(
@@ -32,7 +35,9 @@ export class DuiFlowService {
     private _fgs: DuiFormGeneratorService,
     private _fds: DuiFormDataService,
     private _rt: Router,
-    private _hc: HttpClient
+    private _hc: HttpClient,
+    private _trs: DuiTaskRegistryService,
+
   ) {
   }
 
@@ -104,7 +109,6 @@ export class DuiFlowService {
     });
   }
 
-
   async RunStepTasks(taskType: string, formValue: any, flowContext: any): Promise<any> {
     const currentStep = this.currentStep$.value;
     const currentModule = this.currentFlow$.value.module;
@@ -118,14 +122,31 @@ export class DuiFlowService {
     }).toPromise();
   }
 
+  async asyncForEach(array, callback) {
+    for (let index = 0; index < array.length; index++) {
+      await callback(array[index], index, array);
+    }
+  }
+
+  async RunUiStepTasks(taskType: string): Promise<any> {
+    const currentStep = this.currentStep$.value;
+    if (currentStep.tasks != null && currentStep.tasks.length > 0) {
+      const uiTasks = currentStep.tasks.filter(task => task.taskType === taskType && task.executeOn === ExecuteOn.Ui);
+      await this.asyncForEach(uiTasks, async (t) => {        
+        const task = this._trs.getTask(t.uiTask);
+        task.execute();
+      });
+    }
+  }
+
   async RunStepPeriTasks(form: FormGroup) {
     const currentStep = this.currentStep$.value;
     const currentFlowId = this.currentFlowId$.value;
     const currentModule = this.currentFlow$.value.module;
     const currentFlow = this.currentFlow$.value.flow.flow;
     const formValue = form.getRawValue();
-    let flowData = cloneDeep(this._fds.getFlowData(currentFlowId));    
-    
+    let flowData = cloneDeep(this._fds.getFlowData(currentFlowId));
+
     if (flowData == null) {
       this._fds.setStepData(currentFlowId, currentModule, currentFlow, currentStep.modelProperty, formValue, {
         flowId: currentFlowId
@@ -136,7 +157,7 @@ export class DuiFlowService {
     flowData.flowData[currentStep.modelProperty] = formValue;
     const flowDataChanges = await this.RunStepTasks(TaskType.PeriTask, flowData.flowData, flowData.flowContext);
     if (flowDataChanges != null) {
-      this._fgs.setFormValue(form, flowDataChanges.data[currentStep.modelProperty], false, true);      
+      this._fgs.setFormValue(form, flowDataChanges.data[currentStep.modelProperty], false, true);
     }
   }
 
@@ -177,6 +198,7 @@ export class DuiFlowService {
       }
 
       const flowDataChanges = await this.RunStepTasks(TaskType.PostTask, flowData.flowData, flowData.flowContext);
+      await this.RunUiStepTasks(TaskType.PostTask);
 
       if (flowDataChanges != null) {
         this._fds.setStepData(

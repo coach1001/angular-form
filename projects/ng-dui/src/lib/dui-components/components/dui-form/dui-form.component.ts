@@ -36,8 +36,8 @@ export class DuiFormComponent implements OnInit, OnDestroy {
     this._fgs.form$.pipe(
       filter(value => value != null),
       takeUntil(this._destroy$)
-    ).subscribe(form => {      
-      this.form = form;      
+    ).subscribe(form => {
+      this.form = form;
       const tasks = form['element']['tasks'] as Array<any>;
       const currentStep = this._fs.currentStep$.value;
       const currentModule = this._fs.currentFlow$.value.module;
@@ -54,8 +54,7 @@ export class DuiFormComponent implements OnInit, OnDestroy {
             .pipe(
               debounceTime(500),
               takeUntil(this._destroy$)
-            )
-            .subscribe(val => {
+            ).subscribe(val => {
               this._emitForm = false;
               this._fs.RunStepPeriTasks(form);
             });

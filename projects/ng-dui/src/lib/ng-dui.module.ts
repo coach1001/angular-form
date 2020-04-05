@@ -6,6 +6,7 @@ import { DuiFlowModule } from './dui-flow/dui-flow.module';
 import { StepGuard } from './guards/step.guard';
 import { FlowGuard } from './guards/flow.guard';
 import { ModuleGuard } from './guards/module.guard';
+import { DuiTasksModule } from './dui-tasks/dui-tasks.module';
 
 @NgModule({
   declarations: [],
@@ -13,11 +14,13 @@ import { ModuleGuard } from './guards/module.guard';
     DuiFlowModule,
     DuiFormModule,
     DuiComponentsModule,
+    DuiTasksModule
   ],
   exports: [
     DuiFlowModule,
     DuiFormModule,
     DuiComponentsModule,
+    DuiTasksModule
   ],
   providers: [
     NgDuiConfigService,
