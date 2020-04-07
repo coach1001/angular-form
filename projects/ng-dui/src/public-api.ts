@@ -51,6 +51,9 @@ export * from './lib/dui-tasks/services/dui-task-registry-item.model';
 export * from './lib/dui-tasks/services/dui-task-registry.service';
 export * from './lib/dui-tasks/services/dui-task.model';
 
+export * from './lib/guards/authentication.guard';
+export * from './lib/guards/role.guard';
+
 export * from './lib/guards/flow.guard';
 export * from './lib/guards/module.guard';
 export * from './lib/guards/step.guard';

@@ -17,7 +17,7 @@ export class LayoutService {
     const positionConfig = controlIn['element']['positionConfig'];
     const mediaSize = this._fgs.getMediaSize();
     let gridStyle = {
-      'display': 'grid',      
+      'display': 'grid'
     }
     if (controlIn['element']['borderConfig'] != null) {
       const borderConfig = this.getBorder(controlIn['element']['borderConfig']);

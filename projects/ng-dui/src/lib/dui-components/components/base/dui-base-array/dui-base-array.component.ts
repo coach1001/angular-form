@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { FormGroup, FormArray } from '@angular/forms';
-import { Subject, Observable } from 'rxjs';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import * as jexl from 'jexl';
 import * as changeCase from 'change-case';

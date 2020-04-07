@@ -1,65 +1,29 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subject } from 'rxjs';
-import { Router } from '@angular/router';
-// import { DuiFormDataService } from 'ng-dui';
-import { DuiFormDataService } from 'projects/ng-dui/src/lib/dui-form/services/dui-form-data.service';
+import { Component, OnInit } from '@angular/core';
+import { AuthenticationService } from './modules/authentication/services/authentication.service';
+import { TokenStorageService } from './modules/authentication/services/token-storage.service';
+import { NullTemplateVisitor } from '@angular/compiler';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit, OnDestroy {
-
-  private _destroy$: Subject<void> = new Subject<void>();
-  isShown: boolean = false;
+export class AppComponent implements OnInit {
 
   constructor(
-    private _formData: DuiFormDataService,
-    private _router: Router) {
+    private _as: AuthenticationService,
+    private _tss: TokenStorageService
+  ) {
   }
 
-  ngOnInit(): void {
-  }
-
-  ngOnDestroy(): void {
-    this._destroy$.next();
-    this._destroy$.complete();
-  }
-
-  gotoRegistration(): void {
-    this._formData.clearFlowOnNextGet$.next(true);
-
-    this._router.navigate(['flow/account/user-registration'], { queryParamsHandling: 'merge' });
-  }
-
-  gotoLogin(): void {
-    this._formData.clearFlowOnNextGet$.next(true);
-    this._router.navigate(['flow/account/user-login'], { queryParamsHandling: 'merge' });
-  }
-
-  gotoChart(): void {
-    this._router.navigate(['charting']);
-  }
-
-  gotoA1(): void {
-    this._formData.clearFlowOnNextGet$.next(true);
-    this._router.navigate(['flow/tmh1/a1'], { queryParamsHandling: 'merge' });
-  }
-
-  gotoA2A3A4(): void {
-    this._formData.clearFlowOnNextGet$.next(true);
-    this._router.navigate(['flow/tmh1/a2a3a4'], { queryParamsHandling: 'merge' });
-  }
-
-  gotoA7(): void {
-    this._formData.clearFlowOnNextGet$.next(true);
-    this._router.navigate(['flow/tmh1/a7'], { queryParamsHandling: 'merge' });
-  }
-  
-  gotoTestFlow(): void {
-    this._formData.clearFlowOnNextGet$.next(true);
-    this._router.navigate(['flow/tmh1/test-flow'], { queryParamsHandling: 'merge' });
+  ngOnInit() {
+    const token = this._tss.getSyncAccessToken();
+    const roles = this._tss.getSyncRoles();
+    if (token != null && roles != null) {
+      this._as.saveAccessData({ accessToken: token, refreshToken: null, roles });
+    } else if (token != null) {
+      this._as.saveAccessData({ accessToken: token, refreshToken: null, roles: [] });
+    }
   }
 
 }

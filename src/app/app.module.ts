@@ -11,14 +11,18 @@ import { ChartModule } from 'angular-highcharts';
 import { LabCalculatorModule } from './modules/lab-calculator/lab-calculator.module';
 import { LoadingInterceptor } from './modules/lab-calculator/interceptors/loading.interceptor';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AuthenticationModule } from './modules/authentication/authentication.module';
+import { NavHeaderComponent } from './components/nav-header/nav-header.component';
 // import { NgDuiModule } from 'ng-dui';
 import { NgDuiModule } from 'projects/ng-dui/src/lib/ng-dui.module';
-import { AuthenticationModule } from './modules/authentication/authentication.module';
+import { AuthenticationGuard } from './modules/authentication/guards/authentication.guard';
+import { RoleGuard } from './modules/authentication/guards/role.guard';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ChartCustomComponent
+    ChartCustomComponent,
+    NavHeaderComponent
   ],
   imports: [
     BrowserModule,
@@ -30,14 +34,19 @@ import { AuthenticationModule } from './modules/authentication/authentication.mo
     NgbModule,
     NgDuiModule.forRoot({
       ...environment.flowsConfig,
-      production: environment.production
+      production: environment.production,
+      authenticationGuard: AuthenticationGuard,
+      roleGuard: RoleGuard
     }),
     AuthenticationModule,
     LabCalculatorModule,
     ChartModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
+  ],
+  entryComponents: [
+    NavHeaderComponent
   ],
   bootstrap: [AppComponent]
 })

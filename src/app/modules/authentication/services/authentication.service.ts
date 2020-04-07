@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AuthService } from 'ngx-auth';
-import { Observable } from 'rxjs';
+import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { HttpErrorResponse, HttpClient } from '@angular/common/http';
 import { TokenStorageService } from './token-storage.service';
 import { map, switchMap, tap, catchError } from 'rxjs/operators';
@@ -8,6 +8,7 @@ import { map, switchMap, tap, catchError } from 'rxjs/operators';
 interface AccessData {
   accessToken: string;
   refreshToken: string;
+  roles: string[];
 }
 
 @Injectable({
@@ -15,22 +16,25 @@ interface AccessData {
 })
 export class AuthenticationService implements AuthService {
 
+  isLoggedIn$ = new BehaviorSubject<boolean>(false);
+  roles$ = new BehaviorSubject<string[]>([]);
+
   constructor(
     private _http: HttpClient,
     private _tokenStorage: TokenStorageService
   ) { }
 
-  public isAuthorized(): Observable<boolean> {
+  isAuthorized(): Observable<boolean> {
     return this._tokenStorage
       .getAccessToken()
       .pipe(map(token => !!token));
   }
 
-  public getAccessToken(): Observable<string> {
+  getAccessToken(): Observable<string> {
     return this._tokenStorage.getAccessToken();
   }
 
-  public refreshToken(): Observable<AccessData> {
+  refreshToken(): Observable<AccessData> {
     return this._tokenStorage
       .getRefreshToken()
       .pipe(
@@ -47,11 +51,11 @@ export class AuthenticationService implements AuthService {
       );
   }
 
-  public refreshShouldHappen(response: HttpErrorResponse): boolean {
+  refreshShouldHappen(response: HttpErrorResponse): boolean {
     return response.status === 401
   }
 
-  public verifyTokenRequest(url: string): boolean {
+  verifyTokenRequest(url: string): boolean {
     return url.endsWith('/refresh');
   }
 
@@ -60,14 +64,18 @@ export class AuthenticationService implements AuthService {
       .pipe(tap((tokens: AccessData) => this.saveAccessData(tokens)));
   }*/
 
-  public logout(): void {
+  logout(): void {
     this._tokenStorage.clear();
-    location.reload(true);
+    this.isLoggedIn$.next(false);
   }
 
-  private saveAccessData({ accessToken, refreshToken }: AccessData) {
+  saveAccessData({ accessToken, roles }: AccessData) {
+    this.isLoggedIn$.next(true);
+    this.roles$.next(roles);
     this._tokenStorage
       .setAccessToken(accessToken)
-      .setRefreshToken(refreshToken);
+      .setRoles(roles);
+    //.setRefreshToken(refreshToken);
+
   }
 }

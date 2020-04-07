@@ -5,11 +5,12 @@ import {
   PUBLIC_FALLBACK_PAGE_URI,
   PROTECTED_FALLBACK_PAGE_URI
 } from 'ngx-auth';
-
 import { TokenStorageService } from './services/token-storage.service';
 import { AuthenticationService } from './services/authentication.service';
-import { DuiTaskRegistryService, NgDuiModule } from 'projects/ng-dui/src/public-api';
+import { DuiTaskRegistryService } from 'projects/ng-dui/src/public-api';
 import { LoginTask } from './tasks/login.task';
+import { AuthenticationGuard } from './guards/authentication.guard';
+import { RoleGuard } from './guards/role.guard';
 
 export function factory(authenticationService: AuthenticationService) {
   return authenticationService;
@@ -29,7 +30,9 @@ export function factory(authenticationService: AuthenticationService) {
       deps: [AuthenticationService],
       useFactory: factory
     },
-    LoginTask
+    LoginTask,
+    AuthenticationGuard,
+    RoleGuard
   ]
 })
 export class AuthenticationModule {

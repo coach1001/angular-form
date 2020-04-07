@@ -1,9 +1,10 @@
 <h6 *ngIf="label && visible" class="text-light">{{label}}</h6>
-<form [formGroup]="parent" *ngIf="visible">  
-    <button *ngIf="showAdd" [disabled]="controlIn.disabled" type="button" class="btn btn-success btn-block"
-    (click)="addRow()">Add</button>  
+<form [formGroup]="parent" *ngIf="visible">
+    <button *ngIf="showAdd" [disabled]="controlIn.disabled" type="button" class="add-btn btn btn-success btn-block"
+        (click)="addRow()">Add</button>
+    <!-- <button (click)="addRow()">Add</button> -->
     <div *ngIf="controlIn.touched && controlIn.invalid" class="invalid-feedback feedback">{{error_}}</div>
-    <div [ngStyle]="arrayOrientationStyle">        
+    <div [ngStyle]="arrayOrientationStyle">
         <ng-container *ngFor="let group of groupKeys;let gIndex = index;">
             <div [ngStyle]="rowOrientationStyle">
                 <div [ngStyle]="deleteButtonStyle" *ngIf="vertical">

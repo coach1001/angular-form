@@ -6,6 +6,8 @@ import { DuiFlowService } from '../dui-flow/services/dui-flow.service';
 import { DuiFormDataService } from '../dui-form/services/dui-form-data.service';
 import { NgDuiConfigService } from '../services/ng-dui-config.service';
 import { uuid } from 'uuidv4';
+import { AuthenticationGuard } from './authentication.guard';
+import { RoleGuard } from './role.guard';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +19,8 @@ export class ModuleGuard implements CanActivate {
     private _fs: DuiFlowService,
     private _fds: DuiFormDataService,
     private _rt: Router
-  ) { }
+  ) {    
+  }
 
   async canActivate(
     next: ActivatedRouteSnapshot,
@@ -80,7 +83,7 @@ export class ModuleGuard implements CanActivate {
         this._fs.initFlow(moduleFromRouteData, flowFromUrl, unregisteredFlow);
         const currentFlow = this._fs.currentFlow$.value;
         if (currentFlow != null) {
-          const routeConfig = this.buildRoutes(routePrefix, moduleFromRouteData, flowFromUrl, currentFlow.flow.steps, stepFromUrl);          
+          const routeConfig = this.buildRoutes(routePrefix, moduleFromRouteData, flowFromUrl, currentFlow.flow.steps, stepFromUrl, currentFlow);
           this._fs.registerRoute(routePrefix, moduleFromRouteData, flowFromUrl, routeConfig.startPathForFlow, routeConfig.routes);
           if (currentFlow.flow.resumable || !this._config.production) {
             this._rt.navigateByUrl(`${routeConfig.startUrl}?flowId=${flowId == null ? uuid() : flowId}`);
@@ -95,21 +98,30 @@ export class ModuleGuard implements CanActivate {
   };
 
 
-  buildRoutes(routePrefix: string, moduleFromRouteData: string, flowFromUrl: string, steps: any, stepFromUrl: string): any {
-
+  buildRoutes(routePrefix: string, moduleFromRouteData: string, flowFromUrl: string, steps: any, stepFromUrl: string, currentFlow: any): any {
+    
     let startPathForFlow = '';
     let startUrl = '';
     let routes = [];
 
     const moduleMainRoute = this._rt.config.find(route => route.data && route.data.module === moduleFromRouteData);
 
-    let flowRoute;
+    let flowRoute: Route;
 
     if (moduleMainRoute != null) {
       moduleMainRoute.children.unshift({
         path: flowFromUrl
       });
-      flowRoute = moduleMainRoute.children[0];
+      flowRoute = moduleMainRoute.children[0];  
+      flowRoute.canActivate = [];            
+      if(currentFlow?.flow.requiresAuthorization) {
+        flowRoute.canActivate.push(AuthenticationGuard)
+      }
+      if(currentFlow?.flow.allowedRoles != null && currentFlow?.flow.allowedRoles.length > 0) {
+        flowRoute.canActivate.push(RoleGuard)
+        flowRoute.data.roles =  currentFlow?.flow.allowedRoles;
+      }
+      
       flowRoute.children = [];
     } else {
       return;
@@ -137,7 +149,7 @@ export class ModuleGuard implements CanActivate {
       const stepRoute: Route = {
         path: stepSegment,
         component: DuiFormComponent,
-        canActivate: [StepGuard],        
+        canActivate: [StepGuard],
         // runGuardsAndResolvers: 'always',
         data: {
           module: moduleFromRouteData,

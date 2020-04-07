@@ -198,7 +198,6 @@ export class DuiFlowService {
       }
 
       const flowDataChanges = await this.RunStepTasks(TaskType.PostTask, flowData.flowData, flowData.flowContext);
-      await this.RunUiStepTasks(TaskType.PostTask);
 
       if (flowDataChanges != null) {
         this._fds.setStepData(
@@ -209,6 +208,8 @@ export class DuiFlowService {
           flowDataChanges.data[currentStep.modelProperty],
           flowDataChanges.context);
       }
+
+      await this.RunUiStepTasks(TaskType.PostTask);
 
       const routeConfig = this.routeRegistration.find(routeReg =>
         routeReg.module === currentModule &&
