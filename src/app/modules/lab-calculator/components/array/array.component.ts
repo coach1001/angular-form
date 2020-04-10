@@ -81,7 +81,6 @@ export class ArrayComponent extends DuiBaseArrayComponent {
   }
 
   get error_() {
-    console.log(this.controlIn);
     return this._esm.isErrorState(<FormControl><any>this.controlIn, null) ? this.error : '';
   }
 

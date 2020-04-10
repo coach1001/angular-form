@@ -48,7 +48,28 @@ const routes: Routes = [
         component: DuiDynamicComponent,
       }
     ]
-  }
+  },
+  {
+    path: 'flow/test',
+    component: LabCalculatorContainerComponent,
+    canActivate: [ModuleGuard],
+    data: {
+      module: 'test',
+    },
+    children: [
+      {
+        path: '**',
+        data: {
+          module: 'test',
+          staticComponents: [
+            { name: 'done' }                      
+          ]
+        },
+        canActivate: [FlowGuard],
+        component: DuiDynamicComponent,
+      }
+    ]
+  }  
 ]
 
 @NgModule({

@@ -60,6 +60,11 @@ export class DuiBaseArrayComponent implements OnInit, OnDestroy {
         this.checkReactivity(value);
       });
     }
+    this.controlIn.valueChanges
+      .pipe(takeUntil(this._destroy$))
+      .subscribe(_ => {        
+        this.initKeys();
+      });
     this.decorators = this._fgs.decorators.filter(decorator => decorator.taskPath === this.controlIn['element'].taskPath);
   }
 

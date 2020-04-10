@@ -30,7 +30,7 @@ import { RoleGuard } from './modules/authentication/guards/role.guard';
     BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule,    
+    ReactiveFormsModule,
     NgbModule,
     NgDuiModule.forRoot({
       ...environment.flowsConfig,

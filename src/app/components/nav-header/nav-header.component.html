@@ -4,16 +4,18 @@
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav ml-auto" >
-      <!-- <li class="nav-item">
-        <a (click)="gotoTestFlow()" class="nav-link c-pointer">Test Flow</a>
-      </li> -->
-      <li class="nav-item">
-        <a (click)="gotoA1()" *ngIf="isLoggedIn" class="nav-link c-pointer">A1</a>
-      </li>
-      <li class="nav-item">
-        <a (click)="gotoA2A3A4()" *ngIf="isLoggedIn" class="nav-link c-pointer">A2-3-4</a>
-      </li>
+    <ul class="navbar-nav ml-auto">
+      <ng-container *ngIf="isLoggedIn">
+        <li class="nav-item">
+          <a (click)="gotoTestFlow()" class="nav-link c-pointer">Test Flow</a>
+        </li>
+        <li class="nav-item">
+          <a (click)="gotoA1()" class="nav-link c-pointer">A1</a>
+        </li>
+        <li class="nav-item">
+          <a (click)="gotoA2A3A4()" class="nav-link c-pointer">A2-3-4</a>
+        </li>
+      </ng-container>
       <!-- <li class="nav-item">
         <a (click)="gotoA7()" class="nav-link c-pointer">A7</a>
       </li>
@@ -27,7 +29,7 @@
         <a (click)="gotoLogin()" class="nav-link c-pointer">Login</a>
       </li> -->
       <li class="nav-item">
-        <a (click)="gotoLogin()" *ngIf="!isLoggedIn"class="nav-link c-pointer">Login</a>
+        <a (click)="gotoLogin()" *ngIf="!isLoggedIn" class="nav-link c-pointer">Login</a>
       </li>
       <li class="nav-item">
         <a (click)="logout()" *ngIf="isLoggedIn" class="nav-link c-pointer">Logout</a>

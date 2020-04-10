@@ -17,6 +17,7 @@ import { LayoutService } from './services/layout.service';
 // import { DuiComponentsModule, DuiComponentsRegistryService } from 'ng-dui';
 import { DuiComponentsModule } from 'projects/ng-dui/src/lib/dui-components/dui-components.module';
 import { DuiComponentsRegistryService } from 'projects/ng-dui/src/lib/dui-components/services/dui-components-registry.service';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { DuiComponentsRegistryService } from 'projects/ng-dui/src/lib/dui-compon
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    NgSelectModule,
     DigitOnlyModule,
     LabCalculatorRoutingModule,
     DuiComponentsModule
