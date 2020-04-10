@@ -77,14 +77,13 @@ export class DuiFormComponent implements OnInit, OnDestroy {
       const currentFlow = this._fs.currentFlow$.value.flow.flow;
       const currentFlowId = this._fs.currentFlowId$.value;
       const stepData = this._fds.getStepData(currentFlowId, currentModule, currentFlow, currentStep.modelProperty);
-
       if (stepData != null && this.form != null && this._fds.getUpdateForm(currentFlowId)) {
-        this._fgs.setFormValue(this.form, stepData, true, true);
+        this.allowPeriTasks = false;
+        this._fgs.setFormValue(this.form, stepData, true, false);        
         setTimeout(() => {
           this.allowPeriTasks = true;
         }, 600);
       }
-
     });
 
   }

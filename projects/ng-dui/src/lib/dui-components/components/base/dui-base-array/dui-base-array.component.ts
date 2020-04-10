@@ -56,13 +56,13 @@ export class DuiBaseArrayComponent implements OnInit, OnDestroy {
       this.controlIn.parent.valueChanges.pipe(
         takeUntil(this._destroy$)
       ).subscribe(value => {
-        this.setDefaultValue();
+        // this.setDefaultValue();              
         this.checkReactivity(value);
       });
     }
     this.controlIn.valueChanges
       .pipe(takeUntil(this._destroy$))
-      .subscribe(_ => {                
+      .subscribe(_ => {
         this.initKeys();
       });
     this.decorators = this._fgs.decorators.filter(decorator => decorator.taskPath === this.controlIn['element'].taskPath);
@@ -92,8 +92,9 @@ export class DuiBaseArrayComponent implements OnInit, OnDestroy {
   customInit() { }
 
   setDefaultValue() {
-    if (this.controlIn['element'].defaultValue && this.controlIn.value == null) {
-      this.controlIn.patchValue(this.controlIn['element'].defaultValue, { emitEvent: false });
+    if (this.controlIn['element'].defaultValue && (this.controlIn.value == null || this.controlIn.value.length === 0)) {
+      this._fgs.setArrayValue(this.controlIn, this.controlIn['element'].defaultValue);
+      this.initKeys();
     }
   }
 
@@ -161,6 +162,7 @@ export class DuiBaseArrayComponent implements OnInit, OnDestroy {
       parentCleared$: this.cleared$,
     };
   }
+
 
   getComponentInputs(controlKey: string, rowIndex) {
     const control = this.controlIn.controls[rowIndex]['controls'][controlKey];

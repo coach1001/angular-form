@@ -127,7 +127,8 @@ export class DuiBaseObjectComponent implements OnInit, OnDestroy {
 
   setDefaultValue() {
     if (this.controlIn['element'].defaultValue && this.controlIn.value == null) {
-      this.controlIn.patchValue(this.controlIn['element'].defaultValue, { emitEvent: false });
+      this._fgs.setFormValue(this.controlIn, this.controlIn['element'].defaultValue, false);
+      // this.controlIn.patchValue(this.controlIn['element'].defaultValue, { emitEvent: false });
     }
   }
 

@@ -47,10 +47,12 @@ export class ArrayComponent extends DuiBaseArrayComponent {
       this.rowOrientationStyle = {
         'display': 'grid',
         'grid-template-columns': '1fr auto',
+        'grid-template-rows': '1fr',        
         'margin-bottom': '10px'
       };
       this.arrayOrientationStyle = {
-        'display': 'grid'
+        'display': 'grid',
+        'grid-template-rows': '1fr'        
       };
     }
     if (!this.vertical) {
@@ -84,7 +86,7 @@ export class ArrayComponent extends DuiBaseArrayComponent {
     return this._esm.isErrorState(<FormControl><any>this.controlIn, null) ? this.error : '';
   }
 
-  get showAdd() {
+  get showAdd() {    
     if (this.controlIn['element']['maxRows'] === 0) {
       return true;
     } else {      

@@ -9,14 +9,13 @@ import { DuiValidatorRegistryService } from './dui-validator-registry.service';
 import { MediaSize } from './dui-media-size.enum';
 import { NgDuiConfigService } from '../../services/ng-dui-config.service';
 
-
 @Injectable({
   providedIn: 'root'
 })
 export class DuiFormGeneratorService {
 
   private _form: FormGroup;
-  private _empty: Array<boolean> = [];  
+  private _empty: Array<boolean> = [];
 
   resetForm$ = new Subject<void>();
   form$ = new BehaviorSubject<FormGroup>(null);
@@ -169,27 +168,39 @@ export class DuiFormGeneratorService {
       const abstractControl = group.controls[key];
       const controlValue = value != null && value[key] != null ? value[key] : null;
       if (abstractControl instanceof FormGroup) {
-        this.setFormValue(abstractControl, controlValue);
+        this.setFormValue(abstractControl, controlValue, emitEvent, updateDisabledOnly);
       } else if (abstractControl instanceof FormArray) {
         abstractControl.controls = [];
         abstractControl.setValue([]);
         if (controlValue != null) {
           controlValue.forEach((val, index) => {
             abstractControl.controls.push(cloneDeep(abstractControl['rowTemplate']));
-            this.setFormValue(<FormGroup>abstractControl['controls'][index], val);
+            this.setFormValue(<FormGroup>abstractControl['controls'][index], val, emitEvent, updateDisabledOnly);
           });
         }
         abstractControl.updateValueAndValidity();
       } else {
         if (!updateDisabledOnly) {
-          abstractControl.patchValue(controlValue, { emitEvent });          
+          abstractControl.patchValue(controlValue, { emitEvent });
         } else {
           if (abstractControl.disabled) {
-            abstractControl.patchValue(controlValue, { emitEvent });            
+            abstractControl.patchValue(controlValue, { emitEvent });
           }
         }
       }
     });
+  }
+
+  setArrayValue(arrayIn: FormArray, value: [any], emitEvent = true, updateDisabledOnly = false) {
+    arrayIn.controls = [];
+    arrayIn.setValue([]);
+    if (value != null) {
+      value.forEach((val, index) => {
+        arrayIn.controls.push(cloneDeep(arrayIn['rowTemplate']));
+        this.setFormValue(<FormGroup>arrayIn['controls'][index], val, emitEvent, updateDisabledOnly);
+      });
+    }
+    arrayIn.updateValueAndValidity();
   }
 
   operateOnControl(abstractControl: FormControl, operation: string) {

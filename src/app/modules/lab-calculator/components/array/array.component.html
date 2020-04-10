@@ -12,9 +12,13 @@
                         (click)="deleteRow(gIndex)">Delete</button>
                 </div>
                 <div [ngStyle]="gridStyleParent">
-                    <ng-container *ngFor="let key of group;let i = index;">
-                        <dui-dynamic [inputs]="getComponentInputs(key, gIndex)"></dui-dynamic>
+
+                    <ng-container *ngFor="let key of group;let i = index;">                        
+                        <ng-container *ngIf="key !== 'id__' && key !== 'operation__'">                            
+                            <dui-dynamic [inputs]="getComponentInputs(key, gIndex)"></dui-dynamic>
+                        </ng-container>
                     </ng-container>
+
                     <ng-container *ngFor="let decorator of decorators;let i = index;">
                         <dui-dynamic [ngStyle]="gridStyleDecorator(decorator)" [inputs]="getDecoratorInputs(i)">
                         </dui-dynamic>
