@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormArray, FormGroup, FormControl, FormBuilder, AbstractControl } from '@angular/forms';
+import { FormArray, FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { BehaviorSubject, Subject } from 'rxjs';
 import cloneDeep from 'lodash-es/cloneDeep';
 import * as changeCase from 'change-case';
@@ -16,8 +16,7 @@ import { NgDuiConfigService } from '../../services/ng-dui-config.service';
 export class DuiFormGeneratorService {
 
   private _form: FormGroup;
-
-  private _empty: Array<boolean> = [];
+  private _empty: Array<boolean> = [];  
 
   resetForm$ = new Subject<void>();
   form$ = new BehaviorSubject<FormGroup>(null);
@@ -168,23 +167,25 @@ export class DuiFormGeneratorService {
   setFormValue(group: FormGroup, value: any, emitEvent = true, updateDisabledOnly = false) {
     Object.keys(group.controls).forEach((key: string) => {
       const abstractControl = group.controls[key];
-      const controlValue = value[key] != null ? value[key] : null;
+      const controlValue = value != null && value[key] != null ? value[key] : null;
       if (abstractControl instanceof FormGroup) {
         this.setFormValue(abstractControl, controlValue);
       } else if (abstractControl instanceof FormArray) {
-        abstractControl['controls'] = [];
+        abstractControl.controls = [];
+        abstractControl.setValue([]);
         if (controlValue != null) {
           controlValue.forEach((val, index) => {
-            abstractControl['controls'].push(cloneDeep(abstractControl['rowTemplate']));
+            abstractControl.controls.push(cloneDeep(abstractControl['rowTemplate']));
             this.setFormValue(<FormGroup>abstractControl['controls'][index], val);
           });
         }
+        abstractControl.updateValueAndValidity();
       } else {
         if (!updateDisabledOnly) {
-          abstractControl.patchValue(controlValue, { emitEvent });
+          abstractControl.patchValue(controlValue, { emitEvent });          
         } else {
           if (abstractControl.disabled) {
-            abstractControl.patchValue(controlValue, { emitEvent });
+            abstractControl.patchValue(controlValue, { emitEvent });            
           }
         }
       }

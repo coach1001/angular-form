@@ -132,7 +132,7 @@ export class DuiFlowService {
     const currentStep = this.currentStep$.value;
     if (currentStep.tasks != null && currentStep.tasks.length > 0) {
       const uiTasks = currentStep.tasks.filter(task => task.taskType === taskType && task.executeOn === ExecuteOn.Ui);
-      await this.asyncForEach(uiTasks, async (t) => {        
+      await this.asyncForEach(uiTasks, async (t) => {
         const task = this._trs.getTask(t.uiTask);
         task.execute();
       });
@@ -150,14 +150,21 @@ export class DuiFlowService {
     if (flowData == null) {
       this._fds.setStepData(currentFlowId, currentModule, currentFlow, currentStep.modelProperty, formValue, {
         flowId: currentFlowId
-      });
+      }, false);
       flowData = this._fds.getFlowData(currentFlowId);
     }
 
     flowData.flowData[currentStep.modelProperty] = formValue;
     const flowDataChanges = await this.RunStepTasks(TaskType.PeriTask, flowData.flowData, flowData.flowContext);
     if (flowDataChanges != null) {
-      this._fgs.setFormValue(form, flowDataChanges.data[currentStep.modelProperty], false, true);
+      this._fds.setStepData(
+        currentFlowId,
+        currentModule,
+        currentFlow,
+        currentStep.modelProperty,
+        flowDataChanges.data[currentStep.modelProperty],
+        flowDataChanges.context, true
+      );      
     }
   }
 
@@ -177,7 +184,7 @@ export class DuiFlowService {
       const formValue = form.getRawValue();
 
       if (!this._config.production) {
-        console.log(formValue);
+        // console.log(formValue);
       }
 
       let flowData = this._fds.getFlowData(currentFlowId);
@@ -185,7 +192,7 @@ export class DuiFlowService {
       if (flowData == null) {
         this._fds.setStepData(currentFlowId, currentModule, currentFlow, currentStep.modelProperty, formValue, {
           flowId: currentFlowId
-        });
+        }, false);
         flowData = this._fds.getFlowData(currentFlowId);
       } else {
         this._fds.setStepData(
@@ -194,11 +201,11 @@ export class DuiFlowService {
           currentFlow,
           currentStep.modelProperty,
           formValue,
-          flowData.flowContext);
+          flowData.flowContext, false);
       }
 
       const flowDataChanges = await this.RunStepTasks(TaskType.PostTask, flowData.flowData, flowData.flowContext);
-
+      
       if (flowDataChanges != null) {
         this._fds.setStepData(
           currentFlowId,
@@ -206,7 +213,7 @@ export class DuiFlowService {
           currentFlow,
           currentStep.modelProperty,
           flowDataChanges.data[currentStep.modelProperty],
-          flowDataChanges.context);
+          flowDataChanges.context, true);
       }
 
       await this.RunUiStepTasks(TaskType.PostTask);

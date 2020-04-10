@@ -9,6 +9,7 @@ export interface IFlowData {
   updatedAt: Date;
   flowData: any;
   flowContext: any;  
+  updateForm: any;
 }
 
 @Injectable({
@@ -24,7 +25,7 @@ export class DuiFormDataService {
     private _config: NgDuiConfigService
   ) { }
 
-  setStepData(flowId: string, module: string, flow: string, modelProperty: string, data: any, context: any) {
+  setStepData(flowId: string, module: string, flow: string, modelProperty: string, data: any, context: any, updateForm = true) {
     this.clearFlowOnNextGet$.next(false);
     const allFlowData = this.allFlowData$.value;
     if (allFlowData == null) {
@@ -34,18 +35,19 @@ export class DuiFormDataService {
       context = {
         flowId
       };
-      newAllFlowData.push(<IFlowData>{module, flow, flowId, updatedAt: new Date(), flowData, flowContext: context });
+      newAllFlowData.push(<IFlowData>{module, flow, flowId, updatedAt: new Date(), flowData, flowContext: context, updateForm });
       this.allFlowData$.next(newAllFlowData);
     } else {
       const flowDataIndex = allFlowData.findIndex(stepData => stepData.flowId === flowId);
       if (flowDataIndex < 0) {
         const flowData = {};
         flowData[modelProperty] = data;
-        allFlowData.push(<IFlowData>{ module, flow, flowId, updatedAt: new Date(), flowData, flowContext: context });
+        allFlowData.push(<IFlowData>{ module, flow, flowId, updatedAt: new Date(), flowData, flowContext: context, updateForm });
       } else {
         allFlowData[flowDataIndex].flowData[modelProperty] = data;
         allFlowData[flowDataIndex].flowContext = context;
         allFlowData[flowDataIndex].updatedAt = new Date();
+        allFlowData[flowDataIndex].updateForm = updateForm;
       }
       this.allFlowData$.next(allFlowData);
     }
@@ -57,6 +59,12 @@ export class DuiFormDataService {
       }
     }
   }
+
+  getUpdateForm(flowId: string) {
+    return this.allFlowData$.value.find(flow => flow.flowId === flowId) != null
+      ? this.allFlowData$.value.find(flow => flow.flowId === flowId).updateForm
+      : true;
+  } 
 
   getFlowData(flowId: string) {
     let allFlowData = this.allFlowData$.value;

@@ -62,7 +62,7 @@ export class DuiBaseArrayComponent implements OnInit, OnDestroy {
     }
     this.controlIn.valueChanges
       .pipe(takeUntil(this._destroy$))
-      .subscribe(_ => {        
+      .subscribe(_ => {                
         this.initKeys();
       });
     this.decorators = this._fgs.decorators.filter(decorator => decorator.taskPath === this.controlIn['element'].taskPath);
@@ -189,14 +189,14 @@ export class DuiBaseArrayComponent implements OnInit, OnDestroy {
     if (this.controlIn.valid || this.controlIn.controls.length === 0) {
       this.controlIn.markAsUntouched();
       this.controlIn.controls.push(cloneDeep(this.controlIn['rowTemplate']));
-      this.controlIn.updateValueAndValidity({ onlySelf: true, emitEvent: false });
+      this.controlIn.updateValueAndValidity();
       this.initKeys();
     }
   }
 
   deleteRow(gIndex: number) {
     this.controlIn.controls.splice(gIndex, 1);
-    this.controlIn.updateValueAndValidity({ onlySelf: true, emitEvent: false });
+    this.controlIn.updateValueAndValidity();
     this.initKeys();
   }
 

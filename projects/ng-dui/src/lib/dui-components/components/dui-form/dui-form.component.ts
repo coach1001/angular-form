@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, BehaviorSubject } from 'rxjs';
 import { takeUntil, filter, debounceTime } from 'rxjs/operators';
 import { diff } from 'deep-diff';
 import { FormGroup } from '@angular/forms';
@@ -16,8 +16,9 @@ import { TaskType } from '../../../dui-form/services/dui-task.enum';
 export class DuiFormComponent implements OnInit, OnDestroy {
 
   private _destroy$: Subject<void> = new Subject<void>();
-  private _emitForm = false;
   form: FormGroup = null;
+  periTaskRunning = false;
+  allowPeriTasks = false;
 
   constructor(
     private _fs: DuiFlowService,
@@ -53,14 +54,20 @@ export class DuiFormComponent implements OnInit, OnDestroy {
           form.valueChanges
             .pipe(
               debounceTime(500),
-              takeUntil(this._destroy$)
+              takeUntil(this._destroy$),
             ).subscribe(val => {
-              this._emitForm = false;
-              this._fs.RunStepPeriTasks(form);
+              if (this.allowPeriTasks) {
+                this.allowPeriTasks = false;
+                this._fs.RunStepPeriTasks(form);
+              }
             });
         }
       }
+      setTimeout(() => {
+        this.allowPeriTasks = true;
+      }, 600);
     });
+
     this._fds.allFlowData$.pipe(
       filter(value => value != null),
       takeUntil(this._destroy$)
@@ -70,15 +77,16 @@ export class DuiFormComponent implements OnInit, OnDestroy {
       const currentFlow = this._fs.currentFlow$.value.flow.flow;
       const currentFlowId = this._fs.currentFlowId$.value;
       const stepData = this._fds.getStepData(currentFlowId, currentModule, currentFlow, currentStep.modelProperty);
-      if (stepData != null && this.form != null) {
-        const formValue = this.form.getRawValue();
-        const difference = diff(formValue, stepData);
-        if (difference != null) {
-          this._fgs.setFormValue(this.form, stepData, this._emitForm);
-          this._emitForm = true;
-        }
+
+      if (stepData != null && this.form != null && this._fds.getUpdateForm(currentFlowId)) {
+        this._fgs.setFormValue(this.form, stepData, true, true);
+        setTimeout(() => {
+          this.allowPeriTasks = true;
+        }, 600);
       }
+
     });
+
   }
 
   ngOnDestroy(): void {
