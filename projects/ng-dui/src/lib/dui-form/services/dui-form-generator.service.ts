@@ -171,7 +171,7 @@ export class DuiFormGeneratorService {
         this.setFormValue(abstractControl, controlValue, emitEvent, updateDisabledOnly);
       } else if (abstractControl instanceof FormArray) {
         abstractControl.controls = [];
-        abstractControl.setValue([]);
+        abstractControl.patchValue([], { emitEvent: false });
         if (controlValue != null) {
           controlValue.forEach((val, index) => {
             abstractControl.controls.push(cloneDeep(abstractControl['rowTemplate']));
@@ -191,9 +191,9 @@ export class DuiFormGeneratorService {
     });
   }
 
-  setArrayValue(arrayIn: FormArray, value: [any], emitEvent = true, updateDisabledOnly = false) {
+  setArrayValue(arrayIn: FormArray, value: any, emitEvent = true, updateDisabledOnly = false) {
     arrayIn.controls = [];
-    arrayIn.setValue([]);
+    arrayIn.patchValue([], { emitEvent: false });
     if (value != null) {
       value.forEach((val, index) => {
         arrayIn.controls.push(cloneDeep(arrayIn['rowTemplate']));

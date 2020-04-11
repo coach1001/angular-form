@@ -56,7 +56,7 @@ export class DuiBaseArrayComponent implements OnInit, OnDestroy {
       this.controlIn.parent.valueChanges.pipe(
         takeUntil(this._destroy$)
       ).subscribe(value => {
-        // this.setDefaultValue();              
+        this.setDefaultValue();
         this.checkReactivity(value);
       });
     }
@@ -75,7 +75,8 @@ export class DuiBaseArrayComponent implements OnInit, OnDestroy {
         takeUntil(this._destroy$)
       ).subscribe(_ => {
         if (this.controlIn['controls'].length !== 0) {
-          this.controlIn.clear();
+          this.controlIn.controls = [];
+          this.controlIn.patchValue([], { emitEvent: false });
           this.cleared$.next();
           this.initKeys();
         }
@@ -180,7 +181,8 @@ export class DuiBaseArrayComponent implements OnInit, OnDestroy {
 
   handleClearing(clear: Array<boolean>): void {
     if (clear.length > 0 && clear.every(c => c) && this.controlIn['controls'].length > 0) {
-      this.controlIn.clear();
+      this.controlIn.controls = [];
+      this.controlIn.patchValue([], { emitEvent: false });
       this.cleared$.next();
       this.initKeys();
     }

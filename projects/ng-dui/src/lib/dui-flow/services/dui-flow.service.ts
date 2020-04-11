@@ -164,7 +164,7 @@ export class DuiFlowService {
         currentStep.modelProperty,
         flowDataChanges.data[currentStep.modelProperty],
         flowDataChanges.context, true
-      );      
+      );
     }
   }
 
@@ -205,7 +205,7 @@ export class DuiFlowService {
       }
 
       const flowDataChanges = await this.RunStepTasks(TaskType.PostTask, flowData.flowData, flowData.flowContext);
-      
+
       if (flowDataChanges != null) {
         this._fds.setStepData(
           currentFlowId,
