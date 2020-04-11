@@ -200,7 +200,7 @@ export class DuiFormGeneratorService {
         this.setFormValue(<FormGroup>arrayIn['controls'][index], val, emitEvent, updateDisabledOnly);
       });
     }
-    arrayIn.updateValueAndValidity();
+    arrayIn.updateValueAndValidity({emitEvent: false});
   }
 
   operateOnControl(abstractControl: FormControl, operation: string) {

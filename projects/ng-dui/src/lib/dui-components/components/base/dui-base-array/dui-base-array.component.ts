@@ -53,10 +53,9 @@ export class DuiBaseArrayComponent implements OnInit, OnDestroy {
     this.setDefaultValue();
     if (this.controlIn.parent != null) {
       this.checkReactivity(this.controlIn.parent.getRawValue());
-      this.controlIn.parent.valueChanges.pipe(
-        takeUntil(this._destroy$)
+      this.controlIn.parent.valueChanges.pipe(        
+        takeUntil(this._destroy$)        
       ).subscribe(value => {
-        this.setDefaultValue();
         this.checkReactivity(value);
       });
     }
@@ -94,7 +93,7 @@ export class DuiBaseArrayComponent implements OnInit, OnDestroy {
 
   setDefaultValue() {
     if (this.controlIn['element'].defaultValue && (this.controlIn.value == null || this.controlIn.value.length === 0)) {
-      this._fgs.setArrayValue(this.controlIn, this.controlIn['element'].defaultValue);
+      this._fgs.setArrayValue(this.controlIn, this.controlIn['element'].defaultValue, false);
       this.initKeys();
     }
   }
@@ -130,10 +129,13 @@ export class DuiBaseArrayComponent implements OnInit, OnDestroy {
         this.controlIn.markAsUntouched();
         this.controlIn.markAsPristine();
         this.controlIn.enable({ emitEvent: false });
-        this.visible = true;
+        this.setDefaultValue();                
+        this.visible = true;        
       } else if (visible.length > 0 && !visible.every(v => v)) {
         this.cleared$.next();
         this.controlIn.disable({ emitEvent: false });
+        this._fgs.setArrayValue(this.controlIn, [], false);
+        this.initKeys();
         this.visible = false;
       }
 
@@ -181,8 +183,7 @@ export class DuiBaseArrayComponent implements OnInit, OnDestroy {
 
   handleClearing(clear: Array<boolean>): void {
     if (clear.length > 0 && clear.every(c => c) && this.controlIn['controls'].length > 0) {
-      this.controlIn.controls = [];
-      this.controlIn.patchValue([], { emitEvent: false });
+      this._fgs.setArrayValue(this.controlIn, [], false);
       this.cleared$.next();
       this.initKeys();
     }
