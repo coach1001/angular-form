@@ -173,15 +173,42 @@ export class DuiFormGeneratorService {
       const controlValue = value != null && value[key] != null ? value[key] : null;
       if (abstractControl instanceof FormGroup) {
         this.setFormValue(abstractControl, controlValue, emitEvent, updateDisabledOnly);
-      } else if (abstractControl instanceof FormArray) {        
-        abstractControl.clear();
-        if (controlValue != null) {
-          controlValue.forEach((val, index) => {
+      } else if (abstractControl instanceof FormArray) {
+
+        const arrayValue = controlValue == null ? [] : controlValue;
+        const controlIds = abstractControl.controls.map(group => group.get('id__').value);
+        const valueIds = arrayValue.map(v => v.id__);
+
+        let controlIdsToRemove = controlIds.filter(value => !valueIds.includes(value));
+        const controlIdsToUpdate = controlIds.filter(value => valueIds.includes(value));
+        const valueIdsToAdd = valueIds.filter(value => !controlIds.includes(value));
+        controlIdsToRemove = controlIdsToRemove.reverse();
+
+        controlIdsToRemove.forEach(removeId => {
+          const controlIndexToRemove = abstractControl.controls.findIndex(group => group.get('id__').value === removeId);
+          abstractControl.removeAt(controlIndexToRemove);
+        });
+
+        controlIdsToUpdate.forEach(updateId => {
+          const controlIndexToUpdate = abstractControl.controls.findIndex(group => group.get('id__').value === updateId);
+          const updateValue = arrayValue.find(v => v.id__ === updateId);
+          if (value != null) {
+            if (controlIndexToUpdate > -1) {
+              this.setFormValue(<FormGroup>abstractControl.controls[controlIndexToUpdate], updateValue, emitEvent, updateDisabledOnly);
+            }
+          }
+        });
+
+        valueIdsToAdd.forEach(addId => {
+          const addValue = arrayValue.find(v => v.id__ === addId);
+          if (addValue != null) {
+            addValue.operation__ = ArrayOperation.Update;
             abstractControl.push(cloneDeep(abstractControl['rowTemplate']));
-            this.setFormValue(<FormGroup>abstractControl['controls'][index], val, emitEvent, updateDisabledOnly);
-          });
-        }        
-        this.updateArrayKeys$.next();
+            const newLength = abstractControl.controls.length;
+            this.setFormValue(<FormGroup>abstractControl['controls'][newLength - 1], addValue, emitEvent, updateDisabledOnly);
+          }
+        });
+
       } else {
         if (!updateDisabledOnly) {
           abstractControl.patchValue(controlValue, { emitEvent });
@@ -195,15 +222,15 @@ export class DuiFormGeneratorService {
   }
 
   setArrayValue(arrayIn: FormArray, value: any, emitEvent = true, updateDisabledOnly = false) {
-    console.log('Default Array value');
     arrayIn.clear();
     if (value != null) {
       value.forEach((val, index) => {
         arrayIn.push(cloneDeep(arrayIn['rowTemplate']));
+        val.id__ = uuid();
+        val.operation__ = ArrayOperation.Add;
         this.setFormValue(<FormGroup>arrayIn.controls[index], val, emitEvent, updateDisabledOnly);
       });
-    }    
-    this.updateArrayKeys$.next();
+    }
   }
 
   operateOnControl(abstractControl: FormControl, operation: string) {

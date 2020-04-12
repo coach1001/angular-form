@@ -8,6 +8,7 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import { DuiFormGeneratorService } from '../../../../dui-form/services/dui-form-generator.service';
 import { KeyValue } from '@angular/common';
 import { ArrayOperation } from 'projects/ng-dui/src/lib/dui-form/services/dui-array-operation.enum';
+import { uuid } from 'uuidv4';
 
 @Component({
   template: ''
@@ -64,21 +65,21 @@ export class DuiBaseArrayComponent implements OnInit, OnDestroy {
     this.decorators = this._fgs.decorators.filter(decorator => decorator.taskPath === this.controlIn['element'].taskPath);
   }
 
-  elementInit() {    
+  elementInit() {
     this.parentCleared$
       .pipe(
         takeUntil(this._destroy$)
       ).subscribe(_ => {
         if (this.controlIn['controls'].length !== 0) {
           this._fgs.setArrayValue(this.controlIn, [], false);
-          this.cleared$.next();          
+          this.cleared$.next();
         }
       });
     this.parentReset$
       .pipe(
         takeUntil(this._destroy$)
       ).subscribe(_ => {
-        this.reset$.next();        
+        this.reset$.next();
       });
   }
 
@@ -86,7 +87,7 @@ export class DuiBaseArrayComponent implements OnInit, OnDestroy {
 
   setDefaultValue() {
     if (this.controlIn['element'].defaultValue && (this.controlIn.value == null || this.controlIn.value.length === 0)) {
-      this._fgs.setArrayValue(this.controlIn, this.controlIn['element'].defaultValue, false);      
+      this._fgs.setArrayValue(this.controlIn, this.controlIn['element'].defaultValue, false);
     }
   }
 
@@ -149,7 +150,7 @@ export class DuiBaseArrayComponent implements OnInit, OnDestroy {
     return {
       controlIn: control,
       parent: parent,
-      modelProperty: control['element'].modelProperty,      
+      modelProperty: control['element'].modelProperty,
       label: control['element']?.name,
       hint: control['element']?.hint,
       parentReset$: this.reset$,
@@ -157,31 +158,33 @@ export class DuiBaseArrayComponent implements OnInit, OnDestroy {
     };
   }
 
-  originalOrder = (a: KeyValue<number,string>, b: KeyValue<number,string>): number => {
+  originalOrder = (a: KeyValue<number, string>, b: KeyValue<number, string>): number => {
     return 0;
   }
 
   handleClearing(clear: Array<boolean>): void {
     if (clear.length > 0 && clear.every(c => c) && this.controlIn['controls'].length > 0) {
       this._fgs.setArrayValue(this.controlIn, [], false);
-      this.cleared$.next();      
+      this.cleared$.next();
     }
   }
 
   addRow() {
     this._fgs.recurseFormGroup(this.controlIn, 'TOUCH_AND_VALIDATE');
-    if (this.controlIn.valid || this.controlIn.controls.length === 0) {      
-      this.controlIn.push(cloneDeep(this.controlIn['rowTemplate']));     
+    if (this.controlIn.valid || this.controlIn.controls.length === 0) {
+      this.controlIn.push(cloneDeep(this.controlIn['rowTemplate']));
+      this.controlIn.controls[this.controlIn.controls.length - 1].get('id__').patchValue(uuid());
+      this.controlIn.controls[this.controlIn.controls.length - 1].get('operation__').patchValue(ArrayOperation.Add);
     }
   }
 
   deleteRow(rowIndex: number, rowGroup: FormGroup) {
-    const rowId = rowGroup.get('id__').value;
-    if(rowId == null) {
+    const rowOperation = rowGroup.get('operation__').value;
+    if (rowOperation === ArrayOperation.Add) {
       this.controlIn.removeAt(rowIndex);
     } else {
-      this.controlIn.controls[rowIndex].get('operation__').patchValue(ArrayOperation.Remove);  
-    }           
+      this.controlIn.controls[rowIndex].get('operation__').patchValue(ArrayOperation.Remove);
+    }
   }
 
   get error() {

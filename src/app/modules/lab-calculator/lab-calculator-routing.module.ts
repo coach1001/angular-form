@@ -11,6 +11,7 @@ const routes: Routes = [
     path: 'flow/account',
     component: LabCalculatorContainerComponent,
     canActivate: [ModuleGuard],
+    runGuardsAndResolvers: 'always',
     data: {
       module: 'account',
     },
@@ -32,6 +33,7 @@ const routes: Routes = [
     path: 'flow/tmh1',
     component: LabCalculatorContainerComponent,
     canActivate: [ModuleGuard],
+    runGuardsAndResolvers: 'always',
     data: {
       module: 'tmh1',
     },
@@ -53,6 +55,7 @@ const routes: Routes = [
     path: 'flow/test',
     component: LabCalculatorContainerComponent,
     canActivate: [ModuleGuard],
+    runGuardsAndResolvers: 'always',
     data: {
       module: 'test',
     },
