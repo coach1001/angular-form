@@ -1,34 +1,36 @@
 <h6 *ngIf="label && visible" class="text-light">{{label}}</h6>
 <form [formGroup]="parent" *ngIf="visible">
-    <button *ngIf="showAdd" [disabled]="controlIn.disabled" type="button" class="add-btn btn btn-success btn-block"
-        (click)="addRow()">Add</button>
-    <!-- <button (click)="addRow()">Add</button> -->
-    <div *ngIf="controlIn.touched && controlIn.invalid" class="invalid-feedback feedback">{{error_}}</div>
-    <div [ngStyle]="arrayOrientationStyle">
-        <ng-container *ngFor="let group of groupKeys;let gIndex = index;">
-            <div [ngStyle]="rowOrientationStyle">
-                <div [ngStyle]="deleteButtonStyle" *ngIf="vertical">
-                    <button type="button" class="btn btn-danger btn-sm btn-block"
-                        (click)="deleteRow(gIndex)">Delete</button>
-                </div>
-                <div [ngStyle]="gridStyleParent">
+  <button *ngIf="showAdd" [disabled]="controlIn.disabled" type="button" class="add-btn btn btn-success btn-block"
+    (click)="addRow()">Add</button>
+  <div *ngIf="controlIn.touched && controlIn.invalid" class="invalid-feedback feedback">{{error_}}</div>
+  <div [ngStyle]="arrayOrientationStyle">
 
-                    <ng-container *ngFor="let key of group;let i = index;">                        
-                        <ng-container *ngIf="key !== 'id__' && key !== 'operation__'">                            
-                            <dui-dynamic [inputs]="getComponentInputs(key, gIndex)"></dui-dynamic>
-                        </ng-container>
-                    </ng-container>
+    <ng-container *ngFor="let rowFormGroup of controlIn.controls; let rowIndex = index;">
+      
+      <div [ngStyle]="rowOrientationStyle">
+        <div [ngStyle]="deleteButtonStyle" *ngIf="vertical && !hideAddAndDelete">
+          <button type="button" class="btn btn-danger btn-sm btn-block" (click)="deleteRow(rowIndex, rowFormGroup)">Delete</button>
+        </div>
 
-                    <ng-container *ngFor="let decorator of decorators;let i = index;">
-                        <dui-dynamic [ngStyle]="gridStyleDecorator(decorator)" [inputs]="getDecoratorInputs(i)">
-                        </dui-dynamic>
-                    </ng-container>
-                </div>
-                <div [ngStyle]="deleteButtonStyle" *ngIf="!vertical">
-                    <button type="button" class="btn btn-danger btn-sm btn-block"
-                        (click)="deleteRow(gIndex)">Delete</button>
-                </div>
-            </div>
-        </ng-container>
-    </div>
+        <div [ngStyle]="gridStyleParent">
+          <ng-container *ngFor="let controlKeyValue of rowFormGroup.controls | keyvalue : originalOrder">
+            <ng-container *ngIf="controlKeyValue.key !== 'id__' && controlKeyValue.key !== 'operation__'">
+              <dui-dynamic [inputs]="getComponentInputs(controlKeyValue.value, rowFormGroup)"></dui-dynamic>
+            </ng-container>
+          </ng-container>
+
+          <ng-container *ngFor="let decorator of decorators;let i = index;">
+            <dui-dynamic [ngStyle]="gridStyleDecorator(decorator)" [inputs]="getDecoratorInputs(i)">
+            </dui-dynamic>
+          </ng-container>
+        </div>
+
+        <div [ngStyle]="deleteButtonStyle" *ngIf="!vertical && !hideAddAndDelete">
+          <button type="button" class="btn btn-danger btn-sm btn-block" (click)="deleteRow(rowIndex, rowFormGroup)">Delete</button>
+        </div>
+      </div>
+
+    </ng-container>
+
+  </div>
 </form>

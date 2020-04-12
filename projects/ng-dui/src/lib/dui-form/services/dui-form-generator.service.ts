@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { FormArray, FormGroup, FormControl, FormBuilder } from '@angular/forms';
+import { Injectable, ChangeDetectorRef, ApplicationRef } from '@angular/core';
+import { FormArray, FormGroup, FormControl, FormBuilder, Form } from '@angular/forms';
 import { BehaviorSubject, Subject } from 'rxjs';
 import cloneDeep from 'lodash-es/cloneDeep';
 import * as changeCase from 'change-case';
@@ -8,6 +8,8 @@ import { ControlType } from './dui-controls.enum';
 import { DuiValidatorRegistryService } from './dui-validator-registry.service';
 import { MediaSize } from './dui-media-size.enum';
 import { NgDuiConfigService } from '../../services/ng-dui-config.service';
+import { uuid } from 'uuidv4';
+import { ArrayOperation } from './dui-array-operation.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -20,11 +22,13 @@ export class DuiFormGeneratorService {
   resetForm$ = new Subject<void>();
   form$ = new BehaviorSubject<FormGroup>(null);
   decorators: Array<any> = [];
+  updateArrayKeys$ = new Subject<void>();
 
   constructor(
     private _fb: FormBuilder,
     private _vrs: DuiValidatorRegistryService,
-    private _config: NgDuiConfigService
+    private _config: NgDuiConfigService,
+    private _ar: ApplicationRef
   ) { }
 
   buildForm(definition: any): void {
@@ -169,16 +173,15 @@ export class DuiFormGeneratorService {
       const controlValue = value != null && value[key] != null ? value[key] : null;
       if (abstractControl instanceof FormGroup) {
         this.setFormValue(abstractControl, controlValue, emitEvent, updateDisabledOnly);
-      } else if (abstractControl instanceof FormArray) {
-        abstractControl.controls = [];
-        abstractControl.patchValue([], { emitEvent: false });
+      } else if (abstractControl instanceof FormArray) {        
+        abstractControl.clear();
         if (controlValue != null) {
           controlValue.forEach((val, index) => {
-            abstractControl.controls.push(cloneDeep(abstractControl['rowTemplate']));
+            abstractControl.push(cloneDeep(abstractControl['rowTemplate']));
             this.setFormValue(<FormGroup>abstractControl['controls'][index], val, emitEvent, updateDisabledOnly);
           });
-        }
-        abstractControl.updateValueAndValidity();
+        }        
+        this.updateArrayKeys$.next();
       } else {
         if (!updateDisabledOnly) {
           abstractControl.patchValue(controlValue, { emitEvent });
@@ -192,15 +195,15 @@ export class DuiFormGeneratorService {
   }
 
   setArrayValue(arrayIn: FormArray, value: any, emitEvent = true, updateDisabledOnly = false) {
-    arrayIn.controls = [];
-    arrayIn.patchValue([], { emitEvent: false });
+    console.log('Default Array value');
+    arrayIn.clear();
     if (value != null) {
       value.forEach((val, index) => {
-        arrayIn.controls.push(cloneDeep(arrayIn['rowTemplate']));
-        this.setFormValue(<FormGroup>arrayIn['controls'][index], val, emitEvent, updateDisabledOnly);
+        arrayIn.push(cloneDeep(arrayIn['rowTemplate']));
+        this.setFormValue(<FormGroup>arrayIn.controls[index], val, emitEvent, updateDisabledOnly);
       });
-    }
-    arrayIn.updateValueAndValidity({emitEvent: false});
+    }    
+    this.updateArrayKeys$.next();
   }
 
   operateOnControl(abstractControl: FormControl, operation: string) {

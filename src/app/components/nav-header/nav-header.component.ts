@@ -65,6 +65,11 @@ export class NavHeaderComponent implements OnInit, OnDestroy {
     this._rt.navigate(['flow/test/test-flow'], { queryParamsHandling: 'merge' });
   }
 
+  gotoSimpleFlow(): void {
+    this._fds.clearFlowOnNextGet$.next(true);
+    this._rt.navigate(['flow/test/simple-flow'], { queryParamsHandling: 'merge' });
+  }
+
   logout(): void {
     this._as.logout();
     this._rt.navigate(['flow/account/user-login'], { queryParamsHandling: 'merge' });

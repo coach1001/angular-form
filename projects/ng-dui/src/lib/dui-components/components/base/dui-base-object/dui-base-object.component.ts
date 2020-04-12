@@ -55,7 +55,6 @@ export class DuiBaseObjectComponent implements OnInit, OnDestroy {
       this.controlIn.parent.valueChanges.pipe(
         takeUntil(this._destroy$)
       ).subscribe(value => {
-        this.setDefaultValue();
         this.checkReactivity(value);
       });
     }
@@ -126,9 +125,8 @@ export class DuiBaseObjectComponent implements OnInit, OnDestroy {
   }
 
   setDefaultValue() {
-    if (this.controlIn['element'].defaultValue && this.controlIn.value == null) {
+    if (this.controlIn['element'].defaultValue && this._fgs.isEmpty(this.controlIn)) {
       this._fgs.setFormValue(this.controlIn, this.controlIn['element'].defaultValue, false);
-      // this.controlIn.patchValue(this.controlIn['element'].defaultValue, { emitEvent: false });
     }
   }
 
@@ -163,6 +161,7 @@ export class DuiBaseObjectComponent implements OnInit, OnDestroy {
         this.controlIn.markAsUntouched();
         this.controlIn.markAsPristine();
         this.controlIn.enable({ emitEvent: false });
+        this.setDefaultValue();
         this.visible = true;
       } else if (visible.length > 0 && !visible.every(v => v)) {
         this.cleared$.next();
@@ -191,10 +190,9 @@ export class DuiBaseObjectComponent implements OnInit, OnDestroy {
     return {
       controlIn: control,
       parent: this.controlIn,
-      modelProperty: controlKey,
-      // label: control['element'].name ? control['element'].name : changeCase.sentenceCase(controlKey),
-      label: control['element'].name,
-      hint: control['element'].hint,
+      modelProperty: controlKey,      
+      label: control['element']?.name,
+      hint: control['element']?.hint,
       parentReset$: this.reset$,
       parentCleared$: this.cleared$
     };
@@ -202,7 +200,7 @@ export class DuiBaseObjectComponent implements OnInit, OnDestroy {
 
   handleClearing(clear: Array<boolean>): void {
     if (clear.length > 0 && clear.every(c => c) && this.controlIn.value != null) {
-      this.controlIn.patchValue({}, { emitEvent: false });
+      this._fgs.setFormValue(this.controlIn, {}, false);
       this.cleared$.next();
     }
   }

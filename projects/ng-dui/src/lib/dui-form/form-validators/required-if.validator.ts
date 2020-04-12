@@ -5,7 +5,7 @@ import { RequiredValidator } from './required.validator';
 // custom validator to check that two fields match
 export function RequiredIfValidator(controlName: string, metadata: any) {
 
-  return (formGroup: FormGroup): ValidationErrors => {
+  return (formGroup: FormGroup): ValidationErrors => {    
     const requiredIfControl = formGroup.controls[controlName];
     const triggerControl = formGroup.controls[metadata.triggerField];
     if (triggerControl.value != null && triggerControl.value.toString().toLowerCase() === metadata.triggerValue.toString().toLowerCase()) {
@@ -14,6 +14,7 @@ export function RequiredIfValidator(controlName: string, metadata: any) {
       requiredIfControl.clearValidators();
       requiredIfControl.setValidators(validators);
       requiredIfControl.updateValueAndValidity({ onlySelf: true });
+      // TODO: Why is this here
       requiredIfControl.markAsTouched();
       requiredIfControl['element'].resetValidators = true;
     } else {

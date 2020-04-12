@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from './modules/authentication/services/authentication.service';
 import { TokenStorageService } from './modules/authentication/services/token-storage.service';
-import { NullTemplateVisitor } from '@angular/compiler';
 
 @Component({
   selector: 'app-root',

@@ -28,7 +28,7 @@ export class DuiBaseControlComponent implements OnInit, OnDestroy {
   @Input()
   allowDecimal: boolean;
 
-  visible = true;  
+  visible = true;
   cleared$: Subject<void> = new Subject<void>();
   reset$: Subject<void> = new Subject<void>();
   prefix: any;
@@ -58,8 +58,7 @@ export class DuiBaseControlComponent implements OnInit, OnDestroy {
       this.checkReactivity(this.controlIn.parent.getRawValue());
       this.controlIn.parent.valueChanges.pipe(
         takeUntil(this._destroy$)
-      ).subscribe(value => {
-        this.setDefaultValue();
+      ).subscribe(value => {        
         this.checkReactivity(value);
       });
     }
@@ -117,6 +116,7 @@ export class DuiBaseControlComponent implements OnInit, OnDestroy {
         this.controlIn.markAsUntouched();
         this.controlIn.markAsPristine();
         this.controlIn.enable({ emitEvent: false });
+        this.setDefaultValue();
         this.visible = true;
       } else if (visible.length > 0 && !visible.every(v => v)) {
         this.cleared$.next();
@@ -148,7 +148,7 @@ export class DuiBaseControlComponent implements OnInit, OnDestroy {
   }
 
   setAppending(append: string) {
-    const append_ = this.controlIn['element'][append];    
+    const append_ = this.controlIn['element'][append];
     if (append_ != null) {
       return {
         visible: true,
@@ -160,5 +160,5 @@ export class DuiBaseControlComponent implements OnInit, OnDestroy {
       visible: false
     };
   }
-  
+
 }

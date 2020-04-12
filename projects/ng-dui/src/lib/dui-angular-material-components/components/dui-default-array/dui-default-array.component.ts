@@ -11,7 +11,7 @@ export class DuiDefaultArrayComponent extends DuiBaseArrayComponent {
 
   constructor(
     private _fgs_: DuiFormGeneratorService) {
-    super(_fgs_);
+    super(_fgs_)
   }
 
 }

@@ -7,7 +7,7 @@ export function MustBeLessThanValidator(controlName: string, metadata: any) {
     if (parseFloat(control.value) > parseFloat(matchingControl.value)) {
       control.setErrors({ mustBeLessThan: { field: metadata.targetField } });      
     } else if (control.errors) {
-      delete control.errors.mustMatch;
+      delete control.errors.mustBeLessThan;
       control.updateValueAndValidity({ onlySelf: true, emitEvent: false });
     }
     return null;

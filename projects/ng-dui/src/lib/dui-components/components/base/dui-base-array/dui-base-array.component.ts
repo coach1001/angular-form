@@ -1,11 +1,13 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { FormGroup, FormArray } from '@angular/forms';
+import { Component, OnInit, Input, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { FormGroup, FormArray, AbstractControl } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import * as jexl from 'jexl';
 import * as changeCase from 'change-case';
 import cloneDeep from 'lodash-es/cloneDeep';
 import { DuiFormGeneratorService } from '../../../../dui-form/services/dui-form-generator.service';
+import { KeyValue } from '@angular/common';
+import { ArrayOperation } from 'projects/ng-dui/src/lib/dui-form/services/dui-array-operation.enum';
 
 @Component({
   template: ''
@@ -35,7 +37,7 @@ export class DuiBaseArrayComponent implements OnInit, OnDestroy {
   groupKeys: Array<Array<string>>;
 
   constructor(
-    private _fgs: DuiFormGeneratorService
+    private _fgs: DuiFormGeneratorService,
   ) { }
 
   ngOnInit() {
@@ -53,39 +55,30 @@ export class DuiBaseArrayComponent implements OnInit, OnDestroy {
     this.setDefaultValue();
     if (this.controlIn.parent != null) {
       this.checkReactivity(this.controlIn.parent.getRawValue());
-      this.controlIn.parent.valueChanges.pipe(        
-        takeUntil(this._destroy$)        
+      this.controlIn.parent.valueChanges.pipe(
+        takeUntil(this._destroy$)
       ).subscribe(value => {
         this.checkReactivity(value);
       });
     }
-    this.controlIn.valueChanges
-      .pipe(takeUntil(this._destroy$))
-      .subscribe(_ => {
-        this.initKeys();
-      });
     this.decorators = this._fgs.decorators.filter(decorator => decorator.taskPath === this.controlIn['element'].taskPath);
   }
 
-  elementInit() {
-    this.initKeys();
+  elementInit() {    
     this.parentCleared$
       .pipe(
         takeUntil(this._destroy$)
       ).subscribe(_ => {
         if (this.controlIn['controls'].length !== 0) {
-          this.controlIn.controls = [];
-          this.controlIn.patchValue([], { emitEvent: false });
-          this.cleared$.next();
-          this.initKeys();
+          this._fgs.setArrayValue(this.controlIn, [], false);
+          this.cleared$.next();          
         }
       });
     this.parentReset$
       .pipe(
         takeUntil(this._destroy$)
       ).subscribe(_ => {
-        this.reset$.next();
-        this.initKeys();
+        this.reset$.next();        
       });
   }
 
@@ -93,8 +86,7 @@ export class DuiBaseArrayComponent implements OnInit, OnDestroy {
 
   setDefaultValue() {
     if (this.controlIn['element'].defaultValue && (this.controlIn.value == null || this.controlIn.value.length === 0)) {
-      this._fgs.setArrayValue(this.controlIn, this.controlIn['element'].defaultValue, false);
-      this.initKeys();
+      this._fgs.setArrayValue(this.controlIn, this.controlIn['element'].defaultValue, false);      
     }
   }
 
@@ -129,28 +121,15 @@ export class DuiBaseArrayComponent implements OnInit, OnDestroy {
         this.controlIn.markAsUntouched();
         this.controlIn.markAsPristine();
         this.controlIn.enable({ emitEvent: false });
-        this.setDefaultValue();                
-        this.visible = true;        
+        this.setDefaultValue();
+        this.visible = true;
       } else if (visible.length > 0 && !visible.every(v => v)) {
         this.cleared$.next();
         this.controlIn.disable({ emitEvent: false });
-        this._fgs.setArrayValue(this.controlIn, [], false);
-        this.initKeys();
         this.visible = false;
       }
 
     }
-  }
-
-  initKeys() {
-    this.groupKeys = [];
-    this.controlIn.controls.forEach((rowGroup: any, rgIndex) => {
-      const groupKeys = Object.keys(rowGroup.controls);
-      this.groupKeys[rgIndex] = [];
-      groupKeys.forEach(groupKey => {
-        this.groupKeys[rgIndex].push(groupKey);
-      });
-    });
   }
 
   getDecoratorInputs(decoratorIndex: number) {
@@ -166,43 +145,43 @@ export class DuiBaseArrayComponent implements OnInit, OnDestroy {
     };
   }
 
-
-  getComponentInputs(controlKey: string, rowIndex) {
-    const control = this.controlIn.controls[rowIndex]['controls'][controlKey];
+  getComponentInputs(control: AbstractControl, parent: FormGroup) {
     return {
       controlIn: control,
-      parent: this.controlIn?.controls[rowIndex],
-      modelProperty: controlKey,
-      // label: control['element']?.name ? control['element'].name : changeCase.sentenceCase(controlKey),
-      label: control['element'].name,
+      parent: parent,
+      modelProperty: control['element'].modelProperty,      
+      label: control['element']?.name,
       hint: control['element']?.hint,
       parentReset$: this.reset$,
       parentCleared$: this.cleared$
     };
   }
 
+  originalOrder = (a: KeyValue<number,string>, b: KeyValue<number,string>): number => {
+    return 0;
+  }
+
   handleClearing(clear: Array<boolean>): void {
     if (clear.length > 0 && clear.every(c => c) && this.controlIn['controls'].length > 0) {
       this._fgs.setArrayValue(this.controlIn, [], false);
-      this.cleared$.next();
-      this.initKeys();
+      this.cleared$.next();      
     }
   }
 
   addRow() {
     this._fgs.recurseFormGroup(this.controlIn, 'TOUCH_AND_VALIDATE');
-    if (this.controlIn.valid || this.controlIn.controls.length === 0) {
-      this.controlIn.markAsUntouched();
-      this.controlIn.controls.push(cloneDeep(this.controlIn['rowTemplate']));
-      this.controlIn.updateValueAndValidity();
-      this.initKeys();
+    if (this.controlIn.valid || this.controlIn.controls.length === 0) {      
+      this.controlIn.push(cloneDeep(this.controlIn['rowTemplate']));     
     }
   }
 
-  deleteRow(gIndex: number) {
-    this.controlIn.controls.splice(gIndex, 1);
-    this.controlIn.updateValueAndValidity();
-    this.initKeys();
+  deleteRow(rowIndex: number, rowGroup: FormGroup) {
+    const rowId = rowGroup.get('id__').value;
+    if(rowId == null) {
+      this.controlIn.removeAt(rowIndex);
+    } else {
+      this.controlIn.controls[rowIndex].get('operation__').patchValue(ArrayOperation.Remove);  
+    }           
   }
 
   get error() {

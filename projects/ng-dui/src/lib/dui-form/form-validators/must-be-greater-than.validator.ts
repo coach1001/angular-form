@@ -9,7 +9,7 @@ export function MustBeGreaterThanValidator(controlName: string, metadata: any) {
     if (parseFloat(control.value) < parseFloat(matchingControl.value)) {
       control.setErrors({ mustBeGreaterThan: { field: metadata.targetField } });      
     } else if (control.errors) {
-      delete control.errors.mustMatch;
+      delete control.errors.mustBeGreaterThan;
       control.updateValueAndValidity({ onlySelf: true, emitEvent: false });
     }
     return null;

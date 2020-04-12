@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { LayoutService } from '../../services/layout.service';
 // import { DuiBaseArrayComponent, DuiFormGeneratorService, BorderType } from 'ng-dui';
 import { DuiFormGeneratorService } from 'projects/ng-dui/src/lib/dui-form/services/dui-form-generator.service';
@@ -18,7 +18,8 @@ export class ArrayComponent extends DuiBaseArrayComponent {
   rowOrientationStyle: {}
   deleteButtonStyle: {}
   vertical: boolean;
-
+  hideAddAndDelete: boolean;  
+  
   constructor(
     private _esm: ErrorStateMatcher,
     private _fgs_: DuiFormGeneratorService,
@@ -26,7 +27,8 @@ export class ArrayComponent extends DuiBaseArrayComponent {
     super(_fgs_);
   }
 
-  customInit() {
+  customInit() {    
+    this.hideAddAndDelete = this.controlIn['element'].hideAddAndDelete;
     this.vertical = this.controlIn['element']['vertical'];
     const verticalRows = this.controlIn['element']['verticalRows'];
     if (this.vertical != null && this.vertical) {
@@ -52,7 +54,7 @@ export class ArrayComponent extends DuiBaseArrayComponent {
       };
       this.arrayOrientationStyle = {
         'display': 'grid',
-        'grid-template-rows': '1fr'        
+        'grid-template-rows': '1fr'       
       };
     }
     if (!this.vertical) {
@@ -67,7 +69,10 @@ export class ArrayComponent extends DuiBaseArrayComponent {
   }
 
   get gridStyleParent(): object {
-    return this._ls.gridStyleParent(this.controlIn);
+    const style = this._ls.gridStyleParent(this.controlIn) as any;
+    style.gap = '10px';    
+    return style;
+    // return this._ls.gridStyleParent(this.controlIn);
   }
 
   gridStyleChild(controlKey: string): object {
@@ -85,8 +90,11 @@ export class ArrayComponent extends DuiBaseArrayComponent {
   get error_() {
     return this._esm.isErrorState(<FormControl><any>this.controlIn, null) ? this.error : '';
   }
-
+  
   get showAdd() {    
+    if(this.hideAddAndDelete != null && this.hideAddAndDelete) {
+      return false;
+    }    
     if (this.controlIn['element']['maxRows'] === 0) {
       return true;
     } else {      
