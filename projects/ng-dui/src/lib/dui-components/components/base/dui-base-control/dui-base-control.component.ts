@@ -58,8 +58,8 @@ export class DuiBaseControlComponent implements OnInit, OnDestroy {
       this.checkReactivity(this.controlIn.parent.getRawValue());
       this.controlIn.parent.valueChanges.pipe(
         takeUntil(this._destroy$)
-      ).subscribe(value => {        
-        this.checkReactivity(value);
+      ).subscribe(_ => {
+        this.checkReactivity(this.controlIn.parent.getRawValue());
       });
     }
     this.prefix = this.setAppending('prefix');
@@ -92,7 +92,7 @@ export class DuiBaseControlComponent implements OnInit, OnDestroy {
     const clear: Array<boolean> = [];
 
     if (this.controlIn['element'].reactivity) {
-      this.controlIn['element'].reactivity.forEach(r => {
+      this.controlIn['element'].reactivity.forEach(r => {        
         const result = jexl.evalSync(r.expression, scopeValue);
         switch (r.type) {
           case 'clearWhen': result ? clear.push(true) : clear.push(false); break;

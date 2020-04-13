@@ -47,7 +47,7 @@ export class DuiFormComponent implements OnInit, OnDestroy {
       const stepData = this._fds.getStepData(currentFlowId, currentModule, currentFlow, modelProperty);
 
       if (stepData != null) {
-        this._fgs.setFormValue(form, stepData, true);
+        this._fgs.setFormValue(form, stepData);
       }
 
       this.form = form;
@@ -79,7 +79,7 @@ export class DuiFormComponent implements OnInit, OnDestroy {
       const stepData = this._fds.getStepData(currentFlowId, currentModule, currentFlow, currentStep.modelProperty);
       if (stepData != null && this.form != null && this._fds.getUpdateForm(currentFlowId)) {
         this.allowPeriTasks = false;
-        this._fgs.setFormValue(this.form, stepData, true, false);
+        this._fgs.setFormValue(this.form, stepData);
         setTimeout(() => {
           this.allowPeriTasks = true;
         }, 600);

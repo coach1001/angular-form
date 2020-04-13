@@ -58,8 +58,8 @@ export class DuiBaseArrayComponent implements OnInit, OnDestroy {
       this.checkReactivity(this.controlIn.parent.getRawValue());
       this.controlIn.parent.valueChanges.pipe(
         takeUntil(this._destroy$)
-      ).subscribe(value => {
-        this.checkReactivity(value);
+      ).subscribe(_ => {
+        this.checkReactivity(this.controlIn.parent.getRawValue());
       });
     }
     this.decorators = this._fgs.decorators.filter(decorator => decorator.taskPath === this.controlIn['element'].taskPath);
@@ -71,7 +71,7 @@ export class DuiBaseArrayComponent implements OnInit, OnDestroy {
         takeUntil(this._destroy$)
       ).subscribe(_ => {
         if (this.controlIn['controls'].length !== 0) {
-          this._fgs.setArrayValue(this.controlIn, [], false);
+          this._fgs.setArrayValue(this.controlIn, []);
           this.cleared$.next();
         }
       });
@@ -87,7 +87,7 @@ export class DuiBaseArrayComponent implements OnInit, OnDestroy {
 
   setDefaultValue() {
     if (this.controlIn['element'].defaultValue && (this.controlIn.value == null || this.controlIn.value.length === 0)) {
-      this._fgs.setArrayValue(this.controlIn, this.controlIn['element'].defaultValue, false);
+      this._fgs.setArrayValue(this.controlIn, this.controlIn['element'].defaultValue);
     }
   }
 
@@ -164,7 +164,7 @@ export class DuiBaseArrayComponent implements OnInit, OnDestroy {
 
   handleClearing(clear: Array<boolean>): void {
     if (clear.length > 0 && clear.every(c => c) && this.controlIn['controls'].length > 0) {
-      this._fgs.setArrayValue(this.controlIn, [], false);
+      this._fgs.setArrayValue(this.controlIn, []);
       this.cleared$.next();
     }
   }

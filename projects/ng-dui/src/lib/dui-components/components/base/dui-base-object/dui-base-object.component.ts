@@ -54,8 +54,8 @@ export class DuiBaseObjectComponent implements OnInit, OnDestroy {
       this.checkReactivity(this.controlIn.parent.getRawValue());
       this.controlIn.parent.valueChanges.pipe(
         takeUntil(this._destroy$)
-      ).subscribe(value => {
-        this.checkReactivity(value);
+      ).subscribe(_ => {
+        this.checkReactivity(this.controlIn.parent.getRawValue());
       });
     }
     this.decorators = this._fgs.decorators.filter(decorator => decorator.taskPath === this.controlIn['element'].taskPath);
@@ -126,7 +126,7 @@ export class DuiBaseObjectComponent implements OnInit, OnDestroy {
 
   setDefaultValue() {
     if (this.controlIn['element'].defaultValue && this._fgs.isEmpty(this.controlIn)) {
-      this._fgs.setFormValue(this.controlIn, this.controlIn['element'].defaultValue, false);
+      this._fgs.setFormValue(this.controlIn, this.controlIn['element'].defaultValue);
     }
   }
 
@@ -190,7 +190,7 @@ export class DuiBaseObjectComponent implements OnInit, OnDestroy {
     return {
       controlIn: control,
       parent: this.controlIn,
-      modelProperty: controlKey,      
+      modelProperty: controlKey,
       label: control['element']?.name,
       hint: control['element']?.hint,
       parentReset$: this.reset$,
@@ -200,7 +200,7 @@ export class DuiBaseObjectComponent implements OnInit, OnDestroy {
 
   handleClearing(clear: Array<boolean>): void {
     if (clear.length > 0 && clear.every(c => c) && this.controlIn.value != null) {
-      this._fgs.setFormValue(this.controlIn, {}, false);
+      this._fgs.setFormValue(this.controlIn, {});
       this.cleared$.next();
     }
   }
