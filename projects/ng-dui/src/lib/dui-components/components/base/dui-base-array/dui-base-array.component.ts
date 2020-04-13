@@ -172,7 +172,8 @@ export class DuiBaseArrayComponent implements OnInit, OnDestroy {
   addRow() {
     this._fgs.recurseFormGroup(this.controlIn, 'TOUCH_AND_VALIDATE');
     if (this.controlIn.valid || this.controlIn.controls.length === 0) {
-      this.controlIn.push(cloneDeep(this.controlIn['rowTemplate']));
+      this.controlIn.controls.push(cloneDeep(this.controlIn['rowTemplate']));
+      this.controlIn.controls[this.controlIn.controls.length - 1].setParent(this.controlIn);
       this.controlIn.controls[this.controlIn.controls.length - 1].get('id__').patchValue(uuid());
       this.controlIn.controls[this.controlIn.controls.length - 1].get('operation__').patchValue(ArrayOperation.Add);
     }
