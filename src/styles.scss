@@ -37,7 +37,8 @@ body {
 }
 
 input {
-  font-weight: 600 !important;
+  font-weight: 400 !important;
+  font-size: 1rem;
   width: 100%;
 }
 
@@ -69,4 +70,12 @@ input {
 
 .input-group-sm {
   padding-top: 0 !important;
+}
+
+.form-control-sm {
+  height: 36px;
+}
+
+ng-select {
+  width: 100%;
 }

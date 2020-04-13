@@ -22,6 +22,7 @@ export class SelectFieldComponent extends DuiBaseControlComponent {
 
   customInit() {
     this.currentSelectedValue = this.controlIn.value?.key;
+    console.log(this.controlIn['element'].options)
   }
 
   get inputClass() {
@@ -35,16 +36,6 @@ export class SelectFieldComponent extends DuiBaseControlComponent {
     return this._esm.isErrorState(<FormControl>this.controlIn, null) ? this.error : '';
   }
   
-  get displayFn(): (value?: any) => string | undefined {
-    return (value?: any): string | undefined => {
-      if(value != null) {
-        const option = this.controlIn['element'].options.find(option_ => option_.key === value.key);
-        if (option == null) return undefined;
-        return option.display;
-      }      
-    }
-  }
-
   optionSelected(event: any): void {            
     const option = this.controlIn['element'].options.find(option_ => option_.key === event);
     this.controlIn.setValue(option);    

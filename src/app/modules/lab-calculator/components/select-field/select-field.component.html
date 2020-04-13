@@ -1,9 +1,9 @@
 <div class="form-group">
   <label class="text-light col-form-label-sm" *ngIf="label">{{label}}</label>
   <div class="input-group input-group-sm">
-    <select [ngClass]="inputClass" [ngModel]="currentSelectedValue" (ngModelChange)="optionSelected($event)">
-      <option *ngFor="let option of controlIn['element'].options" [value]="option.key">{{displayFn(option)}}</option>
-    </select>
+    <ng-select [items]="controlIn['element'].options" bindValue="key" bindLabel="display" [(ngModel)]="currentSelectedValue"
+      (ngModelChange)="optionSelected($event)">
+    </ng-select>
   </div>
   <small *ngIf="hint" class="form-text text-muted">{{hint}}</small>
   <div class="invalid-feedback feedback">{{error_}}</div>
