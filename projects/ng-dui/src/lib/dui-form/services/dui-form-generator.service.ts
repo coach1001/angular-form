@@ -179,9 +179,9 @@ export class DuiFormGeneratorService {
         const controlIds = abstractControl.controls.map(group => group.get('id__').value);
         const valueIds = arrayValue.map(v => v.id__);
 
-        let controlIdsToRemove = controlIds.filter(value => !valueIds.includes(value));
-        const controlIdsToUpdate = controlIds.filter(value => valueIds.includes(value));
-        const valueIdsToAdd = valueIds.filter(value => !controlIds.includes(value));
+        let controlIdsToRemove = controlIds.filter(value_ => !valueIds.includes(value_));
+        const controlIdsToUpdate = controlIds.filter(value_ => valueIds.includes(value_));
+        const valueIdsToAdd = valueIds.filter(value_ => !controlIds.includes(value_));
         controlIdsToRemove = controlIdsToRemove.reverse();
 
         controlIdsToRemove.forEach(removeId => {
@@ -192,7 +192,7 @@ export class DuiFormGeneratorService {
         controlIdsToUpdate.forEach(updateId => {
           const controlIndexToUpdate = abstractControl.controls.findIndex(group => group.get('id__').value === updateId);
           const updateValue = arrayValue.find(v => v.id__ === updateId);
-          if (value != null) {
+          if (updateValue != null) {
             if (controlIndexToUpdate > -1) {
               this.setFormValue(<FormGroup>abstractControl.controls[controlIndexToUpdate], updateValue, emitEvent, updateDisabledOnly);
             }
@@ -210,13 +210,14 @@ export class DuiFormGeneratorService {
         });
 
       } else {
-        if (!updateDisabledOnly) {
+        abstractControl.patchValue(controlValue, { emitEvent });
+        /*if (!updateDisabledOnly) {
           abstractControl.patchValue(controlValue, { emitEvent });
         } else {
           if (abstractControl.disabled) {
             abstractControl.patchValue(controlValue, { emitEvent });
           }
-        }
+        }*/
       }
     });
   }
