@@ -3,9 +3,9 @@ import { LayoutService } from '../../services/layout.service';
 // import { DuiBaseArrayComponent, DuiFormGeneratorService, BorderType } from 'ng-dui';
 import { DuiFormGeneratorService } from 'projects/ng-dui/src/lib/dui-form/services/dui-form-generator.service';
 import { DuiBaseArrayComponent } from 'projects/ng-dui/src/lib/dui-components/components/base/dui-base-array/dui-base-array.component';
-import { Orientation } from 'projects/ng-dui/src/lib/dui-form/services/dui-orientation.enum';
-import { FormArray, FormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
+import { ArrayOperation } from 'projects/ng-dui/src/lib/dui-form/services/dui-array-operation.enum';
 
 @Component({
   selector: 'app-array',
@@ -18,8 +18,8 @@ export class ArrayComponent extends DuiBaseArrayComponent {
   rowOrientationStyle: {}
   deleteButtonStyle: {}
   vertical: boolean;
-  hideAddAndDelete: boolean;  
-  
+  hideAddAndDelete: boolean;
+
   constructor(
     private _esm: ErrorStateMatcher,
     private _fgs_: DuiFormGeneratorService,
@@ -27,7 +27,7 @@ export class ArrayComponent extends DuiBaseArrayComponent {
     super(_fgs_);
   }
 
-  customInit() {    
+  customInit() {
     this.hideAddAndDelete = this.controlIn['element'].hideAddAndDelete;
     this.vertical = this.controlIn['element']['vertical'];
     const verticalRows = this.controlIn['element']['verticalRows'];
@@ -49,12 +49,12 @@ export class ArrayComponent extends DuiBaseArrayComponent {
       this.rowOrientationStyle = {
         'display': 'grid',
         'grid-template-columns': '1fr auto',
-        'grid-template-rows': '1fr',        
+        'grid-template-rows': '1fr',
         'margin-bottom': '10px'
       };
       this.arrayOrientationStyle = {
         'display': 'grid',
-        'grid-template-rows': '1fr'       
+        'grid-template-rows': '1fr'
       };
     }
     if (!this.vertical) {
@@ -70,7 +70,7 @@ export class ArrayComponent extends DuiBaseArrayComponent {
 
   get gridStyleParent(): object {
     const style = this._ls.gridStyleParent(this.controlIn) as any;
-    style.gap = '10px';    
+    style.gap = '10px';
     return style;
     // return this._ls.gridStyleParent(this.controlIn);
   }
@@ -90,15 +90,16 @@ export class ArrayComponent extends DuiBaseArrayComponent {
   get error_() {
     return this._esm.isErrorState(<FormControl><any>this.controlIn, null) ? this.error : '';
   }
-  
-  get showAdd() {    
-    if(this.hideAddAndDelete != null && this.hideAddAndDelete) {
+
+  get showAdd() {
+    if (this.hideAddAndDelete != null && this.hideAddAndDelete) {
       return false;
-    }    
+    }
     if (this.controlIn['element']['maxRows'] === 0) {
       return true;
-    } else {      
-      return !(this.controlIn?.value?.length === this.controlIn['element']['maxRows']);
+    } else {
+      const rows = this.controlIn.controls.filter(m => m.get('operation__').value !== ArrayOperation.Remove);
+      return !(rows.length === this.controlIn['element']['maxRows']);
     }
   }
 
