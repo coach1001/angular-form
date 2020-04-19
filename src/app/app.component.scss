@@ -1,11 +1,13 @@
 .main-wrapper {
-    height: 100vh;    
-    display: grid !important;
-    grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
 }
 
-.body-wrapper {
-    padding-top: 30px;
-    padding-bottom: 30px;
+@media print {
+  .main-wrapper {
+    height: 100vh;
+    display: block;
+  }
 }

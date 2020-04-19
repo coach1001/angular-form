@@ -1,0 +1,8 @@
+.body-wrapper {
+  padding: 0 !important;
+}
+@media print {
+  button {
+    display: none;
+  }
+}

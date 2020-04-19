@@ -1,0 +1,5 @@
+<div class="book">
+  <ng-container *ngFor="let controlKeyValue of controlIn.controls | keyvalue : originalOrder">
+    <dui-dynamic [inputs]="getComponentInputs(controlKeyValue.key)"></dui-dynamic>
+  </ng-container>
+</div>

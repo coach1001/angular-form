@@ -18,18 +18,24 @@ import { LayoutService } from './services/layout.service';
 import { DuiComponentsModule } from 'projects/ng-dui/src/lib/dui-components/dui-components.module';
 import { DuiComponentsRegistryService } from 'projects/ng-dui/src/lib/dui-components/services/dui-components-registry.service';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { ReportComponent } from './components/report/report.component';
+import { PageComponent } from './components/page/page.component';
+import { ReportContainerComponent } from './components/report-container/report-container.component';
 
 @NgModule({
   declarations: [
     LabCalculatorContainerComponent,
+    ReportContainerComponent,
     ObjectComponent,
     ArrayComponent,
     TextFieldComponent,
-    NumberFieldComponent,    
+    NumberFieldComponent,
     SelectFieldComponent,
     HiddenTextFieldComponent,
     LabelDecoratorComponent,
-    BooleanFieldComponent    
+    BooleanFieldComponent,
+    ReportComponent,
+    PageComponent
   ],
   imports: [
     CommonModule,
@@ -44,18 +50,21 @@ import { NgSelectModule } from '@ng-select/ng-select';
     LayoutService
   ],
   entryComponents: [
-    LabCalculatorContainerComponent
+    LabCalculatorContainerComponent,
+    ReportContainerComponent
   ]
 })
 export class LabCalculatorModule {
   constructor(private _crs: DuiComponentsRegistryService) {
     _crs.addComponent('defaultObject', ObjectComponent);
     _crs.addComponent('defaultArray', ArrayComponent);
-    _crs.addComponent('defaultText', TextFieldComponent);    
-    _crs.addComponent('defaultNumber', NumberFieldComponent);    
+    _crs.addComponent('defaultText', TextFieldComponent);
+    _crs.addComponent('defaultNumber', NumberFieldComponent);
     _crs.addComponent('defaultSelect', SelectFieldComponent);
     _crs.addComponent('defaultHideableText', HiddenTextFieldComponent);
     _crs.addComponent('defaultDecorator', LabelDecoratorComponent);
-    _crs.addComponent('defaultBoolean', BooleanFieldComponent)
+    _crs.addComponent('defaultBoolean', BooleanFieldComponent);
+    _crs.addComponent('defaultReport', ReportComponent);
+    _crs.addComponent('defaultPage', PageComponent);
   }
 }

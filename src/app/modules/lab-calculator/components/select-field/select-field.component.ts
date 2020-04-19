@@ -22,7 +22,6 @@ export class SelectFieldComponent extends DuiBaseControlComponent {
 
   customInit() {
     this.currentSelectedValue = this.controlIn.value?.key;
-    console.log(this.controlIn['element'].options)
   }
 
   get inputClass() {

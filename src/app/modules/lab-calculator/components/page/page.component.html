@@ -1,0 +1,39 @@
+<!-- <h6 *ngIf="label && visible" class="text-light">{{label}}</h6>
+<form [formGroup]="parent" *ngIf="visible" autocomplete="false">
+  <div [ngStyle]="gridStyleParent">
+    <ng-container *ngFor="let key of controlKeys;let i = index;">      
+      <dui-dynamic [ngStyle]="gridStyleChild(key)" [inputs]="getComponentInputs(key)"></dui-dynamic>
+    </ng-container>
+    <ng-container *ngFor="let decorator of decorators;let i = index;">      
+      <dui-dynamic [ngStyle]="gridStyleDecorator(decorator)" [inputs]="getDecoratorInputs(i)"></dui-dynamic>
+    </ng-container>
+  </div>
+</form>     -->
+<div class="print-page">
+  <!-- <div [ngClass]="{ 'subpage': true, 'landscape': page.orientation === 'landscape'}"> -->
+  <div [ngClass]="{'print-subpage': true, 'landscape': orientation === 'landscape'}">
+    <div class="print-page-content">
+      <div class="print-section print-header">
+        <div>
+          <!-- <svg width="80" height="80">
+                <image [attr.xlink:href]="page.header?.logo" width="80" height="80" />
+              </svg> -->
+        </div>
+        <div>DETAILS</div>
+      </div>
+      <div class="print-section print-body">
+        <ng-container *ngFor="let controlKeyValue of controlIn.controls | keyvalue : originalOrder">  
+          <dui-dynamic [inputs]="getComponentInputs(controlKeyValue.key)"></dui-dynamic>
+        </ng-container>
+      </div>
+      <div>
+        <div class="print-section print-footer">
+          <div fxFlex class="print-info">Generated on: {{ printDateTime | date:'medium' }}</div>
+          <!-- <div class="info">{{i+1}} of {{pages.length}}</div> -->
+          <div class="print-info">page x of y</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

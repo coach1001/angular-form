@@ -8,6 +8,7 @@ import {
 import { finalize } from 'rxjs/operators';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { environment } from '../../../../environments/environment';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Injectable()
 export class LoadingInterceptor implements HttpInterceptor {
@@ -18,12 +19,14 @@ export class LoadingInterceptor implements HttpInterceptor {
 
   constructor(
     // TODO: private loadingService: LoadingService
+    private _spinner: NgxSpinnerService
   ) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this._totalRequests += 1;
     if (!this.showSpinner$.value) {
       this.showSpinner$.next(true);
+      this._spinner.show();
       this.spinnerTimeout = setTimeout(() => {
         this.resetInterceptor();
       }, environment.spinnerTimeout);
@@ -43,6 +46,7 @@ export class LoadingInterceptor implements HttpInterceptor {
     if (this.showSpinner$.value) {
       clearTimeout(this.spinnerTimeout);
       this.showSpinner$.next(false);
+      this._spinner.hide();
       this._totalRequests = 0;      
     }
   }

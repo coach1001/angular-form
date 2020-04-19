@@ -1,17 +1,27 @@
-@import '~bootstrap/dist/css/bootstrap.min.css';
+// @import '~bootstrap/dist/css/bootstrap.min.css';
+@import './sass/bootstrap.css';
 @import '~@ng-select/ng-select/themes/default.theme.css';
 @import './sass/variables.scss';
 @import './assets/fonts/montserrat.fonts.scss';
 
+// @import './assets/fonts/raleway.font.scss';
+
 body {
+  margin: 0 !important;
+  padding: 0 !important;
   overflow-y: scroll !important;
-  padding: 0;
-  margin: 0;
+}
+
+html {
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 * {
   font-family: 'Montserrat', sans-serif !important;
-  border-radius: 0 !important;
+  text-rendering: optimizeLegibility !important;
+  // font-family: 'Raleway', sans-serif !important;
+  // border-radius: 0 !important;
 }
 
 .c-pointer {

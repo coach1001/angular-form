@@ -1,9 +1,11 @@
 <h6 *ngIf="label && visible" class="text-light">{{label}}</h6>
 <form [formGroup]="parent" *ngIf="visible" autocomplete="false">
   <div [ngStyle]="gridStyleParent">
-    <ng-container *ngFor="let key of controlKeys;let i = index;">      
-      <dui-dynamic [ngStyle]="gridStyleChild(key)" [inputs]="getComponentInputs(key)"></dui-dynamic>
+    
+    <ng-container *ngFor="let controlKeyValue of controlIn.controls | keyvalue : originalOrder">    
+      <dui-dynamic [ngStyle]="gridStyleChild(controlKeyValue.key)" [inputs]="getComponentInputs(controlKeyValue.key)"></dui-dynamic>
     </ng-container>
+
     <ng-container *ngFor="let decorator of decorators;let i = index;">      
       <dui-dynamic [ngStyle]="gridStyleDecorator(decorator)" [inputs]="getDecoratorInputs(i)"></dui-dynamic>
     </ng-container>

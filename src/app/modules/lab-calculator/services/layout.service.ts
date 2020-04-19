@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 // import { DuiFormGeneratorService, BorderType } from 'ng-dui/ng-dui';
 import { DuiFormGeneratorService } from 'projects/ng-dui/src/lib/dui-form/services/dui-form-generator.service';
 import { BorderType } from 'projects/ng-dui/src/lib/dui-form/services/dui-border.enum';
+import { ElementType } from 'projects/ng-dui/src/lib/dui-form/services/dui-elements.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +18,11 @@ export class LayoutService {
     const positionConfig = controlIn['element']['positionConfig'];
     const mediaSize = this._fgs.getMediaSize();
     let gridStyle = {
-      'display': 'grid'
-    }
+      'display': 'grid',
+      // padding: 
+      //   controlIn['element'].elementType === ElementType.Object || controlIn['element'].elementType == ElementType.Array 
+      //   ? '10px' : 0
+    };
     if (controlIn['element']['borderConfig'] != null) {
       const borderConfig = this.getBorder(controlIn['element']['borderConfig']);
       gridStyle = { ...gridStyle, ...borderConfig };
@@ -82,7 +86,9 @@ export class LayoutService {
   }
 
   getBorder(borderConfig: string) {
-    const borderConfig_ = {};
+    const borderConfig_ = {
+      'border-radius': '.2rem',
+    };
     const border = '1px solid #797D81';
     switch (borderConfig) {
       case BorderType.ltrb:

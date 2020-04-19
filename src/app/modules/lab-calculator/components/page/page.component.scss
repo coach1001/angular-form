@@ -1,0 +1,70 @@
+.print-page {
+  background: white;
+  width: 210mm;
+  min-height: 297mm;
+  margin-bottom: 2cm;
+  margin-left: auto;
+  margin-right: auto
+}
+
+.print-subpage {
+  padding: 1cm;
+  height: 297mm;
+
+  &.landscape {
+    transform: rotate(90deg);
+    width: 297mm;
+    height: 210mm;
+    top: 4.35cm;
+    right: 4.35cm;
+    position: relative;
+  }
+}
+
+.print-page-content {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr auto;
+}
+
+@media print {
+  
+  .print-page {
+    margin: 0;
+    height: 297mm;
+    min-height: 297mm;
+    border: initial;
+    border-radius: initial;
+    width: initial;
+    min-height: initial;
+    box-shadow: initial;
+    background: initial;
+    page-break-after: always;
+  }
+}
+
+.print-info {
+  font-size: 8px;
+  font-weight: bold;
+}
+
+.print-section {
+  padding: 2mm;
+
+  &.print-header {
+    border-top: 1px solid #e5e6eb;
+    border-left: 1px solid #e5e6eb;
+    border-right: 1px solid #e5e6eb;
+  }
+
+  &.print-body {
+    border-top: 1px solid #e5e6eb;
+    border-left: 1px solid #e5e6eb;
+    border-right: 1px solid #e5e6eb;
+  }
+
+  &.print-footer {
+    border: 1px solid #e5e6eb;
+  }
+}

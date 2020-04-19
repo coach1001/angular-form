@@ -5,6 +5,7 @@ import { takeUntil } from 'rxjs/operators';
 import * as jexl from 'jexl';
 import * as changeCase from 'change-case';
 import { DuiFormGeneratorService } from '../../../../dui-form/services/dui-form-generator.service';
+import { KeyValue } from '@angular/common';
 
 @Component({
   template: ''
@@ -24,8 +25,7 @@ export class DuiBaseObjectComponent implements OnInit, OnDestroy {
   @Input()
   parentReset$: Subject<void> = new Subject<void>();
 
-  visible = true;
-  controlKeys: Array<string> = [];
+  visible = true;  
 
   cleared$: Subject<void> = new Subject<void>();
   reset$: Subject<void> = new Subject<void>();
@@ -61,8 +61,7 @@ export class DuiBaseObjectComponent implements OnInit, OnDestroy {
     this.decorators = this._fgs.decorators.filter(decorator => decorator.taskPath === this.controlIn['element'].taskPath);
   }
 
-  elementInit() {
-    this.controlKeys = Object.keys(this.controlIn.controls);
+  elementInit() {    
     this.parentCleared$
       .pipe(
         takeUntil(this._destroy$)
@@ -81,6 +80,10 @@ export class DuiBaseObjectComponent implements OnInit, OnDestroy {
 
   customInit() { }
 
+  originalOrder = (a: KeyValue<number, string>, b: KeyValue<number, string>): number => {
+    return 0;
+  }
+  
   get gridStyleParent(): object {
     const gridConfig = this.controlIn['element']['gridConfig'];
     const spanConfig = gridConfig?.spanConfig;

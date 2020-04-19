@@ -62,6 +62,12 @@ export class DuiFormGeneratorService {
       case ElementType.Array:
         this.processArray_r(element, currFormElm);
         break;
+      case ElementType.Report:
+        this.processObject_r(element, currFormElm);
+        break;
+      case ElementType.Page:
+        this.processObject_r(element, currFormElm);
+        break;
       default: break;
     }
     return currFormElm;

@@ -5,6 +5,8 @@ import { LabCalculatorContainerComponent } from './components/lab-calculator-con
 import { ModuleGuard } from 'projects/ng-dui/src/lib/guards/module.guard';
 import { FlowGuard } from 'projects/ng-dui/src/lib/guards/flow.guard';
 import { DuiDynamicComponent } from 'projects/ng-dui/src/lib/dui-components/components/dui-dynamic/dui-dynamic.component';
+import { ReportComponent } from './components/report/report.component';
+import { ReportContainerComponent } from './components/report-container/report-container.component';
 
 const routes: Routes = [
   {
@@ -64,6 +66,28 @@ const routes: Routes = [
         path: '**',
         data: {
           module: 'test',
+          staticComponents: [
+            { name: 'done' }                      
+          ]
+        },
+        canActivate: [FlowGuard],
+        component: DuiDynamicComponent,
+      }
+    ]
+  },
+  {
+    path: 'flow/reports',
+    component: ReportContainerComponent,
+    canActivate: [ModuleGuard],
+    runGuardsAndResolvers: 'always',
+    data: {
+      module: 'reports',
+    },
+    children: [
+      {
+        path: '**',
+        data: {
+          module: 'reports',
           staticComponents: [
             { name: 'done' }                      
           ]

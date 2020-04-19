@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -17,6 +17,7 @@ import { NavHeaderComponent } from './components/nav-header/nav-header.component
 import { NgDuiModule } from 'projects/ng-dui/src/lib/ng-dui.module';
 import { AuthenticationGuard } from './modules/authentication/guards/authentication.guard';
 import { RoleGuard } from './modules/authentication/guards/role.guard';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { RoleGuard } from './modules/authentication/guards/role.guard';
       authenticationGuard: AuthenticationGuard,
       roleGuard: RoleGuard
     }),
+    NgxSpinnerModule,
     AuthenticationModule,
     LabCalculatorModule,
     ChartModule
@@ -48,6 +50,7 @@ import { RoleGuard } from './modules/authentication/guards/role.guard';
   entryComponents: [
     NavHeaderComponent
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
