@@ -19,7 +19,7 @@ export class ModuleGuard implements CanActivate {
     private _fs: DuiFlowService,
     private _fds: DuiFormDataService,
     private _rt: Router
-  ) {    
+  ) {
   }
 
   async canActivate(
@@ -99,7 +99,7 @@ export class ModuleGuard implements CanActivate {
 
 
   buildRoutes(routePrefix: string, moduleFromRouteData: string, flowFromUrl: string, steps: any, stepFromUrl: string, currentFlow: any): any {
-    
+
     let startPathForFlow = '';
     let startUrl = '';
     let routes = [];
@@ -112,16 +112,15 @@ export class ModuleGuard implements CanActivate {
       moduleMainRoute.children.unshift({
         path: flowFromUrl
       });
-      flowRoute = moduleMainRoute.children[0];  
-      flowRoute.canActivate = [];            
-      if(currentFlow?.flow.requiresAuthorization) {
+      flowRoute = moduleMainRoute.children[0];
+      flowRoute.canActivate = [];
+      if (currentFlow?.flow.requiresAuthorization) {
         flowRoute.canActivate.push(AuthenticationGuard)
       }
-      if(currentFlow?.flow.allowedRoles != null && currentFlow?.flow.allowedRoles.length > 0) {
+      if (currentFlow?.flow.allowedRoles != null && currentFlow?.flow.allowedRoles.length > 0) {
         flowRoute.canActivate.push(RoleGuard)
-        flowRoute.data.roles =  currentFlow?.flow.allowedRoles;
+        flowRoute.data.roles = currentFlow?.flow.allowedRoles;
       }
-      
       flowRoute.children = [];
     } else {
       return;

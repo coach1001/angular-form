@@ -18,6 +18,7 @@ import { NgDuiModule } from 'projects/ng-dui/src/lib/ng-dui.module';
 import { AuthenticationGuard } from './modules/authentication/guards/authentication.guard';
 import { RoleGuard } from './modules/authentication/guards/role.guard';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { DigitOnlyModule } from '@uiowa/digit-only';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     NgxSpinnerModule,
     AuthenticationModule,
     LabCalculatorModule,
-    ChartModule
+    ChartModule,
+    DigitOnlyModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
