@@ -168,6 +168,35 @@ export class DuiFlowService {
     }
   }
 
+  async RunStepPreTasks(form: FormGroup) {
+    const currentStep = this.currentStep$.value;
+    const currentFlowId = this.currentFlowId$.value;
+    const currentModule = this.currentFlow$.value.module;
+    const currentFlow = this.currentFlow$.value.flow.flow;
+    const formValue = form.getRawValue();
+    let flowData = cloneDeep(this._fds.getFlowData(currentFlowId));
+
+    if (flowData == null) {
+      this._fds.setStepData(currentFlowId, currentModule, currentFlow, currentStep.modelProperty, formValue, {
+        flowId: currentFlowId
+      }, false);
+      flowData = this._fds.getFlowData(currentFlowId);
+    }
+
+    flowData.flowData[currentStep.modelProperty] = formValue;
+    const flowDataChanges = await this.RunStepTasks(TaskType.PreTask, flowData.flowData, flowData.flowContext);
+    if (flowDataChanges != null) {      
+      this._fds.setStepData(
+        currentFlowId,
+        currentModule,
+        currentFlow,
+        currentStep.modelProperty,
+        flowDataChanges.data[currentStep.modelProperty],
+        flowDataChanges.context, true
+      );
+    }
+  }
+
   async nextStep(): Promise<void> {
 
     let form = this._fgs.form$.value;

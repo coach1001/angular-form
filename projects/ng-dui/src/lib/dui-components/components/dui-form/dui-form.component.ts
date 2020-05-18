@@ -35,7 +35,7 @@ export class DuiFormComponent implements OnInit, OnDestroy {
       this._fgs.buildForm(step);
     });
     this._fgs.form$.pipe(
-      filter(value => value != null),
+      filter(value => value != null && this.form == null),
       takeUntil(this._destroy$)
     ).subscribe(form => {
       const tasks = form['element']['tasks'] as Array<any>;
@@ -53,10 +53,14 @@ export class DuiFormComponent implements OnInit, OnDestroy {
       this.form = form;
       if (tasks != null && tasks.length > 0) {
         const hasPeriTasks = tasks.find(task => task.taskType === TaskType.PeriTask);
+        const hasPreTasks = tasks.find(task => task.taskType === TaskType.PreTask);
+        if(hasPreTasks != null) {
+          this._fs.RunStepPreTasks(form);
+        }
         if (hasPeriTasks != null) {
           form.valueChanges
             .pipe(
-              debounceTime(500),
+              debounceTime(700),
               takeUntil(this._destroy$),
             ).subscribe(val => {
               if (this.allowPeriTasks) {
@@ -82,7 +86,7 @@ export class DuiFormComponent implements OnInit, OnDestroy {
         this._fgs.setFormValue(this.form, stepData);
         setTimeout(() => {
           this.allowPeriTasks = true;
-        }, 600);
+        }, 800);
       }
     });
   }

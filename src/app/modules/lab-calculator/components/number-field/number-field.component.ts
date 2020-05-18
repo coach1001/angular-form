@@ -13,6 +13,8 @@ import { DuiBaseControlComponent } from 'projects/ng-dui/src/lib/dui-components/
 export class NumberFieldComponent extends DuiBaseControlComponent {
 
   groupStyle: any;
+  allowDecimal = false;
+  decimalPattern = '';  
 
   constructor(
     private _esm: ErrorStateMatcher,
@@ -26,14 +28,15 @@ export class NumberFieldComponent extends DuiBaseControlComponent {
       'is-invalid': this._esm.isErrorState(<FormControl>this.controlIn, null)
     };
   }
-  
+
   get error_() {
     return this._esm.isErrorState(<FormControl>this.controlIn, null) ? this.error : '';
   }
 
   customInit() {
     let columns = '';
-    if(this.prefix?.visible && this.suffix?.visible) {
+    const metadata = this.controlIn['element'].metadata;
+    if (this.prefix?.visible && this.suffix?.visible) {
       columns = 'auto 1fr auto';
     } else if (this.prefix?.visible) {
       columns = 'auto 1fr';
@@ -47,6 +50,12 @@ export class NumberFieldComponent extends DuiBaseControlComponent {
       'grid-template-rows': '1fr',
       'grid-template-columns': columns
     };
+    if (metadata != null) {
+      if (metadata.decimal != null && metadata.decimal > 0) {
+        this.allowDecimal = true;
+        this.decimalPattern = `^\\d+(\\.\\d{1,` + metadata.decimal + `})?$`;                
+      }
+    }
   }
 
 }

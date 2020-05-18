@@ -217,7 +217,16 @@ export class DuiFormGeneratorService {
         });
 
       } else {
-        abstractControl.patchValue(controlValue, { onlySelf: true, emitEvent: false });
+        const metadata = abstractControl['element'].metadata;
+        const controlType = abstractControl['element'].controlType;
+        if (controlValue != null && controlType === 'number' &&  metadata != null) {
+          if (metadata.decimal != null && metadata.decimal > 0) {
+            abstractControl.patchValue(controlValue.toFixed(metadata.decimal), { onlySelf: true, emitEvent: false });
+          }
+        }
+        else {
+          abstractControl.patchValue(controlValue, { onlySelf: true, emitEvent: false });
+        }
       }
     });
   }

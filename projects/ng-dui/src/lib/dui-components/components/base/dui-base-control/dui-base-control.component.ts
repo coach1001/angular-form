@@ -33,7 +33,7 @@ export class DuiBaseControlComponent implements OnInit, OnDestroy {
   reset$: Subject<void> = new Subject<void>();
   prefix: any;
   suffix: any;
-
+  
   protected _destroy$: Subject<void> = new Subject<void>();
 
   constructor(

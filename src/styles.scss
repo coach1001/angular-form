@@ -83,7 +83,11 @@ input {
 }
 
 .form-control-sm {
-  height: 36px;
+  height: 36px !important;
+}
+
+.form-control-sm {
+  height: 36px !important;
 }
 
 ng-select {

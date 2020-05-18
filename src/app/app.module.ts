@@ -19,7 +19,7 @@ import { AuthenticationGuard } from './modules/authentication/guards/authenticat
 import { RoleGuard } from './modules/authentication/guards/role.guard';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { DigitOnlyModule } from '@uiowa/digit-only';
-
+ 
 @NgModule({
   declarations: [
     AppComponent,

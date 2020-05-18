@@ -13,7 +13,7 @@ import { DuiFormGeneratorService } from 'projects/ng-dui/src/lib/dui-form/servic
 export class HiddenTextFieldComponent extends DuiBaseControlComponent {
 
   hidden = true;
-
+  
   constructor(
     private _esm: ErrorStateMatcher,
     private _fgs_: DuiFormGeneratorService) {

@@ -1,8 +1,15 @@
 .body-wrapper {
-  padding: 0 !important;
+  padding: 0 !important;  
 }
+
 @media print {
   button {
     display: none;
   }
+}
+
+button {
+  position: sticky;
+  top: 0px;
+  z-index: 2yarn ;
 }

@@ -98,7 +98,7 @@ export class ArrayComponent extends DuiBaseArrayComponent {
     if (this.controlIn['element']['maxRows'] === 0) {
       return true;
     } else {
-      const rows = this.controlIn.controls.filter(m => m.get('operation__').value !== ArrayOperation.Remove);
+      const rows = this.controlIn?.controls?.filter(m => m.get('operation__').value !== ArrayOperation.Remove);
       return !(rows.length === this.controlIn['element']['maxRows']);
     }
   }
