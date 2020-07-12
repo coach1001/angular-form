@@ -8,11 +8,11 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { ArrayOperation } from 'projects/ng-dui/src/lib/dui-form/services/dui-array-operation.enum';
 
 @Component({
-  selector: 'app-array',
-  templateUrl: './array.component.html',
-  styleUrls: ['./array.component.scss']
+  selector: 'app-grid',
+  templateUrl: './grid.component.html',
+  styleUrls: ['./grid.component.scss']
 })
-export class ArrayComponent extends DuiBaseArrayComponent {
+export class GridComponent extends DuiBaseArrayComponent {
 
   arrayOrientationStyle: {}
   rowOrientationStyle: {}

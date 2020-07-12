@@ -16,7 +16,7 @@ import { CollectionRangeValidator } from './form-validators/collection-range.val
 @NgModule({
   declarations: [],
   imports: [
-    CommonModule
+    CommonModule    
   ],
   providers: [
     DuiValidatorRegistryService,

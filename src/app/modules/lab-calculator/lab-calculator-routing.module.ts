@@ -5,7 +5,6 @@ import { LabCalculatorContainerComponent } from './components/lab-calculator-con
 import { ModuleGuard } from 'projects/ng-dui/src/lib/guards/module.guard';
 import { FlowGuard } from 'projects/ng-dui/src/lib/guards/flow.guard';
 import { DuiDynamicComponent } from 'projects/ng-dui/src/lib/dui-components/components/dui-dynamic/dui-dynamic.component';
-import { ReportComponent } from './components/report/report.component';
 import { ReportContainerComponent } from './components/report-container/report-container.component';
 
 const routes: Routes = [

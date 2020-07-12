@@ -18,13 +18,13 @@ export class StepGuard implements CanActivate {
 
   canActivate(
     next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-
+    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {    
     if (next.queryParams.flowId == null) {
       const flowId = uuid();
       this._fs.currentFlowId$.next(flowId);      
       this._rt.navigate([`${state.url}`], {
         queryParams: {
+          ...next.queryParams,
           flowId
         },
         queryParamsHandling: 'merge'
@@ -38,6 +38,7 @@ export class StepGuard implements CanActivate {
           this._fs.currentFlowId$.next(flowId);          
           this._rt.navigate([`${state.url}`], {
             queryParams: {
+              ...next.queryParams,
               flowId
             },
             queryParamsHandling: 'merge'

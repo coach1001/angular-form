@@ -1,6 +1,6 @@
 import { Injectable, Inject, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { DuiFormGeneratorService } from '../../dui-form/services/dui-form-generator.service';
 import { DuiFormDataService } from '../../dui-form/services/dui-form-data.service';
 import { NgDuiConfigService } from '../../services/ng-dui-config.service';
@@ -37,7 +37,7 @@ export class DuiFlowService {
     private _rt: Router,
     private _hc: HttpClient,
     private _trs: DuiTaskRegistryService,
-
+    private _ars: ActivatedRoute
   ) {
   }
 
@@ -178,9 +178,16 @@ export class DuiFlowService {
 
     if (flowData == null) {
       this._fds.setStepData(currentFlowId, currentModule, currentFlow, currentStep.modelProperty, formValue, {
+        ...this._ars.snapshot.queryParams,        
         flowId: currentFlowId
       }, false);
       flowData = this._fds.getFlowData(currentFlowId);
+    } else {
+      flowData.flowContext = {
+        ...flowData.flowContext,
+        ...this._ars.snapshot.queryParams,
+        flowId: currentFlowId
+      }
     }
 
     flowData.flowData[currentStep.modelProperty] = formValue;
@@ -220,6 +227,7 @@ export class DuiFlowService {
 
       if (flowData == null) {
         this._fds.setStepData(currentFlowId, currentModule, currentFlow, currentStep.modelProperty, formValue, {
+          ...this._ars.snapshot.queryParams,
           flowId: currentFlowId
         }, false);
         flowData = this._fds.getFlowData(currentFlowId);
@@ -278,9 +286,7 @@ export class DuiFlowService {
     const currentRouteIndex = routeConfig.routes.findIndex(route => route.stepName === currentStepName);
     const nextRoute = routeConfig.routes[currentRouteIndex - 1];
     if (nextRoute == null) return;
-    this._rt.navigate([nextRoute.absolutePath], {
-      queryParamsHandling: 'merge'
-    });
+    this._rt.navigate([nextRoute.absolutePath]);
   }
 
 }

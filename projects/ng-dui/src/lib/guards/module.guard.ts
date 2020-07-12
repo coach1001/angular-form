@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router, Route, UrlSegment } from '@angular/router';
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router, Route, UrlSegment, NavigationExtras, Params } from '@angular/router';
 import { StepGuard } from './step.guard';
 import { DuiFormComponent } from '../dui-components/components/dui-form/dui-form.component';
 import { DuiFlowService } from '../dui-flow/services/dui-flow.service';
@@ -8,6 +8,7 @@ import { NgDuiConfigService } from '../services/ng-dui-config.service';
 import { uuid } from 'uuidv4';
 import { AuthenticationGuard } from './authentication.guard';
 import { RoleGuard } from './role.guard';
+import cloneDeep from 'lodash-es/cloneDeep';
 
 @Injectable({
   providedIn: 'root'
@@ -25,21 +26,19 @@ export class ModuleGuard implements CanActivate {
   async canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot) {
-
     const unregisteredFlow = state['unregisteredFlow'] != null ? state['unregisteredFlow'] : false;
-
     if (this._fs.currentFlow$.value != null && this._fs.currentFlow$.value.flowStarted && !unregisteredFlow) {
-      const flowId = next.queryParams.flowId;
-      if (flowId == null) {
-        this._rt.navigateByUrl(`${state.url}?flowId=${uuid()}`);
+      let paramsFlowStarted = cloneDeep(next.queryParams);
+      if (paramsFlowStarted.flowId == null) {
+        paramsFlowStarted.flowId = uuid();
+        this._rt.navigate([`${state.url}`], { queryParams: paramsFlowStarted } as NavigationExtras);
         return false;
       } else {
-        this._fs.currentFlowId$.next(flowId);
+        this._fs.currentFlowId$.next(paramsFlowStarted.flowId);
         return true;
       }
     } else {
-
-      const flowId = next.queryParams.flowId;
+      let paramsFlowNotStarted = cloneDeep(next.queryParams);
       const moduleFromRouteData = next.data.module;
       const urlSegments = <UrlSegment[]>this._rt.parseUrl(state.url).root.children['primary'].segments;
 
@@ -78,7 +77,8 @@ export class ModuleGuard implements CanActivate {
       const startUrl = this._fs.checkIfRouteRegistered(routePrefix, moduleFromRouteData, flowFromUrl);
 
       if (startUrl != null) {
-        this._rt.navigateByUrl(`${startUrl}?flowId=${flowId == null ? uuid() : flowId}`);
+        paramsFlowNotStarted.flowId = paramsFlowNotStarted.flowId != null ? paramsFlowNotStarted.flowId : uuid();
+        this._rt.navigate([`${startUrl}`], { queryParams: paramsFlowNotStarted } as NavigationExtras);
       } else {
         this._fs.initFlow(moduleFromRouteData, flowFromUrl, unregisteredFlow);
         const currentFlow = this._fs.currentFlow$.value;
@@ -86,10 +86,12 @@ export class ModuleGuard implements CanActivate {
           const routeConfig = this.buildRoutes(routePrefix, moduleFromRouteData, flowFromUrl, currentFlow.flow.steps, stepFromUrl, currentFlow);
           this._fs.registerRoute(routePrefix, moduleFromRouteData, flowFromUrl, routeConfig.startPathForFlow, routeConfig.routes);
           if (currentFlow.flow.resumable || !this._config.production) {
-            this._rt.navigateByUrl(`${routeConfig.startUrl}?flowId=${flowId == null ? uuid() : flowId}`);
+            paramsFlowNotStarted.flowId = paramsFlowNotStarted.flowId != null ? paramsFlowNotStarted.flowId : uuid();
+            this._rt.navigate([`${routeConfig.startUrl}`], { queryParams: paramsFlowNotStarted } as NavigationExtras);
           } else {
             this._fds.clearFlowOnNextGet$.next(true);
-            this._rt.navigateByUrl(`${routeConfig.startPathForFlow}?flowId=${flowId == null ? uuid() : flowId}`);
+            paramsFlowNotStarted.flowId = paramsFlowNotStarted.flowId != null ? paramsFlowNotStarted.flowId : uuid();
+            this._rt.navigate([`${routeConfig.startPathForFlow}`], { queryParams: paramsFlowNotStarted } as NavigationExtras);
           }
         }
       }

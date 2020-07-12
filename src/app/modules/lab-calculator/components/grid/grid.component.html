@@ -1,0 +1,37 @@
+<h6 *ngIf="label && visible" class="text-light">{{label}}</h6>
+<table class="table table-dark table-bordered table-striped">
+  <thead>
+    <ng-container *ngFor="let controlKeyValue of controlIn?.controls[0]?.controls | keyvalue : originalOrder">
+      <ng-container
+        *ngIf="controlKeyValue.value.element.modelProperty !== 'id__' && controlKeyValue.value.element.modelProperty !== 'operation__'">
+        <th scope="col">{{controlKeyValue.value.element.name}}</th>
+      </ng-container>
+    </ng-container>
+  </thead>
+  <thead>
+    <ng-container *ngFor="let controlKeyValue of controlIn?.controls[0]?.controls | keyvalue : originalOrder">
+      <ng-container
+        *ngIf="controlKeyValue.value.element.modelProperty !== 'id__' && controlKeyValue.value.element.modelProperty !== 'operation__'">
+        <th scope="col">
+          <div class="form-group">
+            <div class="input-group input-group-sm">
+              <input type="text">
+            </div>
+          </div>
+        </th>
+      </ng-container>
+    </ng-container>
+  </thead>
+  <tbody>
+    <ng-container *ngFor="let rowFormGroup of controlIn?.controls; let rowIndex = index;">
+      <tr>
+        <ng-container *ngFor="let controlKeyValue of rowFormGroup?.controls | keyvalue : originalOrder">
+          <ng-container
+            *ngIf="controlKeyValue.value.element.modelProperty !== 'id__' && controlKeyValue.value.element.modelProperty !== 'operation__'">
+            <td>{{controlKeyValue.value.value}}</td>
+          </ng-container>
+        </ng-container>
+      </tr>
+    </ng-container>
+  </tbody>
+</table>

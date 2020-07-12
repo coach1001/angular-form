@@ -4,8 +4,6 @@
 @import './sass/variables.scss';
 @import './assets/fonts/montserrat.fonts.scss';
 
-// @import './assets/fonts/raleway.font.scss';
-
 body {
   margin: 0 !important;
   padding: 0 !important;
@@ -92,4 +90,9 @@ input {
 
 ng-select {
   width: 100%;
+}
+
+:focus {
+  outline: none !important;
+  background-color: #cddefc;
 }

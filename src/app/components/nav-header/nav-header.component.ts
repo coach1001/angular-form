@@ -33,17 +33,17 @@ export class NavHeaderComponent implements OnInit, OnDestroy {
 
   gotoRegistration(): void {
     this._fds.clearFlowOnNextGet$.next(true);
-    this._rt.navigate(['flow/account/user-registration'], { queryParamsHandling: 'merge' });
+    this._rt.navigate(['flow/account/user-registration']);
   }
 
   gotoLogin(): void {
     this._fds.clearFlowOnNextGet$.next(true);
-    this._rt.navigate(['flow/account/user-login'], { queryParamsHandling: 'merge' });
+    this._rt.navigate(['flow/account/user-login']);
   }
 
   gotoUserEdit(): void {
     this._fds.clearFlowOnNextGet$.next(true);
-    this._rt.navigate(['flow/account/user-edit'], { queryParamsHandling: 'merge' });
+    this._rt.navigate(['flow/account/user-edit']);
   }
 
   gotoChart(): void {
@@ -52,37 +52,37 @@ export class NavHeaderComponent implements OnInit, OnDestroy {
 
   gotoA1(): void {
     this._fds.clearFlowOnNextGet$.next(true);
-    this._rt.navigate(['flow/tmh1/a1'], { queryParamsHandling: 'merge' });
+    this._rt.navigate(['flow/tmh1/a1']);
   }
 
   gotoA2A3A4(): void {
     this._fds.clearFlowOnNextGet$.next(true);
-    this._rt.navigate(['flow/tmh1/a2a3a4'], { queryParamsHandling: 'merge' });
+    this._rt.navigate(['flow/tmh1/a2a3a4']);
   }
 
   gotoA7(): void {
     this._fds.clearFlowOnNextGet$.next(true);
-    this._rt.navigate(['flow/tmh1/a7'], { queryParamsHandling: 'merge' });
+    this._rt.navigate(['flow/tmh1/a7']);
   }
 
   gotoTestFlow(): void {
     this._fds.clearFlowOnNextGet$.next(true);
-    this._rt.navigate(['flow/test/test-flow'], { queryParamsHandling: 'merge' });
+    this._rt.navigate(['flow/test/test-flow']);
   }
 
   gotoTestReport(): void {
     this._fds.clearFlowOnNextGet$.next(true);
-    this._rt.navigate(['flow/reports/tmh1-main-report'], { queryParamsHandling: 'merge' });
+    this._rt.navigate(['flow/reports/tmh1-main-report']);
   }
 
   gotoSimpleFlow(): void {
     this._fds.clearFlowOnNextGet$.next(true);
-    this._rt.navigate(['flow/test/simple-flow'], { queryParamsHandling: 'merge' });
+    this._rt.navigate(['flow/test/simple-flow']);
   }
 
   logout(): void {
     this._as.logout();
-    this._rt.navigate(['flow/account/user-login'], { queryParamsHandling: 'merge' });
+    this._rt.navigate(['flow/account/user-login']);
   }
 
   ngOnDestroy(): void {

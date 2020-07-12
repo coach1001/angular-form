@@ -1,6 +1,7 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { NgDuiConfigService } from '../../services/ng-dui-config.service';
+import { ActivatedRoute } from '@angular/router';
 
 export interface IFlowData {
   module: string,
@@ -8,7 +9,7 @@ export interface IFlowData {
   flowId: string,
   updatedAt: Date;
   flowData: any;
-  flowContext: any;  
+  flowContext: any;
   updateForm: any;
 }
 
@@ -18,11 +19,12 @@ export interface IFlowData {
 export class DuiFormDataService {
 
   public persistData = true;
-  public allFlowData$: BehaviorSubject<Array<IFlowData>> = new BehaviorSubject(null);  
+  public allFlowData$: BehaviorSubject<Array<IFlowData>> = new BehaviorSubject(null);
   public clearFlowOnNextGet$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor(
-    private _config: NgDuiConfigService
+    private _config: NgDuiConfigService,
+    private _ars: ActivatedRoute
   ) { }
 
   setStepData(flowId: string, module: string, flow: string, modelProperty: string, data: any, context: any, updateForm = true) {
@@ -32,10 +34,11 @@ export class DuiFormDataService {
       const newAllFlowData = [];
       const flowData = {};
       flowData[modelProperty] = data;
-      context = {
+      const context = {
+        ...this._ars.snapshot.queryParams,
         flowId
       };
-      newAllFlowData.push(<IFlowData>{module, flow, flowId, updatedAt: new Date(), flowData, flowContext: context, updateForm });
+      newAllFlowData.push(<IFlowData>{ module, flow, flowId, updatedAt: new Date(), flowData, flowContext: context, updateForm });
       this.allFlowData$.next(newAllFlowData);
     } else {
       const flowDataIndex = allFlowData.findIndex(stepData => stepData.flowId === flowId);
@@ -64,7 +67,7 @@ export class DuiFormDataService {
     return this.allFlowData$.value.find(flow => flow.flowId === flowId) != null
       ? this.allFlowData$.value.find(flow => flow.flowId === flowId).updateForm
       : true;
-  } 
+  }
 
   getFlowData(flowId: string) {
     let allFlowData = this.allFlowData$.value;
@@ -83,7 +86,7 @@ export class DuiFormDataService {
     }
     allFlowData = this.allFlowData$.value;
     if (allFlowData == null) return null;
-    return allFlowData.find(flow => 
+    return allFlowData.find(flow =>
       flow.flowId === flowId)
   }
 
@@ -126,7 +129,7 @@ export class DuiFormDataService {
       });
       this.allFlowData$.next(allFlowData);
       if (this.persistData) {
-        if(this._config.production) {
+        if (this._config.production) {
           localStorage.setItem('fg.stepData', btoa(JSON.stringify(this.allFlowData$.value)));
         } else {
           localStorage.setItem('fg.stepData', JSON.stringify(this.allFlowData$.value));

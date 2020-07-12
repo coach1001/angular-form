@@ -21,6 +21,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { ReportComponent } from './components/report/report.component';
 import { PageComponent } from './components/page/page.component';
 import { ReportContainerComponent } from './components/report-container/report-container.component';
+import { GridComponent } from './components/grid/grid.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { ReportContainerComponent } from './components/report-container/report-c
     LabelDecoratorComponent,
     BooleanFieldComponent,
     ReportComponent,
-    PageComponent
+    PageComponent,
+    GridComponent
   ],
   imports: [
     CommonModule,
@@ -58,6 +60,7 @@ export class LabCalculatorModule {
   constructor(private _crs: DuiComponentsRegistryService) {
     _crs.addComponent('defaultObject', ObjectComponent);
     _crs.addComponent('defaultArray', ArrayComponent);
+    _crs.addComponent('defaultGrid', GridComponent);
     _crs.addComponent('defaultText', TextFieldComponent);
     _crs.addComponent('defaultNumber', NumberFieldComponent);
     _crs.addComponent('defaultSelect', SelectFieldComponent);

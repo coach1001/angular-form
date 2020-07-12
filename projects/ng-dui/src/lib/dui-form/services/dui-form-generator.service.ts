@@ -1,4 +1,4 @@
-import { Injectable, ChangeDetectorRef, ApplicationRef } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { FormArray, FormGroup, FormControl, FormBuilder, Form } from '@angular/forms';
 import { BehaviorSubject, Subject } from 'rxjs';
 import cloneDeep from 'lodash-es/cloneDeep';
@@ -27,8 +27,7 @@ export class DuiFormGeneratorService {
   constructor(
     private _fb: FormBuilder,
     private _vrs: DuiValidatorRegistryService,
-    private _config: NgDuiConfigService,
-    private _ar: ApplicationRef
+    private _config: NgDuiConfigService
   ) { }
 
   buildForm(definition: any): void {
@@ -219,7 +218,7 @@ export class DuiFormGeneratorService {
       } else {
         const metadata = abstractControl['element'].metadata;
         const controlType = abstractControl['element'].controlType;
-        if (controlValue != null && controlType === 'number' &&  metadata != null) {
+        if (controlValue != null && controlType === 'number' && metadata != null) {
           if (metadata.decimal != null && metadata.decimal > 0) {
             abstractControl.patchValue(controlValue.toFixed(metadata.decimal), { onlySelf: true, emitEvent: false });
           }
